@@ -189,7 +189,7 @@ defineExpose({
 <template>
   <div
     ref="sceneRef"
-    class="min-h-screen relative overflow-hidden flex items-center justify-center bg-slate-900 z-1"
+    class="min-h-screen bg-radial from-[#1e1b4b] to-[#0f172a] relative overflow-hidden flex items-center justify-center bg-slate-900 z-1"
     style="background: radial-gradient(circle at 50% 50%, #1e1b4b, #0f172a);"
   >
     <div ref="particlesRef" class="absolute inset-0 z-0"></div>
@@ -198,13 +198,13 @@ defineExpose({
         <div @mouseenter="playTitleHoverAnimation" @mouseleave="reverseTitleHoverAnimation" class="mb-8">
             <h1
                 ref="titleAlternateRef"
-                class="top-0 left-0 text-9xl text-white font-bold mix-blend-difference"
+                class="top-0 left-0 text-9xl text-white font-bold mix-blend-difference yabadaba"
             >
                 Welome to my <br> Portfolio!
             </h1>
             <h1
                 ref="titleRef"
-                class="absolute top-0 left-0 right-0 text-9xl font-bold text-white tracking-tight mix-blend-difference"
+                class="absolute top-0 left-0 right-0 text-9xl font-bold text-white tracking-tight mix-blend-difference yabadaba"
             >
                 I'm Johny Vu, <br> the creator
             </h1>
@@ -213,13 +213,13 @@ defineExpose({
         <div @mouseenter="playSubTextHoverAnimation" @mouseleave="reverseSubTextHoverAnimation" class="relative">
             <p
             ref="subtitleRef"
-            class="text-lg md:text-2xl text-indigo-200/80 mb-10 font-semibold text-white"
+            class="text-lg md:text-2xl text-indigo-200/80 mb-10 font-semibold text-white yabadaba"
                   >
                 I specialize in frontend development with<br>a higher focus on animation, web design, and UI.
             </p>      
             <p
             ref="subtitleAlternateRef"
-            class="absolute top-0 left-0 right-0 text-lg md:text-2xl text-indigo-200/80 mb-10 font-semibold text-white"
+            class="absolute top-0 left-0 right-0 text-lg md:text-2xl text-indigo-200/80 mb-10 font-semibold text-white yabadaba"
                   >
                 This portfolio gives me a chance to show<br> off and maybe even have a chance to be hired.
             </p>
@@ -228,7 +228,7 @@ defineExpose({
       <button
         ref="buttonRef"
         @click="$emit('introTransition')"
-        class="border-4 border-blue-400 text-white font-semibold px-8 py-4 text-base rounded-full"
+        class="border-4 border-blue-400 text-white font-semibold px-8 py-4 text-base rounded-full yabadaba"
       >
         Lets Get Started
       </button>
