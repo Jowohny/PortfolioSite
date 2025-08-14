@@ -189,12 +189,12 @@ defineExpose({
 <template>
   <div
     ref="sceneRef"
-    class="min-h-screen bg-radial from-[#1e1b4b] to-[#0f172a] relative overflow-hidden flex items-center justify-center bg-slate-900 z-1"
+    class="min-h-screen relative overflow-hidden flex items-center justify-center bg-slate-900 z-0"
     style="background: radial-gradient(circle at 50% 50%, #1e1b4b, #0f172a);"
   >
     <div ref="particlesRef" class="absolute inset-0 z-0"></div>
 
-    <div class="relative z-10 text-center px-4">
+    <div class="relative z-0 text-center px-4">
         <div @mouseenter="playTitleHoverAnimation" @mouseleave="reverseTitleHoverAnimation" class="mb-8">
             <h1
                 ref="titleAlternateRef"
