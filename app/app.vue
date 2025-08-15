@@ -72,6 +72,12 @@ const onLeave = (el: Element, done: () => void) => {
       duration: 2,
       ease: "elastic.out(1, 0.75)"
     }, '-=0.75')
+    .to(centerCircle.value, {
+      scale: 5,
+      duration: 2,
+      ease: 'power3.inOut',
+      backgroundColor: '#94A3B8'
+    })
 };
 </script>
 
@@ -91,7 +97,7 @@ const onLeave = (el: Element, done: () => void) => {
       <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
         <div
           ref="centerCircle"
-          class="bg-black rounded-full"
+          class="bg-white rounded-full"
           style="width: 40vh; height: 40vh;"
         />
       </div>
