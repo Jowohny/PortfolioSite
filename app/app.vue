@@ -24,9 +24,7 @@ const turnOnExperience = () => {
 const onLeave = (el: Element, done: () => void) => {
   const particles = el.querySelectorAll('.sparkle');
 
-  const tl = gsap.timeline({
-    onComplete: done
-  });
+  const tl = gsap.timeline();
 
   tl.set(shapeContainer.value, { autoAlpha: 1 })
     .set(centerCircle.value, { scale: 0 })
@@ -53,7 +51,7 @@ const onLeave = (el: Element, done: () => void) => {
         duration: 2.5, 
         ease: 'power2.inOut',
       onComplete: () => {
-        done
+        done()
       } 
       },
       "<"
@@ -78,6 +76,10 @@ const onLeave = (el: Element, done: () => void) => {
       ease: 'power3.inOut',
       backgroundColor: '#94A3B8'
     })
+    .to([centerCircle.value, trapezoidLeft.value, trapezoidRight.value], {
+      opacity: 0,
+      duration: 1
+    }, '-=1')
 };
 </script>
 

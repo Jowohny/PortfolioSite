@@ -52,28 +52,17 @@ onMounted(() => {
       ease: "back.out(1.7)"
     }, 2)
     .to(titleRef.value, {
-      y: -100, 
-      duration: 0.75,
-      color: '#FFFDD0',
-      scale: 0.2,
-      ease: 'power4.out'
-    })
-    .to(titleRef.value, {
-      top: '10rem',
-      yPercent: -25,
-      y: -100, 
-      duration: 0.75, 
+      top: '5rem',
+      duration: 1.5, 
       color: '#98FF98',
       scale: 1,
-      ease: 'power4.in'
+      ease: 'power4.inOut',
     })
-    .to(titleRef.value, {
-      top: '2.5rem',
-      yPercent: 0,
-      y: 0,
-      duration: 1.2,
-      ease: 'power3.inOut'
-    })
+    .to(splitTitle.chars, {
+      rotateX: 360,
+      stagger: 0.05,
+      duration: 1
+    }, '-=1.3')
     .to(leftPathRef.value, {
       strokeDashoffset: 0,
       duration: 1.5,
@@ -91,14 +80,17 @@ onMounted(() => {
 
 <template>
 <svg width="400" height="600" class="z-30 absolute top-40 left-0">
-  <path ref="leftPathRef" d="M -10 0 q 360 300 -10 600" stroke="black" fill="none" stroke-width="10"/>
+  <path ref="leftPathRef" d="M -10 0 q 360 300 -10 600" stroke="#98FF98" fill="none" stroke-width="10"/>
 </svg>
 <svg width="400" height="600" class="z-30 absolute top-40 right-0">
-  <path ref="rightPathRef" d="M 410 600 q -360 -300 10 -600" stroke="black" fill="none" stroke-width="10"/>
+  <path ref="rightPathRef" d="M 410 600 q -360 -300 10 -600" stroke="#98FF98" fill="none" stroke-width="10"/>
 </svg>
 
-<div class="bg-slate-500">
-  <h1 ref="titleRef" class=" fixed top-10 left-1/2 transform -translate-x-1/2 z-50 text-black text-6xl font-bold text-center">
+<div
+  class="min-h-screen"
+  style="background: radial-gradient(circle at 50% 50%, #94A3B8, #0f172a);"
+>
+  <h1 ref="titleRef" class="fixed top-10 left-1/2 transform -translate-x-1/2 z-50 text-black text-6xl font-bold text-center">
     Experience
   </h1>
 </div>

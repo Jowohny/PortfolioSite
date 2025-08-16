@@ -189,7 +189,7 @@ defineExpose({
 <template>
   <div
     ref="sceneRef"
-    class="min-h-screen relative overflow-hidden flex items-center justify-center bg-slate-900 z-0"
+    class="min-h-screen relative overflow-hidden flex items-center justify-center z-0"
     style="background: radial-gradient(circle at 50% 50%, #1e1b4b, #0f172a);"
   >
     <div ref="particlesRef" class="absolute inset-0 z-0"></div>
