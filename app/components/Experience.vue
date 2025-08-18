@@ -25,7 +25,7 @@ onMounted(() => {
     })
   })
 
-  gsap.set(titleRef.value, { top: '50%', yPercent: -50 });
+  gsap.set(titleRef.value, { yPercent: 45 });
 
   if (leftPathRef.value && rightPathRef.value) {
     const leftLength = leftPathRef.value.getTotalLength()
@@ -52,7 +52,7 @@ onMounted(() => {
       ease: "back.out(1.7)"
     }, 2)
     .to(titleRef.value, {
-      top: '5rem',
+      yPercent: 0,
       duration: 1.5, 
       color: '#98FF98',
       scale: 1,
@@ -63,23 +63,19 @@ onMounted(() => {
       stagger: 0.05,
       duration: 1
     }, '-=1.3')
-    .to(leftPathRef.value, {
+    .to([leftPathRef.value, rightPathRef.value], {
       strokeDashoffset: 0,
       duration: 1.5,
-      ease: "power2.inOut"
-    }, 10)
-    .to(rightPathRef.value, {
-      strokeDashoffset: 0,
-      duration: 1.5,
-      ease: "power2.inOut"
-    }, 10)
+      ease: "power2.inOut",
+      stagger: 0.2
+    }, 4.5)
     
   }
 })
 </script>
 
 <template>
-<svg width="400" height="600" class="z-30 absolute top-40 left-0">
+<svg width="400" height="600" class="z-30 absolute top-40 bottom-0 left-0">
   <path ref="leftPathRef" d="M -10 0 q 360 300 -10 600" stroke="#98FF98" fill="none" stroke-width="10"/>
 </svg>
 <svg width="400" height="600" class="z-30 absolute top-40 right-0">
@@ -87,11 +83,12 @@ onMounted(() => {
 </svg>
 
 <div
-  class="min-h-screen"
+  class="min-h-screen flex justify-center"
   style="background: radial-gradient(circle at 50% 50%, #94A3B8, #0f172a);"
 >
-  <h1 ref="titleRef" class="fixed top-10 left-1/2 transform -translate-x-1/2 z-50 text-black text-6xl font-bold text-center">
+  <h1 ref="titleRef" class="z-50 text-black text-6xl font-bold pt-8">
     Experience
   </h1>
+
 </div>
 </template>

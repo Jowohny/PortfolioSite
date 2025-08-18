@@ -12,12 +12,14 @@ const subtitleAlternateRef = ref<HTMLElement | null>(null)
 const buttonRef = ref<HTMLElement | null>(null)
 const particlesRef = ref<HTMLElement | null>(null)
 const titleAlternateRef = ref<HTMLElement | null>(null)
+const existance = ref(true)
 let splitTitle: SplitText | null = null
 let splitTitleAlternate: SplitText | null = null
 let splitSubText: SplitText | null = null
 let splitSubTextAlternate: SplitText | null = null
 let hoverTimelineTitle: gsap.core.Timeline | null = null
 let hoverTimelineSubText: gsap.core.Timeline | null = null
+let buttonTimeline: gsap.core.Timeline | null = null
 
 
 onMounted(() => {
@@ -95,7 +97,8 @@ const createDynamicParticles = () => {
 }
 
 const startContinuousAnimations = () => {
-  gsap.to(buttonRef.value, {
+  buttonTimeline = gsap.timeline();
+  buttonTimeline.to(buttonRef.value, {
     scale: 1.03,
     duration: 2,
     ease: 'power1.inOut',
@@ -181,6 +184,24 @@ const reverseSubTextHoverAnimation = () => {
     hoverTimelineSubText.reverse()
   }
 }
+
+const buttonDestroy = () => {
+  existance.value = false;
+  
+  if (buttonTimeline) {
+    buttonTimeline.pause();
+  }
+  
+  gsap.to(buttonRef.value, {
+    rotateY: 360,
+    duration: 1,
+    opacity: 0,
+    scaleX: 2,
+    scaleY: 0.3,
+    ease: 'power2.inOut'
+  });
+}
+
 defineExpose({
   particlesRef,
 })
@@ -227,7 +248,7 @@ defineExpose({
 
       <button
         ref="buttonRef"
-        @click="$emit('introTransition')"
+        @click="() => { $emit('introTransition'); buttonDestroy(); }"
         class="border-4 border-blue-400 text-white font-semibold px-8 py-4 text-base rounded-full yabadaba"
       >
         Lets Get Started

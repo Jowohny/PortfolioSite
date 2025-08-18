@@ -71,15 +71,20 @@ const onLeave = (el: Element, done: () => void) => {
       ease: "elastic.out(1, 0.75)"
     }, '-=0.75')
     .to(centerCircle.value, {
-      scale: 5,
+      scale: 6,
       duration: 2,
       ease: 'power3.inOut',
       backgroundColor: '#94A3B8'
     })
-    .to([centerCircle.value, trapezoidLeft.value, trapezoidRight.value], {
+    .to(centerCircle.value, {
+      opacity: 0,
+      backgroundColor: '#000000',
+      duration: 2
+    }, '-=1')
+    .to([trapezoidLeft.value, trapezoidRight.value], {
       opacity: 0,
       duration: 1
-    }, '-=1')
+    }, '-=2.3')
 };
 </script>
 
@@ -93,7 +98,7 @@ const onLeave = (el: Element, done: () => void) => {
       />
       <div
         ref="trapezoidRight"
-        class="absolute top-0 right-0 h-full mix-blend-multiply bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+        class="absolute top-0 right-0 h-full mix-blend-darken bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
         style="width: 130%; clip-path: polygon(20% 0, 100% 0, 100% 100%, 0% 100%)"
       />
       <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
