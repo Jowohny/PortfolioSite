@@ -82,8 +82,8 @@ const createDynamicParticles = () => {
     })
 
     gsap.to(particle, {
-      y: gsap.utils.random(-80, 80),
-      x: gsap.utils.random(-70, 70),
+      y: gsap.utils.random(-100, 100),
+      x: gsap.utils.random(-100, 100),
       duration: duration,
       delay: delay,
       ease: 'power1.inOut',
