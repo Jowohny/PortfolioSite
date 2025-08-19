@@ -13,16 +13,26 @@ let timeline: GSAPTimeline | null = null
 
 const experienceSlides = [
   {
-    logo: '/images/LeidosLogo.png', // Corrected path
+    logo: '/images/LeidosLogo.png',
     timePeriod: 'August 2024 - May 2025',
-    title: 'QTC Leidos Frontend Developers',
-    details: ["Detail 1", "Detail 2", "Detail 3", "Detail 4"]
+    title: 'Frontend Developer',
+    details: [
+      "Developed responsive web applications using Vue.js and TypeScript",
+      "Collaborated with cross-functional teams to deliver high-quality software",
+      "Implemented modern UI/UX designs and maintained code quality standards",
+      "Participated in code reviews and contributed to team best practices"
+    ]
   },
   {
-    logo: '/images/AeryLogo.png', // Corrected path
+    logo: '/images/AeryLogo.png',
     timePeriod: 'May 2025 - Present',
     title: 'Frontend Developer',
-    details: ["Detail A", "Detail B", "Detail C", "Detail D"]
+    details: [
+      "Building scalable frontend applications with modern frameworks",
+      "Optimizing application performance and user experience",
+      "Working with design teams to implement pixel-perfect interfaces",
+      "Mentoring junior developers and sharing technical knowledge"
+    ]
   }
 ]
 
@@ -104,26 +114,39 @@ onMounted(() => {
       </h1>
     </div>
 
-    <div class="flex-1 w-2/3 max-w-4xl justify-center">
-    <UCarousel 
-      :items="experienceSlides" 
-      :items-to-show="1" 
-      indicators 
-      arrows
-    >
-      <template #default="{ item }">
-        <div class="relative w-full h-full text-left p-4">
-          <img :src="item.logo" class="w-full h-80 object-contain rounded-t-lg bg-white/10" draggable="false">
-          <div class="w-full p-6 bg-black/50 backdrop-blur-sm rounded-b-lg">
-            <h3 class="text-2xl font-bold text-white">{{ item.title }}</h3>
-            <p class="text-sm text-gray-300 mb-4">{{ item.timePeriod }}</p>
-            <ul class="list-disc list-inside text-white/80">
-              <li v-for="(detail, i) in item.details" :key="i">{{ detail }}</li>
-            </ul>
+    <div class="w-5/12 h-1/2 p-12">
+      <UCarousel 
+        :items="experienceSlides" 
+        :items-to-show="1"  
+        :autoplay="{ delay: 5000 }"
+        dots
+        loop
+        :ui="{ item: 'min-w-full h-full' }"
+      >
+        <template #default="{ item }">
+          <div class="relative w-full h-full overflow-hidden">
+            <div class="w-full h-full flex flex-col">
+              <div class="flex items-center justify-center">
+                <img 
+                  :src="item.logo" 
+                  :alt="item.title"
+                  class="h-72 w-auto object-contain bg-white rounded-3xl p-8 border-black border-4"
+                />
+              </div>
+              <div class="flex-1 p-6 flex flex-col justify-center">
+                <div class="justify-center text-center">
+                  <h3 class="text-2xl font-bold text-black mb-2">{{ item.title }}</h3>
+                  <p class="text-sm text-gray-300 mb-4">{{ item.timePeriod }}</p>
+                </div>
+                
+                <ul class="list-disc list-inside text-white/80 space-y-1 mx-auto">
+                  <li v-for="(detail, i) in item.details" :key="i">{{ detail }}</li>
+                </ul>
+              </div>
+            </div>
           </div>
-        </div>
-      </template>
-    </UCarousel>
-  </div>
+        </template>
+      </UCarousel>
+    </div>
   </div>
 </template>
