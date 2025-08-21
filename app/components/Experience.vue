@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
 
@@ -8,11 +8,17 @@ gsap.registerPlugin(SplitText)
 const titleRef = ref()
 const leftPathRef = ref<SVGPathElement | null>(null)
 const rightPathRef = ref<SVGPathElement | null>(null)
+const currentHover = ref<number | null>(null)
+const invested = ref<boolean>(false)
+const currentZoomedImage = ref<string | null>(null)
 let splitTitle: SplitText | null = null
 let timeline: GSAPTimeline | null = null
 
+
+
 const experienceSlides = [
   {
+    company: 'Leidos',
     logo: '/images/LeidosLogo.png',
     timePeriod: 'August 2024 - May 2025',
     title: 'Frontend Developer',
@@ -21,9 +27,11 @@ const experienceSlides = [
       "Collaborated with cross-functional teams to deliver high-quality software",
       "Implemented modern UI/UX designs and maintained code quality standards",
       "Participated in code reviews and contributed to team best practices"
-    ]
+    ],
+    imgDetails: ['/images/LeidosDashboard1.jpeg','/images/LeidosDashboard2.jpeg','/images/LeidosDashboard3.jpeg']
   },
   {
+    company: 'Aery',
     logo: '/images/AeryLogo.png',
     timePeriod: 'May 2025 - Present',
     title: 'Frontend Developer',
@@ -32,7 +40,8 @@ const experienceSlides = [
       "Optimizing application performance and user experience",
       "Working with design teams to implement pixel-perfect interfaces",
       "Mentoring junior developers and sharing technical knowledge"
-    ]
+    ],
+    imgDetails: ['/images/AerySite1.png','/images/AerySite2.png','/images/AerySite3.png']
   }
 ]
 
@@ -66,7 +75,7 @@ onMounted(() => {
     })
 
     timeline = gsap.timeline()
-    
+
     timeline.to(splitTitle.chars, {
       rotateZ: 0,
       y: 0,
@@ -97,6 +106,22 @@ onMounted(() => {
     
   }
 })
+
+const zoomIn = (imgKey: string) => {
+  const image = document.getElementById(imgKey)
+  invested.value = true
+  gsap.to(image, { scale: 3, duration: 0, opacity: 1})
+}
+
+const zoomOut = (imgKey: string) => {
+  const image = document.getElementById(imgKey)
+  invested.value = false
+  gsap.fromTo(image,
+    { scale: 3 }, 
+    { scale: 1, duration: 0, opacity: 0}
+  )
+}
+
 </script>
 
 <template>
@@ -114,13 +139,14 @@ onMounted(() => {
       </h1>
     </div>
 
-    <div class="w-5/12 h-1/2 p-12">
+    <div class="w-2/3 h-1/2 p-12">
       <UCarousel 
         :items="experienceSlides" 
         :items-to-show="1"  
-        :autoplay="{ delay: 5000 }"
+        :autoplay="invested ? false : { delay: 3000 }"
         dots
         loop
+        fade
         :ui="{ item: 'min-w-full h-full' }"
       >
         <template #default="{ item }">
@@ -139,13 +165,29 @@ onMounted(() => {
                   <p class="text-sm text-gray-300 mb-4">{{ item.timePeriod }}</p>
                 </div>
                 
-                <ul class="list-disc list-inside text-white/80 space-y-1 mx-auto">
-                  <li v-for="(detail, i) in item.details" :key="i">{{ detail }}</li>
+                <ul class="list-disc list-inside text-white space-y-2 mx-auto mb-8">
+                  <li v-for="(detail, i) in item.details" :key="i" class="tracking-wide pb-0 font-semibold border-b">{{ detail }}</li>
                 </ul>
+              </div>
+              <div class="flex flex-row justify-around">
+                <img 
+                  v-for="(imgDetail, i) in item.imgDetails" 
+                  :src="imgDetail" 
+                  class="h-32 cursor-pointer"
+                  @mouseenter="zoomIn(`${item.company}displayImage${i}`)"
+                  @mouseleave="zoomOut(`${item.company}displayImage${i}`)"
+                />
+              </div>              
+              <div v-for="(imgDetail, i) in item.imgDetails" class="absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-full">
+                <img 
+                  :src="imgDetail" 
+                  :id="`${item.company}displayImage${i}`"
+                  class="h-32 cursor-pointer opacity-0"
+                />
               </div>
             </div>
           </div>
-        </template>
+        </template> 
       </UCarousel>
     </div>
   </div>
