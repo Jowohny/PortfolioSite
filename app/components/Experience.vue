@@ -2,15 +2,13 @@
 import { ref, onMounted, watch } from 'vue'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
+import ExperienceCarousel from './ExperienceCarousel.vue'
 
 gsap.registerPlugin(SplitText)
 
 const titleRef = ref()
 const leftPathRef = ref<SVGPathElement | null>(null)
 const rightPathRef = ref<SVGPathElement | null>(null)
-const currentHover = ref<number | null>(null)
-const invested = ref<boolean>(false)
-const currentZoomedImage = ref<string | null>(null)
 let splitTitle: SplitText | null = null
 let timeline: GSAPTimeline | null = null
 
@@ -106,22 +104,6 @@ onMounted(() => {
     
   }
 })
-
-const zoomIn = (imgKey: string) => {
-  const image = document.getElementById(imgKey)
-  invested.value = true
-  gsap.to(image, { scale: 3, duration: 0, opacity: 1})
-}
-
-const zoomOut = (imgKey: string) => {
-  const image = document.getElementById(imgKey)
-  invested.value = false
-  gsap.fromTo(image,
-    { scale: 3 }, 
-    { scale: 1, duration: 0, opacity: 0}
-  )
-}
-
 </script>
 
 <template>
@@ -141,53 +123,19 @@ const zoomOut = (imgKey: string) => {
 
     <div class="w-2/3 h-1/2 p-12">
       <UCarousel 
+        v-slot="{ item }"
         :items="experienceSlides" 
         :items-to-show="1"  
-        :autoplay="invested ? false : { delay: 3000 }"
-        dots
+        :autoplay="{ delay: 5000 }"
+        prev-icon="i-lucide-chevron-left"
+        next-icon="i-lucide-chevron-right"
         loop
-        fade
-        :ui="{ item: 'min-w-full h-full' }"
+        dots
+        :ui="{ 
+          item: 'min-w-full h-full',
+        }"
       >
-        <template #default="{ item }">
-          <div class="relative w-full h-full overflow-hidden">
-            <div class="w-full h-full flex flex-col">
-              <div class="flex items-center justify-center">
-                <img 
-                  :src="item.logo" 
-                  :alt="item.title"
-                  class="h-72 w-auto object-contain bg-white rounded-3xl p-8 border-black border-4"
-                />
-              </div>
-              <div class="flex-1 p-6 flex flex-col justify-center">
-                <div class="justify-center text-center">
-                  <h3 class="text-2xl font-bold text-black mb-2">{{ item.title }}</h3>
-                  <p class="text-sm text-gray-300 mb-4">{{ item.timePeriod }}</p>
-                </div>
-                
-                <ul class="list-disc list-inside text-white space-y-2 mx-auto mb-8">
-                  <li v-for="(detail, i) in item.details" :key="i" class="tracking-wide pb-0 font-semibold border-b">{{ detail }}</li>
-                </ul>
-              </div>
-              <div class="flex flex-row justify-around">
-                <img 
-                  v-for="(imgDetail, i) in item.imgDetails" 
-                  :src="imgDetail" 
-                  class="h-32 cursor-pointer"
-                  @mouseenter="zoomIn(`${item.company}displayImage${i}`)"
-                  @mouseleave="zoomOut(`${item.company}displayImage${i}`)"
-                />
-              </div>              
-              <div v-for="(imgDetail, i) in item.imgDetails" class="absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-full">
-                <img 
-                  :src="imgDetail" 
-                  :id="`${item.company}displayImage${i}`"
-                  class="h-32 cursor-pointer opacity-0"
-                />
-              </div>
-            </div>
-          </div>
-        </template> 
+          <ExperienceCarousel :item="item"/> 
       </UCarousel>
     </div>
   </div>

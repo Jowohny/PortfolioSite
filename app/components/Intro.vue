@@ -2,6 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
+import { root } from 'postcss'
 
 gsap.registerPlugin(SplitText)
 
@@ -13,6 +14,7 @@ const buttonRef = ref<HTMLElement | null>(null)
 const particlesRef = ref<HTMLElement | null>(null)
 const titleAlternateRef = ref<HTMLElement | null>(null)
 const existance = ref(true)
+const toast = useToast()
 let splitTitle: SplitText | null = null
 let splitTitleAlternate: SplitText | null = null
 let splitSubText: SplitText | null = null
@@ -58,6 +60,23 @@ onMounted(() => {
 
   startContinuousAnimations()
   setupTitleHoverEffect()
+  toast.add({
+    title: "Don't forget to hover!",
+    description: "Hover over the title and subtext for some extra information!",
+    icon: "i-lucide-lightbulb",
+    ui: {
+      root: 'w-full p-4 rounded-lg shadow-lg bg-white dark:bg-gray-900 ring-1 ring-gray-200 dark:ring-gray-800',
+      title: 'text-gray-900 dark:text-white',
+      description: 'text-gray-500 dark:text-gray-400',
+      icon: [ 'p-4' ]
+    },
+    close: {
+      color: 'primary',
+      variant: 'outline',
+      class: 'rounded-full'
+    },
+    
+  })
 })
 
 const createDynamicParticles = () => {
