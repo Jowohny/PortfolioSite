@@ -7,6 +7,7 @@ import ExperienceCarousel from './ExperienceCarousel.vue'
 gsap.registerPlugin(SplitText)
 
 const titleRef = ref()
+const carouselRef = ref<HTMLDivElement | null>(null)
 const leftPathRef = ref<SVGPathElement | null>(null)
 const rightPathRef = ref<SVGPathElement | null>(null)
 let splitTitle: SplitText | null = null
@@ -16,6 +17,7 @@ let timeline: GSAPTimeline | null = null
 
 const experienceSlides = [
   {
+    index: 1,
     company: 'Leidos',
     logo: '/images/LeidosLogo.png',
     timePeriod: 'August 2024 - May 2025',
@@ -29,6 +31,7 @@ const experienceSlides = [
     imgDetails: ['/images/LeidosDashboard1.jpeg','/images/LeidosDashboard2.jpeg','/images/LeidosDashboard3.jpeg']
   },
   {
+    index: 2,
     company: 'Aery',
     logo: '/images/AeryLogo.png',
     timePeriod: 'May 2025 - Present',
@@ -53,11 +56,12 @@ onMounted(() => {
       rotateZ: index % 2 !== 0 ? -50 : 50,
       y: index % 2 !== 0 ? -20 : 20,
       opacity: 0,
-      scale: 0.8
+      scaleY: 1
     })
   })
 
-  gsap.set(titleRef.value, { yPercent: 45 });
+  gsap.set(titleRef.value, { yPercent: 580 });
+
 
   if (leftPathRef.value && rightPathRef.value) {
     const leftLength = leftPathRef.value.getTotalLength()
@@ -70,6 +74,13 @@ onMounted(() => {
     gsap.set(rightPathRef.value, { 
       strokeDasharray: rightLength,
       strokeDashoffset: rightLength 
+    })
+
+    gsap.set(carouselRef.value, {
+      borderBottom: 0,
+      borderTop: 0,
+      opacity: 0,
+      scaleY: 0
     })
 
     timeline = gsap.timeline()
@@ -95,12 +106,30 @@ onMounted(() => {
       stagger: 0.05,
       duration: 1
     }, '-=1.3')
+    .to(carouselRef.value, {
+      opacity: 1,
+      scaleY: 1,
+      duration: 1.5,
+      ease: "power4.inOut"
+    }, '-=1')
+    .to(carouselRef.value, {
+      borderBottom: 20,
+      borderTop: 20,
+      duration: 0.5,
+      ease: "power4.in"
+    }, '-=1.65')
+    .to(carouselRef.value, {
+      borderBottom: 0,
+      borderTop: 0,
+      duration: 0.5,
+      ease: "power4.out"
+    }, '-=0.65')
     .to([leftPathRef.value, rightPathRef.value], {
       strokeDashoffset: 0,
       duration: 1.5,
       ease: "power2.inOut",
       stagger: 0.2
-    }, 4.5)
+    }, 4)
     
   }
 })
@@ -121,7 +150,7 @@ onMounted(() => {
       </h1>
     </div>
 
-    <div class="w-2/3 h-1/2 p-12">
+    <div ref="carouselRef" class="w-2/3 h-1/2 p-12">
       <UCarousel 
         v-slot="{ item }"
         :items="experienceSlides" 
@@ -131,11 +160,12 @@ onMounted(() => {
         next-icon="i-lucide-chevron-right"
         loop
         dots
+        fade
         :ui="{ 
           item: 'min-w-full h-full',
         }"
       >
-          <ExperienceCarousel :item="item"/> 
+          <ExperienceCarousel :item="item" :index="item.index" :experienceCount="experienceSlides.length"/> 
       </UCarousel>
     </div>
   </div>
