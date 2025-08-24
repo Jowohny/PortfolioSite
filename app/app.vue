@@ -109,14 +109,12 @@ const onLeave = (el: Element, done: () => void) => {
         />
       </div>
     </div>
-
     <Transition
       :css="false"
       @leave="onLeave"
     >
       <Intro ref="introRef" v-if="showIntro" @introTransition="turnOffIntro" />
     </Transition>
-
     <Experience v-if="showExperience"/>
   </UApp>
 </template>

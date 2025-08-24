@@ -10,10 +10,29 @@ const titleRef = ref()
 const carouselRef = ref<HTMLDivElement | null>(null)
 const leftPathRef = ref<SVGPathElement | null>(null)
 const rightPathRef = ref<SVGPathElement | null>(null)
+const transitionFinished = ref(false)
 let splitTitle: SplitText | null = null
 let timeline: GSAPTimeline | null = null
 
 
+const sidebarIcons = {
+  frameworks: [
+    '/images/icons/frameworks/Angular.svg',
+    '/images/icons/frameworks/Nuxt.svg',
+    '/images/icons/frameworks/React.svg',
+    '/images/icons/frameworks/SwiftUI.svg',
+    '/images/icons/frameworks/Vue.svg'
+  ],
+  languages: [
+    '/images/icons/languages/HTML5.svg',
+    '/images/icons/languages/Java.svg',
+    '/images/icons/languages/Javascript.svg',
+    '/images/icons/languages/Python.svg',
+    '/images/icons/languages/Typescript.svg'
+  ]
+}
+  
+  
 
 const experienceSlides = [
   {
@@ -97,7 +116,7 @@ onMounted(() => {
     .to(titleRef.value, {
       yPercent: 0,
       duration: 1.5, 
-      color: '#98FF98',
+      color: '#00BFFF',
       scale: 1,
       ease: 'power4.inOut',
     })
@@ -110,7 +129,10 @@ onMounted(() => {
       opacity: 1,
       scaleY: 1,
       duration: 1.5,
-      ease: "power4.inOut"
+      ease: "power4.inOut",
+      onComplete: () => {
+        transitionFinished.value = true
+      }
     }, '-=1')
     .to(carouselRef.value, {
       borderBottom: 20,
@@ -123,7 +145,7 @@ onMounted(() => {
       borderTop: 0,
       duration: 0.5,
       ease: "power4.out"
-    }, '-=0.65')
+    }, '-=0.64')
     .to([leftPathRef.value, rightPathRef.value], {
       strokeDashoffset: 0,
       duration: 1.5,
@@ -137,35 +159,35 @@ onMounted(() => {
 
 <template>
   <svg width="400" height="600" class="z-30 absolute top-40 bottom-0 left-0">
-    <path ref="leftPathRef" d="M -10 0 q 360 300 -10 600" stroke="#98FF98" fill="none" stroke-width="10"/>
+    <path ref="leftPathRef" d="M -10 0 q 360 300 -10 600" stroke="#00BFFF" fill="none" stroke-width="10"/>
   </svg>
   <svg width="400" height="600" class="z-30 absolute top-40 right-0">
-    <path ref="rightPathRef" d="M 410 600 q -360 -300 10 -600" stroke="#98FF98" fill="none" stroke-width="10"/>
+    <path ref="rightPathRef" d="M 410 600 q -360 -300 10 -600" stroke="#00BFFF" fill="none" stroke-width="10"/>
   </svg>
 
   <div class="min-h-screen flex flex-col items-center" style="background: radial-gradient(circle at 50% 50%, #94A3B8, #0f172a);">
     <div class="w-full text-center z-50 pt-8 pb-12">
-      <h1 ref="titleRef" class="text-black text-6xl font-bold">
+      <h1 ref="titleRef" class="font-fira-condensed text-black text-6xl font-bold">
         Experience
       </h1>
     </div>
 
     <div ref="carouselRef" class="w-2/3 h-1/2 p-12">
-      <UCarousel 
+      <UCarousel
         v-slot="{ item }"
-        :items="experienceSlides" 
-        :items-to-show="1"  
-        :autoplay="{ delay: 5000 }"
+        :items="experienceSlides"
+        :items-to-show="1"
+        :autoplay= "transitionFinished ? { delay: 5000 } : false"
         prev-icon="i-lucide-chevron-left"
         next-icon="i-lucide-chevron-right"
         loop
         dots
         fade
-        :ui="{ 
+        :ui="{
           item: 'min-w-full h-full',
         }"
       >
-          <ExperienceCarousel :item="item" :index="item.index" :experienceCount="experienceSlides.length"/> 
+          <ExperienceCarousel :item="item" :index="item.index" :experienceCount="experienceSlides.length"/>
       </UCarousel>
     </div>
   </div>
