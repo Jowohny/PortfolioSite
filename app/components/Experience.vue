@@ -2,9 +2,10 @@
 import { ref, onMounted, watch } from 'vue'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
+import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
 import ExperienceCarousel from './ExperienceCarousel.vue'
 
-gsap.registerPlugin(SplitText)
+gsap.registerPlugin(SplitText, MotionPathPlugin)
 
 const titleRef = ref()
 const carouselRef = ref<HTMLDivElement | null>(null)
@@ -30,9 +31,7 @@ const sidebarIcons = {
     '/images/icons/languages/Python.svg',
     '/images/icons/languages/Typescript.svg'
   ]
-}
-  
-  
+} 
 
 const experienceSlides = [
   {
@@ -80,7 +79,20 @@ onMounted(() => {
   })
 
   gsap.set(titleRef.value, { yPercent: 580 });
-
+  if(leftPathRef.value && rightPathRef.value) {
+    gsap.set('#lament', {
+        motionPath: {
+          path: leftPathRef.value,
+          align: leftPathRef.value,
+          alignOrigin: [0.5, 0.5],
+          start: 0.25,
+          end: 0.25
+        },
+        autoAlpha: 1,
+        scale: 0,
+        opacity: 1,
+    })
+  }
 
   if (leftPathRef.value && rightPathRef.value) {
     const leftLength = leftPathRef.value.getTotalLength()
@@ -152,7 +164,11 @@ onMounted(() => {
       ease: "power2.inOut",
       stagger: 0.2
     }, 4)
-    
+    .to('#lament', {
+      scale: 1,
+      duration: 1,
+      ease: "back.out(1.7)"
+    }, 4.5)
   }
 })
 </script>
@@ -164,6 +180,10 @@ onMounted(() => {
   <svg width="400" height="600" class="z-30 absolute top-40 right-0">
     <path ref="rightPathRef" d="M 410 600 q -360 -300 10 -600" stroke="#00BFFF" fill="none" stroke-width="10"/>
   </svg>
+
+  <div class="w-12 h-12 absolute z-50 backdrop-blur-3xl">
+    <img src="/images/icons/frameworks/Angular.svg" class="w-full h-full object-contain" id="lament">
+  </div>
 
   <div class="min-h-screen flex flex-col items-center" style="background: radial-gradient(circle at 50% 50%, #94A3B8, #0f172a);">
     <div class="w-full text-center z-50 pt-8 pb-12">
@@ -178,8 +198,6 @@ onMounted(() => {
         :items="experienceSlides"
         :items-to-show="1"
         :autoplay= "transitionFinished ? { delay: 5000 } : false"
-        prev-icon="i-lucide-chevron-left"
-        next-icon="i-lucide-chevron-right"
         loop
         dots
         fade
@@ -187,7 +205,7 @@ onMounted(() => {
           item: 'min-w-full h-full',
         }"
       >
-          <ExperienceCarousel :item="item" :index="item.index" :experienceCount="experienceSlides.length"/>
+          <ExperienceCarousel :item="item"/>
       </UCarousel>
     </div>
   </div>

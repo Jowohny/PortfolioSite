@@ -6,14 +6,6 @@ const props = defineProps({
   item: {
     type: Object,
     required: true
-  },
-  index: {
-    type: Number,
-    required: true
-  },
-  experienceCount: {
-    type: Number,
-    required: true
   }
 });
 
@@ -69,11 +61,6 @@ const zoomOut = (imgKey: string) => {
           :ref="(el) => setDisplayImageRef(`${item.company}displayImage${i}`, el)"
           class="h-36 opacity-0"
         />
-      </div>
-      <div class="top-0 right-0 z-50 absolute">
-        <h1 class="tracking-loose text-xl font-bold text-white opacity-60">
-        {{ index }} / {{ experienceCount }}
-        </h1>
       </div>
     </div>
   </div>
