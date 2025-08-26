@@ -42,10 +42,12 @@ const zoomOut = (imgKey: string) => {
           <h3 class="text-2xl font-bold text-black mb-2">{{ item.title }}</h3>
           <p class="text-sm text-gray-300 mb-4">{{ item.timePeriod }}</p>
         </div>
+
         <ul class="list-disc list-inside text-white space-y-2 mx-auto mb-8">
-          <li v-for="(detail, i) in item.details" :key="i" class="tracking-wide pb-0 font-semibold border-b">{{ detail }}</li>
+          <li v-for="(detail, i) in item.details" :key="i" class="tracking-wide pb-0 font-semibold">{{ detail }}</li>
         </ul>
       </div>
+
       <div class="flex flex-row justify-around">
         <img 
           v-for="(imgDetail, i) in item.imgDetails" 

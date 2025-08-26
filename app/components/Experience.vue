@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, type ComponentPublicInstance } from 'vue'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
 import ExperienceCarousel from './ExperienceCarousel.vue'
+import type { RefSymbol } from '@vue/reactivity'
 
 gsap.registerPlugin(SplitText, MotionPathPlugin)
 
@@ -15,6 +16,10 @@ const transitionFinished = ref(false)
 let splitTitle: SplitText | null = null
 let timeline: GSAPTimeline | null = null
 
+const frameworkReferences = ref<HTMLDivElement[]>([])
+const languageReferences = ref<HTMLDivElement[]>([])
+const frameworkTweens = ref<{ [key: number]: gsap.core.Tween }>({})
+const languageTweens = ref<{ [key: number]: gsap.core.Tween }>({})
 
 const sidebarIcons = {
   frameworks: [
@@ -35,7 +40,6 @@ const sidebarIcons = {
 
 const experienceSlides = [
   {
-    index: 1,
     company: 'Leidos',
     logo: '/images/LeidosLogo.png',
     timePeriod: 'August 2024 - May 2025',
@@ -49,7 +53,6 @@ const experienceSlides = [
     imgDetails: ['/images/LeidosDashboard1.jpeg','/images/LeidosDashboard2.jpeg','/images/LeidosDashboard3.jpeg']
   },
   {
-    index: 2,
     company: 'Aery',
     logo: '/images/AeryLogo.png',
     timePeriod: 'May 2025 - Present',
@@ -79,20 +82,11 @@ onMounted(() => {
   })
 
   gsap.set(titleRef.value, { yPercent: 580 });
-  if(leftPathRef.value && rightPathRef.value) {
-    gsap.set('#lament', {
-        motionPath: {
-          path: leftPathRef.value,
-          align: leftPathRef.value,
-          alignOrigin: [0.5, 0.5],
-          start: 0.25,
-          end: 0.25
-        },
-        autoAlpha: 1,
-        scale: 0,
-        opacity: 1,
-    })
-  }
+  gsap.set(carouselRef.value, { borderColor: '#000' })
+  gsap.set([...languageReferences.value, ...frameworkReferences.value], {
+    drawSVG: false,
+    opacity: 0
+  })
 
   if (leftPathRef.value && rightPathRef.value) {
     const leftLength = leftPathRef.value.getTotalLength()
@@ -135,16 +129,16 @@ onMounted(() => {
     .to(splitTitle.chars, {
       rotateX: 360,
       stagger: 0.05,
-      duration: 1
+      duration: 1,
+      onComplete: () => {
+        transitionFinished.value = true
+      }
     }, '-=1.3')
     .to(carouselRef.value, {
       opacity: 1,
       scaleY: 1,
       duration: 1.5,
-      ease: "power4.inOut",
-      onComplete: () => {
-        transitionFinished.value = true
-      }
+      ease: "power4.inOut"
     }, '-=1')
     .to(carouselRef.value, {
       borderBottom: 20,
@@ -158,31 +152,181 @@ onMounted(() => {
       duration: 0.5,
       ease: "power4.out"
     }, '-=0.64')
-    .to([leftPathRef.value, rightPathRef.value], {
-      strokeDashoffset: 0,
-      duration: 1.5,
-      ease: "power2.inOut",
-      stagger: 0.2
-    }, 4)
-    .to('#lament', {
-      scale: 1,
-      duration: 1,
-      ease: "back.out(1.7)"
-    }, 4.5)
+
+    frameworkReferences.value.forEach((icon, index) => {
+      const leftPath = leftPathRef.value!
+      if (timeline)
+        timeline.to(icon, {
+          motionPath: {
+            path: leftPath,
+            align: leftPath,
+            alignOrigin: [0.5, 0.5],
+            start: 0,
+            end: (0.8 / sidebarIcons.frameworks.length) + (index / (sidebarIcons.frameworks.length + 1))
+          },
+          duration: 1.5,
+          ease: 'power4.inOut',
+          drawSVG: true,
+          opacity: 1
+        }, '<+=0.2')
+    })
+
+    languageReferences.value.forEach((icon, index) => {
+      const rightPath = rightPathRef.value!
+      if (timeline)
+        timeline.to(icon, {
+          motionPath: {
+            path: rightPath,
+            align: rightPath,
+            alignOrigin: [0.5, 0.5],
+            start: 0,
+            end: (0.8 / sidebarIcons.frameworks.length) + (index / (sidebarIcons.frameworks.length + 1))
+          },
+          duration: 1,
+          drawSVG: true,
+          opacity: 1
+        }, '<+=0.2')
+    })
+
+    frameworkReferences.value.forEach((icon, index) => {
+      const tween = gsap.fromTo(icon, 
+      {
+        yPercent: -10,
+        rotateZ: -5
+      },
+      {
+        yPercent: 10,
+        duration: 1,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+        rotateZ: 5
+      })
+      
+      frameworkTweens.value[index] = tween
+    })
+
+    languageReferences.value.forEach((icon, index) => {
+      const tween = gsap.fromTo(icon, 
+      {
+        yPercent: -10,
+        rotateZ: -5
+      },
+      {
+        yPercent: 10,
+        duration: 1,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+        rotateZ: 5
+      })
+      
+      languageTweens.value[index] = tween
+    })
+
   }
 })
+
+// Methods to pause/resume specific frameworks by index
+const showIconDetails = (index: number, type: string) => {
+  if(type === 'framework') { 
+    if(frameworkTweens.value[index] && frameworkReferences.value[index]) {
+      frameworkTweens.value[index].pause()
+
+      gsap.to(frameworkReferences.value[index], {
+        yPercent: 0,
+        rotateZ: 0,
+        scale: 1.5,
+        duration: 1,
+        ease: 'elastic.out(1, 0.3)',
+        drawSVG: '50% 50%'
+      })
+    }
+  } else if(type === 'language') {
+    if(languageTweens.value[index] && languageReferences.value[index]) {
+      languageTweens.value[index].pause()
+ 
+      gsap.to(languageReferences.value[index], {
+        yPercent: 0,
+        rotateZ: 0,
+        scale: 1.5,
+        duration: 1,
+        ease: 'elastic.out(1, 0.3)'
+      })
+    }
+  }
+}
+
+const closeIconDetails = (index: number, type: string) => {
+  if(type === 'framework') { 
+    if(frameworkTweens.value[index] && frameworkReferences.value[index]) {
+      frameworkTweens.value[index].resume()      
+
+      gsap.fromTo(frameworkReferences.value[index], 
+      {
+        scale: 1.5
+      },
+      {
+        scale: 1,
+        duration: 1,
+        ease: 'elastic.out(1, 0.3)'
+      })
+    }
+  } else if(type === 'language') {
+    if(languageTweens.value[index] && languageReferences.value[index]) {
+      languageTweens.value[index].resume()
+      
+      gsap.fromTo(languageReferences.value[index], 
+      {
+        scale: 1.5
+      }, 
+      {
+        scale: 1,
+        duration: 1,
+        ease: 'elastic.out(1, 0.3)'
+      })
+    }
+  }
+}
+
+const addFrameworkRef = (el: Element | ComponentPublicInstance | null) => {
+  if (el instanceof HTMLDivElement) frameworkReferences.value.push(el)
+}
+
+const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
+  if (el instanceof HTMLDivElement) languageReferences.value.push(el)
+}
 </script>
 
 <template>
   <svg width="400" height="600" class="z-30 absolute top-40 bottom-0 left-0">
-    <path ref="leftPathRef" d="M -10 0 q 360 300 -10 600" stroke="#00BFFF" fill="none" stroke-width="10"/>
+    <path ref="leftPathRef" d="M -10 0 q 360 300 -10 600" fill="none"/>
   </svg>
   <svg width="400" height="600" class="z-30 absolute top-40 right-0">
-    <path ref="rightPathRef" d="M 410 600 q -360 -300 10 -600" stroke="#00BFFF" fill="none" stroke-width="10"/>
+    <path ref="rightPathRef" d="M 410 600 q -360 -300 10 -600" fill="none"/>
   </svg>
 
-  <div class="w-12 h-12 absolute z-50 backdrop-blur-3xl">
-    <img src="/images/icons/frameworks/Angular.svg" class="w-full h-full object-contain" id="lament">
+  <div
+    v-for="(icon, index) in sidebarIcons.frameworks"
+    :key="`framework-${index}`"
+    :ref="(el) => addFrameworkRef(el)"
+    class="w-16 h-16 absolute z-50"
+    @mouseenter="showIconDetails(index, 'framework')"
+    @mouseleave="closeIconDetails(index, 'framework')"
+    >
+    <img :src="icon" class="w-full h-full object-contain">
+  </div>
+
+  <div
+    v-for="(icon, index) in sidebarIcons.languages"
+    :key="`language-${index}`"
+    :ref="(el) => addLanguageRef(el)"
+    class="w-16 h-16 absolute z-50"
+    @mouseenter="showIconDetails(index, 'language')"
+    @mouseleave="closeIconDetails(index, 'language')"
+    >
+    
+    <img :src="icon" class="w-full h-full object-contain">
   </div>
 
   <div class="min-h-screen flex flex-col items-center" style="background: radial-gradient(circle at 50% 50%, #94A3B8, #0f172a);">
