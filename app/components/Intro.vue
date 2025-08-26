@@ -43,13 +43,7 @@ onMounted(() => {
       rotationX: -90,
       transformOrigin: '50% 50% -50',
       stagger: 0.04,
-      duration: 0.3
-    },'-=0.5')
-    .from(splitSubText.lines, {
-      autoAlpha: 0,
-      y: 20,
-      duration: 0.8,
-      stagger: 0.3,
+      duration: 0.3,
       onComplete: () => {
         toast.add({
           title: "Don't forget to hover!",
@@ -61,6 +55,12 @@ onMounted(() => {
           closeIcon: 'i-lucide-arrow-right'
         })
       }
+    },'-=0.5')
+    .from(splitSubText.lines, {
+      autoAlpha: 0,
+      y: 20,
+      duration: 0.8,
+      stagger: 0.3
     }, '-=0.6')
     .from(buttonRef.value, {
       autoAlpha: 0,

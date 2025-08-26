@@ -82,7 +82,7 @@ onMounted(() => {
   })
 
   gsap.set(titleRef.value, { yPercent: 580 });
-  gsap.set(carouselRef.value, { borderColor: '#000' })
+  gsap.set(carouselRef.value, { borderColor: '#00bbff' })
   gsap.set([...languageReferences.value, ...frameworkReferences.value], {
     drawSVG: false,
     opacity: 0
@@ -163,44 +163,44 @@ onMounted(() => {
             alignOrigin: [0.5, 0.5],
             start: 0,
             end: (0.8 / sidebarIcons.frameworks.length) + (index / (sidebarIcons.frameworks.length + 1))
-          },
-          duration: 1.5,
-          ease: 'power4.inOut',
-          drawSVG: true,
-          opacity: 1
-        }, '<+=0.2')
+        },
+        ease: 'power4.inOut',
+        opacity: 1,
+        duration: 1
+      }, '-=1')
     })
 
     languageReferences.value.forEach((icon, index) => {
       const rightPath = rightPathRef.value!
       if (timeline)
-        timeline.to(icon, {
-          motionPath: {
-            path: rightPath,
-            align: rightPath,
-            alignOrigin: [0.5, 0.5],
-            start: 0,
-            end: (0.8 / sidebarIcons.frameworks.length) + (index / (sidebarIcons.frameworks.length + 1))
-          },
-          duration: 1,
-          drawSVG: true,
-          opacity: 1
-        }, '<+=0.2')
+          timeline.to(icon, {
+            motionPath: {
+              path: rightPath,
+              align: rightPath,
+              alignOrigin: [0.5, 0.5],
+              start: 0,
+              end: (0.8 / sidebarIcons.frameworks.length) + (index / (sidebarIcons.frameworks.length + 1))
+        },
+        ease: 'power4.inOut',
+        opacity: 1,
+        duration: 1
+      }, '-=1')
     })
 
     frameworkReferences.value.forEach((icon, index) => {
       const tween = gsap.fromTo(icon, 
       {
-        yPercent: -10,
+        yPercent: -5,
         rotateZ: -5
       },
       {
-        yPercent: 10,
+        yPercent: 5,
         duration: 1,
         ease: 'sine.inOut',
         yoyo: true,
         repeat: -1,
-        rotateZ: 5
+        rotateZ: 5,
+        delay: 0.15*index
       })
       
       frameworkTweens.value[index] = tween
@@ -209,16 +209,17 @@ onMounted(() => {
     languageReferences.value.forEach((icon, index) => {
       const tween = gsap.fromTo(icon, 
       {
-        yPercent: -10,
+        yPercent: -5,
         rotateZ: -5
       },
       {
-        yPercent: 10,
+        yPercent: 5,
         duration: 1,
         ease: 'sine.inOut',
         yoyo: true,
         repeat: -1,
-        rotateZ: 5
+        rotateZ: 5,
+        delay: 0.15*index
       })
       
       languageTweens.value[index] = tween
@@ -227,7 +228,6 @@ onMounted(() => {
   }
 })
 
-// Methods to pause/resume specific frameworks by index
 const showIconDetails = (index: number, type: string) => {
   if(type === 'framework') { 
     if(frameworkTweens.value[index] && frameworkReferences.value[index]) {
@@ -239,7 +239,7 @@ const showIconDetails = (index: number, type: string) => {
         scale: 1.5,
         duration: 1,
         ease: 'elastic.out(1, 0.3)',
-        drawSVG: '50% 50%'
+
       })
     }
   } else if(type === 'language') {
