@@ -4,7 +4,6 @@ import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
 import ExperienceCarousel from './ExperienceCarousel.vue'
-import type { RefSymbol } from '@vue/reactivity'
 
 gsap.registerPlugin(SplitText, MotionPathPlugin)
 
@@ -15,6 +14,8 @@ const rightPathRef = ref<SVGPathElement | null>(null)
 const transitionFinished = ref(false)
 let splitTitle: SplitText | null = null
 let timeline: GSAPTimeline | null = null
+let splitPopupTitle: SplitText | null = null
+let splitPopupSubtext: SplitText | null = null
 
 const frameworkReferences = ref<HTMLDivElement[]>([])
 const languageReferences = ref<HTMLDivElement[]>([])
@@ -23,11 +24,41 @@ const languageTweens = ref<{ [key: number]: gsap.core.Tween }>({})
 
 const sidebarIcons = {
   frameworks: [
-    '/images/icons/frameworks/Angular.svg',
-    '/images/icons/frameworks/Nuxt.svg',
-    '/images/icons/frameworks/React.svg',
-    '/images/icons/frameworks/SwiftUI.svg',
-    '/images/icons/frameworks/Vue.svg'
+    {
+      name: 'Angular',
+      image: '/images/icons/frameworks/Angular.svg', 
+      description: 'Used in QTC Leidos Capstone Project for college, made proper use of components, used simple CSS, and designed an intuitive user interface.',
+      proficiency: 50,
+      colorScheme: ['text-pink-500', 'text-purple-500']
+    },
+    {
+      name: 'Nuxt',
+      image: '/images/icons/frameworks/Nuxt.svg',
+      description: 'Used in the website you\'re going through/looking at right now! Made use of Tailwind CSS for styling along with GSAP for animation. :D',
+      proficiency: 70,
+      colorScheme: ['text-green-500', 'text-emerald-500']
+    },
+    {
+      name: 'React',
+      image: '/images/icons/frameworks/React.svg',
+      description: 'Used in the Aery site, a simple website for a simple startup. Used Tailwind CSS for styling and GSAP for animation. (First Project with GSAP)',
+      proficiency: 75,
+      colorScheme: ['text-blue-500', 'text-cyan-500']
+    },
+    {
+      name: 'SwiftUI',
+      image: '/images/icons/frameworks/SwiftUI.svg',
+      description: 'Currently unreleased project, will soon be working on an IOS app, details will be kept until time of production...',
+      proficiency: 40,
+      colorScheme: ['text-orange-500', 'text-red-500']
+    },
+    {
+      name: 'Vue',
+      image: '/images/icons/frameworks/Vue.svg',
+      description: 'Will be used for a ,future project, might not even use this since Nuxt is just a better version of Vue anyway lol, but there will be something.',
+      proficiency: 70,
+      colorScheme: ['text-green-400', 'text-teal-500']
+    }
   ],
   languages: [
     '/images/icons/languages/HTML5.svg',
@@ -345,14 +376,21 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
         arrow
         :content="{ side: 'right' }" >        
 
-        <img :src="icon" class="w-full h-full object-contain">
+        <img :src="icon.image" class="w-full h-full object-contain">
 
       <template #content>
-        <Placeholder class="h-12 w-68 m-4 inline-flex" />
+        <div class="h-32 w-88 py-2 px-4 ">
+          <h1 class="font-bold text-xl tracking-loose text-center block" :class="icon.colorScheme[0]">
+            {{ icon.name }}
+          </h1>
+          <p class="font-semibold text-sm tracking-loose" :class="icon.colorScheme[1]">
+            {{ icon.description }}
+          </p>
+
+        </div>
       </template>
       
     </UPopover>
-
   </div>
 
 
