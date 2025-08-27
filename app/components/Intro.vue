@@ -2,7 +2,6 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
-import { root } from 'postcss'
 
 gsap.registerPlugin(SplitText)
 
@@ -52,7 +51,8 @@ onMounted(() => {
           ui: {
             root: 'w-full p-4 rounded-lg shadow-lg bg-white dark:bg-gray-900 ring-1 ring-gray-200 dark:ring-gray-800',
           },
-          closeIcon: 'i-lucide-arrow-right'
+          closeIcon: 'i-lucide-arrow-right',
+          duration: 3000
         })
       }
     },'-=0.5')

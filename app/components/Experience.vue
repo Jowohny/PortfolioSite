@@ -45,10 +45,10 @@ const experienceSlides = [
     timePeriod: 'August 2024 - May 2025',
     title: 'Frontend Developer',
     details: [
-      "Developed responsive web applications using Vue.js and TypeScript",
+      "Developed responsive web applications using Angular.js and Javascript",
       "Collaborated with cross-functional teams to deliver high-quality software",
       "Implemented modern UI/UX designs and maintained code quality standards",
-      "Participated in code reviews and contributed to team best practices"
+      "Participated in code reviews and contributed to good team practices"
     ],
     imgDetails: ['/images/LeidosDashboard1.jpeg','/images/LeidosDashboard2.jpeg','/images/LeidosDashboard3.jpeg']
   },
@@ -58,12 +58,38 @@ const experienceSlides = [
     timePeriod: 'May 2025 - Present',
     title: 'Frontend Developer',
     details: [
-      "Building scalable frontend applications with modern frameworks",
-      "Optimizing application performance and user experience",
-      "Working with design teams to implement pixel-perfect interfaces",
-      "Mentoring junior developers and sharing technical knowledge"
+      "Developed responsive web applications using React.js and Typescript",
+      "Optimizing application performance and user interface",
+      "Created simple animations to improve user experience",
+      "Actively thought of ideas to create a simple and straightforward website"
     ],
     imgDetails: ['/images/AerySite1.png','/images/AerySite2.png','/images/AerySite3.png']
+  },
+  {
+    company: 'Angel Food Donut',
+    logo: '/images/AngelFoodDonutLogo.png',
+    timePeriod: 'June 2020 - Present (Irrelevant Exerience)',
+    title: 'Cashier Customer Service',
+    details: [
+      "Handled high-volume cash and card transactions quickly and accurately",
+      "Multitasked across cashiering, order taking, and customer support to speed up service",
+      "Trained new employees on customer service and workplace conduct",
+      "Communicated with diverse customers, learning basic phrases in multiple languages"
+    ],
+    imgDetails: ['/images/AngelFoodDonut1.jpg','/images/AngelFoodDonut2.jpg','/images/AngelFoodDonut3.jpg']
+  },
+  {
+    company: 'Hello Boba',
+    logo: '/images/HelloBobaLogo.png',
+    timePeriod: 'August 2023 - Present (Irrelevant Experience)',
+    title: 'Bobarista',
+    details: [
+      "Handled high-volume cash and card transactions quickly and accurately",
+      "Multitasked across cashiering, order taking, and customer support to speed up service",
+      "Trained new employees on customer service and workplace conduct",
+      "Communicated with diverse customers, learning basic phrases in multiple languages"
+    ],
+    imgDetails: ['/images/HelloBoba1.jpg','/images/HelloBoba2.jpg','/images/HelloBoba3.jpg']
   }
 ]
 
@@ -306,16 +332,30 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
     <path ref="rightPathRef" d="M 410 600 q -360 -300 10 -600" fill="none"/>
   </svg>
 
+
   <div
     v-for="(icon, index) in sidebarIcons.frameworks"
     :key="`framework-${index}`"
     :ref="(el) => addFrameworkRef(el)"
     class="w-16 h-16 absolute z-50"
     @mouseenter="showIconDetails(index, 'framework')"
-    @mouseleave="closeIconDetails(index, 'framework')"
-    >
-    <img :src="icon" class="w-full h-full object-contain">
+    @mouseleave="closeIconDetails(index, 'framework')" >
+      <UPopover 
+        mode="hover"
+        arrow
+        :content="{ side: 'right' }" >        
+
+        <img :src="icon" class="w-full h-full object-contain">
+
+      <template #content>
+        <Placeholder class="h-12 w-68 m-4 inline-flex" />
+      </template>
+      
+    </UPopover>
+
   </div>
+
+
 
   <div
     v-for="(icon, index) in sidebarIcons.languages"
@@ -326,7 +366,19 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
     @mouseleave="closeIconDetails(index, 'language')"
     >
     
-    <img :src="icon" class="w-full h-full object-contain">
+    <UPopover
+        mode="hover"
+        arrow
+        :content="{ side: 'left' }" >  
+
+      <img :src="icon" class="w-full h-full object-contain">
+
+      <template #content>
+        <Placeholder class="h-12 w-68 m-4 inline-flex" />
+      </template>
+
+    </UPopover>
+
   </div>
 
   <div class="min-h-screen flex flex-col items-center" style="background: radial-gradient(circle at 50% 50%, #94A3B8, #0f172a);">
