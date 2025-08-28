@@ -4,6 +4,7 @@ import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
 import ExperienceCarousel from './ExperienceCarousel.vue'
+import { ColorScheme } from '#components'
 
 gsap.registerPlugin(SplitText, MotionPathPlugin)
 
@@ -14,8 +15,6 @@ const rightPathRef = ref<SVGPathElement | null>(null)
 const transitionFinished = ref(false)
 let splitTitle: SplitText | null = null
 let timeline: GSAPTimeline | null = null
-let splitPopupTitle: SplitText | null = null
-let splitPopupSubtext: SplitText | null = null
 
 const frameworkReferences = ref<HTMLDivElement[]>([])
 const languageReferences = ref<HTMLDivElement[]>([])
@@ -48,7 +47,7 @@ const sidebarIcons = {
     {
       name: 'SwiftUI',
       image: '/images/icons/frameworks/SwiftUI.svg',
-      description: 'Currently unreleased project, will soon be working on an IOS app, details will be kept until time of production...',
+      description: 'Currently unreleased project, will soon be working on an IOS app, details will be kept until time of production... though I\'m not sure what to expect.',
       proficiency: 40,
       colorScheme: ['text-orange-500', 'text-red-500']
     },
@@ -61,11 +60,41 @@ const sidebarIcons = {
     }
   ],
   languages: [
-    '/images/icons/languages/HTML5.svg',
-    '/images/icons/languages/Java.svg',
-    '/images/icons/languages/Javascript.svg',
-    '/images/icons/languages/Python.svg',
-    '/images/icons/languages/Typescript.svg'
+         {
+       name: 'HTML5',
+       image: '/images/icons/languages/HTML5.svg',
+       description: 'I feel like I don\'t use much of this anymore, but I do at the same time. Regardless, I know it enough to be proficient considering that\'s where I\'m headed.',
+       proficiency: 90,
+       colorScheme: ['text-orange-500', 'text-orange-400']
+     },
+     {
+       name: 'Java',
+       image: '/images/icons/languages/Java.svg',
+       description: 'First language I learned for some reason. Not sure why, but I probably know how to code in it better than python, unnaturally so.',
+       proficiency: 70,
+       colorScheme: ['text-red-600', 'text-red-500']
+     },
+     {
+       name: 'Javascript',
+       image: '/images/icons/languages/Javascript.svg',
+       description: 'Definitely needed for where I\'m going, or some form of it at least. I have to say though, I do like the type safety of Typescript better.',
+       proficiency: 75,
+       colorScheme: ['text-yellow-500', 'text-yellow-400']
+     },
+     {
+       name: 'Python',
+       image: '/images/icons/languages/Python.svg',
+       description: 'I love the simplicity of this language, might be one of my favorite languages to code in for fun (Leetcode/Neetcode), but there are levels to this...',
+       proficiency: 60,
+       colorScheme: ['text-blue-600', 'text-blue-500']
+     },
+     {
+       name: 'TypeScript',
+       image: '/images/icons/languages/Typescript.svg',
+       description: 'My go-to language for frontend developing, it\'s my go to. I don\'t know what to say, but all except the Capstone Project did I use Typescript.',
+       proficiency: 80,
+       colorScheme: ['text-blue-500', 'text-cyan-400']
+     }
   ]
 } 
 
@@ -380,13 +409,13 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
 
       <template #content>
         <div class="h-32 w-88 py-2 px-4 ">
-          <h1 class="font-bold text-xl tracking-loose text-center block" :class="icon.colorScheme[0]">
+          <h1 class="font-bold text-lg tracking-loose text-center block" :class="icon.colorScheme[0]">
             {{ icon.name }}
           </h1>
-          <p class="font-semibold text-sm tracking-loose" :class="icon.colorScheme[1]">
+          <p class="font-semibold text-xs tracking-loose mb-4" :class="icon.colorScheme[1]">
             {{ icon.description }}
           </p>
-
+          <UProgress v-model="icon.proficiency" size="lg"/>
         </div>
       </template>
       
@@ -409,10 +438,18 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
         arrow
         :content="{ side: 'left' }" >  
 
-      <img :src="icon" class="w-full h-full object-contain">
+      <img :src="icon.image" class="w-full h-full object-contain">
 
       <template #content>
-        <Placeholder class="h-12 w-68 m-4 inline-flex" />
+        <div class="h-32 w-88 py-2 px-4 ">
+          <h1 class="font-bold text-lg tracking-loose text-center block" :class="icon.colorScheme[0]">
+            {{ icon.name }}
+          </h1>
+          <p class="font-semibold text-xs tracking-loose mb-4" :class="icon.colorScheme[1]">
+            {{ icon.description }}
+          </p>
+          <UProgress v-model="icon.proficiency" size="lg"/>
+        </div>
       </template>
 
     </UPopover>
