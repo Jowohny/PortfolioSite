@@ -4,7 +4,6 @@ import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
 import ExperienceCarousel from './ExperienceCarousel.vue'
-import { ColorScheme } from '#components'
 
 gsap.registerPlugin(SplitText, MotionPathPlugin)
 
@@ -15,6 +14,8 @@ const rightPathRef = ref<SVGPathElement | null>(null)
 const transitionFinished = ref(false)
 let splitTitle: SplitText | null = null
 let timeline: GSAPTimeline | null = null
+
+const toast = useToast()
 
 const frameworkReferences = ref<HTMLDivElement[]>([])
 const languageReferences = ref<HTMLDivElement[]>([])
@@ -91,7 +92,7 @@ const sidebarIcons = {
      {
        name: 'TypeScript',
        image: '/images/icons/languages/Typescript.svg',
-       description: 'My go-to language for frontend developing, it\'s my go to. I don\'t know what to say, but all except the Capstone Project did I use Typescript.',
+       description: 'My go-to language for frontend developing, I just love it. I don\'t know what to say, but for all except the Capstone Project did I use Typescript.',
        proficiency: 80,
        colorScheme: ['text-blue-500', 'text-cyan-400']
      }
@@ -123,7 +124,7 @@ const experienceSlides = [
       "Created simple animations to improve user experience",
       "Actively thought of ideas to create a simple and straightforward website"
     ],
-    imgDetails: ['/images/AerySite1.png','/images/AerySite2.png','/images/AerySite3.png']
+    imgDetails: ['/images/AerySite1.png','/images/AerySite2.png','/images/AerySite3.png','/images/AeryApp1.png']
   },
   {
     company: 'Angel Food Donut',
@@ -236,7 +237,19 @@ onMounted(() => {
       borderBottom: 0,
       borderTop: 0,
       duration: 0.5,
-      ease: "power4.out"
+      ease: "power4.out",
+      onComplete: () => {
+        toast.add({
+          title: "Hover over the icons!",
+          description: "To get more information, hover over each of them to get some insight on how well I feel about them.",
+          icon: "i-lucide-lightbulb",
+          ui: {
+            root: 'w-full p-4 rounded-lg shadow-lg bg-white dark:bg-gray-900 ring-1 ring-gray-200 dark:ring-gray-800',
+          },
+          closeIcon: 'i-lucide-arrow-right',
+          duration: 5000
+        })
+      }
     }, '-=0.64')
 
     frameworkReferences.value.forEach((icon, index) => {
