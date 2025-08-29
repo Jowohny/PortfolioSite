@@ -398,10 +398,10 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
 </script>
 
 <template>
-  <svg width="400" height="600" class="z-30 absolute top-40 bottom-0 left-0">
+  <svg width="400" height="600" class="z-30 absolute top-1/2 -translate-y-1/2 left-0">
     <path ref="leftPathRef" d="M -10 0 q 360 300 -10 600" fill="none"/>
   </svg>
-  <svg width="400" height="600" class="z-30 absolute top-40 right-0">
+  <svg width="400" height="600" class="z-30 absolute top-1/2 -translate-y-1/2 right-0">
     <path ref="rightPathRef" d="M 410 600 q -360 -300 10 -600" fill="none"/>
   </svg>
 
