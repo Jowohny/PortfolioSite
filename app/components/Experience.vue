@@ -461,7 +461,7 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
           <p class="font-semibold text-xs tracking-loose mb-4" :class="icon.colorScheme[1]">
             {{ icon.description }}
           </p>
-          <UProgress v-model="icon.proficiency" size="lg"/>
+          <UProgress v-model="icon.proficiency" getalueLabel="Proficiency: ~{{item}}" size="lg"/>
         </div>
       </template>
 
@@ -469,7 +469,7 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
 
   </div>
 
-  <div class="min-h-screen flex flex-col items-center" style="background: radial-gradient(circle at 50% 50%, #94A3B8, #0f172a);">
+  <div class="min-h-screen flex items-center flex-col items-center" style="background: radial-gradient(ellipse at 50%, #59626e, #0f172a 70%);">
     <div class="w-full text-center z-50 pt-8 pb-12">
       <h1 ref="titleRef" class="font-fira-condensed text-black text-6xl font-bold">
         Experience

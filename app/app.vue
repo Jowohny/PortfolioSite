@@ -115,10 +115,17 @@ const onLeave = (el: Element, done: () => void) => {
     >
       <Intro ref="introRef" v-if="showIntro" @introTransition="turnOffIntro" />
     </Transition>
-    <Experience v-if="showExperience"/>
+    <div v-if="showExperience">
+      <Experience/>
+      <Projects/>
+    </div>
   </UApp>
 </template>
 
 <style>
 @import '~/assets/css/tailwind.css';
+
+body {
+  background-color: #0f172a;
+}
 </style>
