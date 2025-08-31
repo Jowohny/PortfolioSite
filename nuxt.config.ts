@@ -9,6 +9,27 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/scripts',
     '@nuxt/test-utils',
-    '@nuxt/ui'
-  ]
+    '@nuxt/ui',
+    '@nuxt/fonts'
+  ],
+  fonts: {
+    // You can use a predefined provider (google, bunny, etc.)
+    provider: 'google', 
+
+    families: [
+      { name: 'Roboto' },
+      { name: 'Lato', weights: ['400', '700'], styles: ['italic', 'normal'] },
+      { name: 'Inter' },
+      { name: 'Montserrat' },
+      { name: 'Merriweather', provider: 'google' },
+      { name: 'Fira Code', provider: 'google' },
+
+    ]
+  },
+  app: {
+    head: {
+      title: 'Johny\'s Portfolio',
+      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/cube-icon.svg' }]
+    }
+  }
 })
