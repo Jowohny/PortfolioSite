@@ -2,7 +2,6 @@
 import {gsap} from 'gsap'
 import { SplitText } from 'gsap/SplitText';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { split } from 'postcss/lib/list';
 
 gsap.registerPlugin(SplitText, ScrollTrigger)
 
@@ -14,28 +13,28 @@ onMounted(() => {
     splitTitle = new SplitText (splitTitleRef.value, { type: 'chars' })
     gsap.set([...splitTitle.chars], {
         opacity: 0,
-        y: '50vh',
+        y: '50vmin',
         yPercent: -50
     })
 
-    gsap.set(splitTitle.chars[1]!,{rotateX: 180, x: 0, y: '40vh'})
-    gsap.set(splitTitle.chars[2]!,{rotateY: 180, x: '-30vw', y: '34vh'})
-    gsap.set(splitTitle.chars[3]!,{clipPath: 'polygon(0 0, 100% 0, 100% 0, 0 0)', scaleX: 3.8, scaleY: 2.8, opacity: 1, x: '12vw', y: '29vh'})
-    gsap.set(splitTitle.chars[4]!,{clipPath: 'inset(100% 0 0 0)', opacity: 1, scaleX: 3.8, scaleY: 2.51, x: '8vw', y: '73vh'})
-    gsap.set(splitTitle.chars[5]!,{scale: 0, x: '5vw', y: '51vh' })    
-    gsap.set(splitTitle.chars[6]!,{rotateZ: 180, x: '-30vw', y: '-25vh'}),
-    gsap.set(splitTitle.chars[7]!,{rotateZ: 90, x: '-13.5vw', y: '90vh', scale: 2.8})
+    gsap.set(splitTitle.chars[1]!,{rotateX: 180, x: 0, y: '40vmin'}) // R
+    gsap.set(splitTitle.chars[2]!,{rotateY: 180, x: '-30vmin', y: '34vmin'}) // O
+    gsap.set(splitTitle.chars[3]!,{clipPath: 'polygon(0 0, 100% 0, 100% 0, 0 0)', scaleX: 3.8, scaleY: 2.8, opacity: 1, x: '16vmin', y: '29vmin'}) // J
+    gsap.set(splitTitle.chars[4]!,{clipPath: 'inset(100% 0 0 0)', opacity: 1, scaleX: 3.8, scaleY: 2.51, x: '10vmin', y: '73vmin'}) // E
+    gsap.set(splitTitle.chars[5]!,{scale: 0, x: '4vmin', y: '51vmin' }) // C
+    gsap.set(splitTitle.chars[6]!,{rotateZ: 180, x: '-30vmin', y: '-25vmin'}), // T
+    gsap.set(splitTitle.chars[7]!,{rotateZ: 90, x: '-27.5vmin', y: '90vmin', scale: 2.8}) // S
 
     const timeline = gsap.timeline()
 
     timeline.fromTo(splitTitle.chars[0]!, 
     {
-        x: '60vw',
+        x: '60vmin', 
         rotateZ: 90,
         scale: 2
     },
     {
-        x: '12vw',
+        x: '12vmin',
         opacity: 1,
         duration: 1,
         ease: 'expoScale(0.5,7,power2.out)'
@@ -51,8 +50,8 @@ onMounted(() => {
         ease: 'elastic.out(1,0.5)'
     })
     .to(splitTitle.chars[0]!, {
-        x: '7vw',
-        y: '60vh',
+        x: '7vmin', 
+        y: '60vmin',
         duration: 1,
         ease: 'power4.out'
     }, '<+=0.3')
@@ -60,9 +59,10 @@ onMounted(() => {
         opacity: 1,
         duration: 1,
         rotateX: 0,
-        scale: 3,
-        y: '28vh',
-        x: '7vw',
+        scaleY: 3,
+        scaleX: 3.8,
+        y: '28vmin',
+        x: '9vmin', 
         ease: 'power4.out'
     }, '<+=0.15')
     .to(splitTitle.chars[2]!, {
@@ -71,8 +71,8 @@ onMounted(() => {
         rotateY: 0,
         scaleY: 1.3,
         scaleX: 1.5,
-        y: '34vh',
-        x: '-4.5vw',
+        y: '34vmin', 
+        x: '-12.5vmin',
         ease: 'power4.out'
     }, '<+=0.15')
     .to(splitTitle.chars[6]!,{
@@ -81,8 +81,8 @@ onMounted(() => {
         rotateZ: 0,
         scaleY: 1.3,
         scaleX: 1.5,
-        y: '23vh',
-        x: '-17vw',
+        y: '23vmin', 
+        x: '-34vmin',
         ease: 'power4.out'
     }, '<+=0.151')
     .to(splitTitle.chars[5]!, {
@@ -103,7 +103,7 @@ onMounted(() => {
     }, '<+=0.15')
     .to(splitTitle.chars[7]!, {
         duration: 1,
-        y: '75vh',
+        y: '75vmin', 
         ease: 'bounce.out',
         opacity: 1
     }, '<+=0.15')
