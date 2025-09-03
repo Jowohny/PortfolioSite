@@ -102,7 +102,7 @@ const sidebarIcons = {
 const experienceSlides = [
   {
     company: 'Leidos',
-    logo: '/images/LeidosLogo.png',
+    logo: '/images/experience/LeidosLogo.png',
     timePeriod: 'August 2024 - May 2025',
     title: 'Frontend Developer',
     details: [
@@ -111,11 +111,11 @@ const experienceSlides = [
       "Implemented modern UI/UX designs and maintained code quality standards",
       "Participated in code reviews and contributed to good team practices"
     ],
-    imgDetails: ['/images/LeidosDashboard1.jpeg','/images/LeidosDashboard2.jpeg','/images/LeidosDashboard3.jpeg']
+    imgDetails: ['/images/experience/LeidosDashboard1.jpeg','/images/experience/LeidosDashboard2.jpeg','/images/experience/LeidosDashboard3.jpeg']
   },
   {
     company: 'Aery',
-    logo: '/images/AeryLogo.png',
+    logo: '/images/experience/AeryLogo.png',
     timePeriod: 'May 2025 - Present',
     title: 'Frontend Developer',
     details: [
@@ -124,11 +124,11 @@ const experienceSlides = [
       "Created simple animations to improve user experience",
       "Actively thought of ideas to create a simple and straightforward website"
     ],
-    imgDetails: ['/images/AerySite1.png','/images/AerySite2.png','/images/AerySite3.png','/images/AeryApp1.png']
+    imgDetails: ['/images/experience/AerySite1.png','/images/experience/AerySite2.png','/images/experience/AerySite3.png','/images/experience/AeryApp1.png']
   },
   {
     company: 'Angel Food Donut',
-    logo: '/images/AngelFoodDonutLogo.png',
+    logo: '/images/experience/AngelFoodDonutLogo.png',
     timePeriod: 'June 2020 - Present (Irrelevant Exerience)',
     title: 'Cashier Customer Service',
     details: [
@@ -137,11 +137,11 @@ const experienceSlides = [
       "Trained new employees on customer service and workplace conduct",
       "Communicated with diverse customers, learning basic phrases in multiple languages"
     ],
-    imgDetails: ['/images/AngelFoodDonut1.jpg','/images/AngelFoodDonut2.jpg','/images/AngelFoodDonut3.jpg']
+    imgDetails: ['/images/experience/AngelFoodDonut1.jpg','/images/experience/AngelFoodDonut2.jpg','/images/experience/AngelFoodDonut3.jpg']
   },
   {
     company: 'Hello Boba',
-    logo: '/images/HelloBobaLogo.png',
+    logo: '/images/experience/HelloBobaLogo.png',
     timePeriod: 'August 2023 - Present (Irrelevant Experience)',
     title: 'Bobarista',
     details: [
@@ -150,7 +150,7 @@ const experienceSlides = [
       "Trained new employees on customer service and workplace conduct",
       "Communicated with diverse customers, learning basic phrases in multiple languages"
     ],
-    imgDetails: ['/images/HelloBoba1.jpg','/images/HelloBoba2.jpg','/images/HelloBoba3.jpg']
+    imgDetails: ['/images/experience/HelloBoba1.jpg','/images/experience/HelloBoba2.jpg','/images/experience/HelloBoba3.jpg']
   }
 ]
 
@@ -168,12 +168,9 @@ onMounted(() => {
     })
   })
 
-  gsap.set(titleRef.value, { yPercent: 580 });
+  gsap.set(titleRef.value, { yPercent: '580' });
   gsap.set(carouselRef.value, { borderColor: '#00bbff' })
-  gsap.set([...languageReferences.value, ...frameworkReferences.value], {
-    drawSVG: false,
-    opacity: 0
-  })
+  gsap.set([...languageReferences.value, ...frameworkReferences.value], { opacity: 0 })
 
   if (leftPathRef.value && rightPathRef.value) {
     const leftLength = leftPathRef.value.getTotalLength()
@@ -209,7 +206,7 @@ onMounted(() => {
     .to(titleRef.value, {
       yPercent: 0,
       duration: 1.5, 
-      color: '#00BFFF',
+      color: '#fff',
       scale: 1,
       ease: 'power4.inOut',
     })
@@ -470,9 +467,9 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
   </div>
 
   <div class="min-h-screen flex items-center flex-col items-center" style="background: radial-gradient(ellipse at 50%, #59626e, #0f172a 70%);">
-    <div class="w-full text-center z-50 pt-8 pb-12">
-      <h1 ref="titleRef" class="font-fira-condensed text-black text-6xl font-bold">
-        Experience
+    <div class="w-full text-center z-50 pt-8 pb-4">
+      <h1 ref="titleRef" class="font-inter text-black text-8xl font-thin tracking-loose">
+        EXPERIENCE
       </h1>
     </div>
 

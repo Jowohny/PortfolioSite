@@ -8,6 +8,75 @@ gsap.registerPlugin(SplitText, ScrollTrigger)
 const splitTitleRef = ref<HTMLHeadingElement | null>(null)
 let splitTitle: SplitText | null = null
 
+const websiteTypes = {
+    professionalWebsites: [
+        {
+            siteImage: '/images/project/comingsoon.jpg',
+            link: 'https://trollface.dk'
+        },
+        {
+            siteImage: '/images/project/comingsoon.jpg',
+            link: 'https://trollface.dk'
+        },
+        {
+            siteImage: '/images/project/comingsoon.jpg',
+            link: 'https://trollface.dk'
+        },
+        {
+            siteImage: '/images/project/comingsoon.jpg',
+            link: 'https://trollface.dk'
+        },
+        {
+            siteImage: '/images/project/comingsoon.jpg',
+            link: 'https://trollface.dk'
+        }
+    ],
+    forFunSites: [
+        {
+            siteImage: '/images/project/comingsoon.jpg',
+            link: 'https://trollface.dk'
+        },
+        {
+            siteImage: '/images/project/comingsoon.jpg',
+            link: 'https://trollface.dk'
+        },
+        {
+            siteImage: '/images/project/comingsoon.jpg',
+            link: 'https://trollface.dk'
+        },
+        {
+            siteImage: '/images/project/comingsoon.jpg',
+            link: 'https://trollface.dk'
+        },
+        {
+            siteImage: '/images/project/comingsoon.jpg',
+            link: 'https://trollface.dk'
+        }
+    ],
+    portfolioVariations: [
+        {   
+            siteImage: '/images/project/comingsoon.jpg',
+            link: 'https://trollface.dk'
+        },
+        {
+            siteImage: '/images/project/comingsoon.jpg',
+            link: 'https://trollface.dk'
+        },
+        {
+            siteImage: '/images/project/comingsoon.jpg',
+            link: 'https://trollface.dk'
+        },
+        {
+            siteImage: '/images/project/comingsoon.jpg',
+            link: 'https://trollface.dk'
+        },
+        {
+            siteImage: '/images/project/comingsoon.jpg',
+            link: 'https://trollface.dk'
+        }
+    ]
+}
+
 onMounted(() => {
 
     splitTitle = new SplitText (splitTitleRef.value, { type: 'chars' })
@@ -108,9 +177,9 @@ onMounted(() => {
         opacity: 1
     }, '<+=0.15')
     .to([...splitTitle.chars], {
-        duration: 1.5,
-        stagger: 0.05,
-        y: '50%',
+        duration: 1,
+        stagger: 0.06,
+        y: 0,
         x: 0,
         rotateX: 0,
         rotateY: 0,
@@ -126,9 +195,26 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-[#0f172a] mt-12">
-        <h1 ref="splitTitleRef" class="block text-8xl text-white font-thin tracking-loose font-inter text-center">
-            PROJECTS
-        </h1>
+    <div class="min-h-screen bg-[#0f172a] pt-20">
+        <div class="block text-center flex justify-center">
+            <h1 ref="splitTitleRef" class="text-8xl text-white font-thin tracking-loose font-inter">
+                PROJECTS
+            </h1>
+            <h1 class="font-inter font-thin tracking-loose text-red-500 ml-8">(LIVE)</h1>
+        </div>
+        <div v-for="sites in websiteTypes" class="my-4">
+            <UCarousel
+                v-slot="{ item }"
+                :items="sites"
+                :autoplay="{ delay: 3000 }"
+                loop
+                :ui="{ item: 'basis-1/4' }">
+
+                <NuxtLink :to="item.link">
+                    <img :src="item.siteImage" class="h-56">
+                </NuxtLink>
+
+            </UCarousel>
+        </div>
     </div>
 </template>
