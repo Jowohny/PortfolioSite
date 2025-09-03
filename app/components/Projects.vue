@@ -107,13 +107,26 @@ onMounted(() => {
         ease: 'bounce.out',
         opacity: 1
     }, '<+=0.15')
+    .to([...splitTitle.chars], {
+        duration: 1.5,
+        stagger: 0.05,
+        y: '50%',
+        x: 0,
+        rotateX: 0,
+        rotateY: 0,
+        rotateZ: 0,
+        ease: 'power4.inOut',
+        scaleX: 1,
+        scaleY: 1
+    })
+
     
 })
 
 </script>
 
 <template>
-    <div class="min-h-screen bg-[#0f172a]">
+    <div class="min-h-screen bg-[#0f172a] mt-12">
         <h1 ref="splitTitleRef" class="block text-8xl text-white font-thin tracking-loose font-inter text-center">
             PROJECTS
         </h1>
