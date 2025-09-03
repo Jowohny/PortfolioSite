@@ -107,7 +107,7 @@ onMounted(() => {
         opacity: 1,
         duration: 1,
         ease: 'expoScale(0.5,7,power2.out)'
-    })
+    }, '+=3')
     .to(splitTitle.chars[0]!, {
         rotateZ: 0,
         scale: 1,
@@ -178,7 +178,7 @@ onMounted(() => {
     }, '<+=0.15')
     .to([...splitTitle.chars], {
         duration: 1,
-        stagger: 0.06,
+        stagger: 0.04,
         y: 0,
         x: 0,
         rotateX: 0,
@@ -206,11 +206,14 @@ onMounted(() => {
             <UCarousel
                 v-slot="{ item }"
                 :items="sites"
-                :autoplay="{ delay: 3000 }"
+                pause-on-hover="false"
+                :auto-scroll="true"
+                pause-on-focus="false"
+                :draggable="false"
                 loop
                 :ui="{ item: 'basis-1/4' }">
 
-                <NuxtLink :to="item.link">
+                <NuxtLink :to="item.link" external target="_blank" rel="noopener noreferrer">
                     <img :src="item.siteImage" class="h-56">
                 </NuxtLink>
 
