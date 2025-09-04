@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(SplitText, ScrollTrigger)
 
 const splitTitleRef = ref<HTMLHeadingElement | null>(null)
+const carouselRefs = ref<HTMLDivElement[]>([])
 let splitTitle: SplitText | null = null
 
 const websiteTypes = {
@@ -84,6 +85,10 @@ onMounted(() => {
         opacity: 0,
         y: '50vmin',
         yPercent: -50
+    })
+    gsap.set([...carouselRefs.value], {
+        opacity: 0,
+        yPercent: -100
     })
 
     gsap.set(splitTitle.chars[1]!,{rotateX: 180, x: 0, y: '40vmin'}) // R
@@ -187,10 +192,19 @@ onMounted(() => {
         ease: 'power4.inOut',
         scaleX: 1,
         scaleY: 1
+    })  
+    .to([...carouselRefs.value], {
+        duration: 0.75,
+        opacity: 1,
+        ease: 'power4.inOut',
+        yPercent: 0,
+        stagger: 0.5
     })
-
-    
 })
+
+const addCarouselReferences = (el: Element | ComponentPublicInstance | null) => {
+    if (el instanceof HTMLDivElement) carouselRefs.value.push(el)
+}
 
 </script>
 
@@ -202,7 +216,7 @@ onMounted(() => {
             </h1>
             <h1 class="font-inter font-thin tracking-loose text-red-500 ml-8">(LIVE)</h1>
         </div>
-        <div v-for="sites in websiteTypes" class="my-4">
+        <div v-for="(sites, index) in websiteTypes" class="my-4" :ref="(el) => addCarouselReferences(el)">
             <UCarousel
                 v-slot="{ item }"
                 :items="sites"
