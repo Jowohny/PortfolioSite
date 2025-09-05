@@ -13,7 +13,6 @@ export default defineNuxtConfig({
     '@nuxt/fonts'
   ],
   fonts: {
-    // You can use a predefined provider (google, bunny, etc.)
     provider: 'google', 
 
     families: [
