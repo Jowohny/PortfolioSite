@@ -7,76 +7,87 @@ gsap.registerPlugin(SplitText, ScrollTrigger)
 
 const splitTitleRef = ref<HTMLHeadingElement | null>(null)
 const carouselRefs = ref<HTMLDivElement[]>([])
+const liveRef = ref<HTMLDivElement | null>(null)
 let splitTitle: SplitText | null = null
+let splitSectionTitles: SplitText[] = []
 
-const websiteTypes = {
-    professionalWebsites: [
-        {
-            siteImage: '/images/project/comingsoon.jpg',
-            link: 'https://trollface.dk'
-        },
-        {
-            siteImage: '/images/project/comingsoon.jpg',
-            link: 'https://trollface.dk'
-        },
-        {
-            siteImage: '/images/project/comingsoon.jpg',
-            link: 'https://trollface.dk'
-        },
-        {
-            siteImage: '/images/project/comingsoon.jpg',
-            link: 'https://trollface.dk'
-        },
-        {
-            siteImage: '/images/project/comingsoon.jpg',
-            link: 'https://trollface.dk'
-        }
-    ],
-    forFunSites: [
-        {
-            siteImage: '/images/project/comingsoon.jpg',
-            link: 'https://trollface.dk'
-        },
-        {
-            siteImage: '/images/project/comingsoon.jpg',
-            link: 'https://trollface.dk'
-        },
-        {
-            siteImage: '/images/project/comingsoon.jpg',
-            link: 'https://trollface.dk'
-        },
-        {
-            siteImage: '/images/project/comingsoon.jpg',
-            link: 'https://trollface.dk'
-        },
-        {
-            siteImage: '/images/project/comingsoon.jpg',
-            link: 'https://trollface.dk'
-        }
-    ],
-    portfolioVariations: [
-        {   
-            siteImage: '/images/project/comingsoon.jpg',
-            link: 'https://trollface.dk'
-        },
-        {
-            siteImage: '/images/project/comingsoon.jpg',
-            link: 'https://trollface.dk'
-        },
-        {
-            siteImage: '/images/project/comingsoon.jpg',
-            link: 'https://trollface.dk'
-        },
-        {
-            siteImage: '/images/project/comingsoon.jpg',
-            link: 'https://trollface.dk'
-        },
-        {
-            siteImage: '/images/project/comingsoon.jpg',
-            link: 'https://trollface.dk'
-        }
-    ]
-}
+const websiteTypes = [
+    {    
+        type: 'Professional',
+        sites: [
+            {
+                siteImage: '/images/project/AeryLanding.png',
+                link: 'https://aery.app'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
+            }
+        ]
+    },
+    {    
+        type: 'For Fun',
+        sites: [
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
+            }
+        ]
+    },
+    {
+        type: 'Portfolio Variations',
+        sites: [
+            {   
+                siteImage: '/images/project/PortfolioV1.png',
+                link: 'https://portfolio-site-lemon-theta.vercel.app/'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
+            }
+        ]
+    }
+]
 
 onMounted(() => {
 
@@ -88,8 +99,13 @@ onMounted(() => {
     })
     gsap.set([...carouselRefs.value], {
         opacity: 0,
-        yPercent: -100
+        yPercent: -50
     })
+    splitSectionTitles.forEach(splitSection => {
+        gsap.set(splitSection.chars, { opacity: 0, xPercent: 50 })
+    })
+
+    gsap.set(liveRef.value, { opacity: 0, yPercent: 100 })
 
     gsap.set(splitTitle.chars[1]!,{rotateX: 180, x: 0, y: '40vmin'}) // R
     gsap.set(splitTitle.chars[2]!,{rotateY: 180, x: '-30vmin', y: '34vmin'}) // O
@@ -192,7 +208,13 @@ onMounted(() => {
         ease: 'power4.inOut',
         scaleX: 1,
         scaleY: 1
-    })  
+    })
+    .to(liveRef.value, {
+        duration: 0.5,
+        ease: 'power4.inOut',
+        yPercent: 0,
+        opacity: 1
+    }, '-=0.5')
     .to([...carouselRefs.value], {
         duration: 0.75,
         opacity: 1,
@@ -200,11 +222,28 @@ onMounted(() => {
         yPercent: 0,
         stagger: 0.5
     })
+    .to(splitSectionTitles.flatMap(splitSection => splitSection.chars), {
+        opacity: 1,
+        duration: 1.5,
+        ease: 'elastic.out(1,0.1)',
+        stagger: 0.05,
+        xPercent: 0
+    }, '-=1.3')
 })
 
 const addCarouselReferences = (el: Element | ComponentPublicInstance | null) => {
-    if (el instanceof HTMLDivElement) carouselRefs.value.push(el)
+    if (el instanceof HTMLDivElement) {
+        carouselRefs.value.push(el)
+    }
 }
+
+const addSectionTitleReferences = (el: Element | ComponentPublicInstance | null) => {
+    if (el instanceof HTMLHeadingElement) {
+        let splitSection = new SplitText(el, { type: 'chars' })
+        splitSectionTitles.push(splitSection)
+    } 
+}
+
 
 </script>
 
@@ -214,24 +253,27 @@ const addCarouselReferences = (el: Element | ComponentPublicInstance | null) => 
             <h1 ref="splitTitleRef" class="text-8xl text-white font-thin tracking-loose font-inter">
                 PROJECTS
             </h1>
-            <h1 class="font-inter font-thin tracking-loose text-red-500 ml-8">(LIVE)</h1>
+            <h1 ref="liveRef" class="font-inter font-thin tracking-loose text-red-500 ml-8">(LIVE)</h1>
         </div>
-        <div v-for="(sites, index) in websiteTypes" class="my-4" :ref="(el) => addCarouselReferences(el)">
-            <UCarousel
-                v-slot="{ item }"
-                :items="sites"
-                pause-on-hover="false"
-                :auto-scroll="true"
-                pause-on-focus="false"
-                :draggable="false"
-                loop
-                :ui="{ item: 'basis-1/4' }">
-
-                <NuxtLink :to="item.link" external target="_blank" rel="noopener noreferrer">
-                    <img :src="item.siteImage" class="h-56">
-                </NuxtLink>
-
-            </UCarousel>
+        <div v-for="site in websiteTypes">
+            <h1 :ref="(el) => addSectionTitleReferences(el)" class="font-3xl text-emerald-300 tracking-loose font-fira-code my-2 block text-center">
+                {{ site.type }}
+            </h1>
+            <div class="my-4" :ref="(el) => addCarouselReferences(el)">
+                <UCarousel
+                    v-slot="{ item }"
+                    :items="site.sites"
+                    pause-on-hover="false"
+                    :auto-scroll="true"
+                    pause-on-focus="false"
+                    :draggable="false"
+                    loop
+                    :ui="{ item: 'basis-1/4' }">
+                    <NuxtLink :to="item.link" external target="_blank" rel="noopener noreferrer">
+                        <img :src="item.siteImage" class="h-56">
+                    </NuxtLink>
+                </UCarousel>
+            </div>
         </div>
     </div>
 </template>
