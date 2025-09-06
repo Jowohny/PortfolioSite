@@ -168,7 +168,7 @@ onMounted(() => {
     })
   })
 
-  gsap.set(titleRef.value, { yPercent: '580' });
+  gsap.set(titleRef.value, { yPercent: '460' });
   gsap.set(carouselRef.value, { borderColor: '#00bbff' })
   gsap.set([...languageReferences.value, ...frameworkReferences.value], { opacity: 0 })
 

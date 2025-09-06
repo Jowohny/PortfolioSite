@@ -39,7 +39,7 @@ const zoomOut = (imgKey: string) => {
       </div>
       <div class="flex-1 p-6 flex flex-col justify-center">
         <div class="justify-center text-center">
-          <h3 class="text-2xl font-bold text-black mb-2">{{ item.title }}</h3>
+          <h3 class="text-2xl font-bold text-black mb-2 bg-linear-to-r/longer from-indigo-500 to-teal-400 bg-clip-text text-transparent">{{ item.title }}</h3>
           <p class="text-sm text-gray-300 mb-4">{{ item.timePeriod }}</p>
         </div>
 

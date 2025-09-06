@@ -65,13 +65,13 @@ const websiteTypes = [
     {
         type: 'Portfolio Variations',
         sites: [
-            {   
-                siteImage: '/images/project/PortfolioV1.png',
-                link: 'https://portfolio-site-lemon-theta.vercel.app/'
-            },
             {
                 siteImage: '/images/project/comingsoon.jpg',
                 link: 'https://trollface.dk'
+            },
+            {   
+                siteImage: '/images/project/PortfolioV1.png',
+                link: 'https://portfolio-site-lemon-theta.vercel.app/'
             },
             {
                 siteImage: '/images/project/comingsoon.jpg',
@@ -228,7 +228,7 @@ onMounted(() => {
         ease: 'elastic.out(1,0.1)',
         stagger: 0.05,
         xPercent: 0
-    }, '-=1.3')
+    }, '-=1.31')
 })
 
 const addCarouselReferences = (el: Element | ComponentPublicInstance | null) => {
@@ -248,7 +248,7 @@ const addSectionTitleReferences = (el: Element | ComponentPublicInstance | null)
 </script>
 
 <template>
-    <div class="min-h-screen bg-[#0f172a] pt-20">
+    <div class="min-h-screen bg-[#0f172a] mt-20">
         <div class="block text-center flex justify-center">
             <h1 ref="splitTitleRef" class="text-8xl text-white font-thin tracking-loose font-inter">
                 PROJECTS
@@ -256,7 +256,7 @@ const addSectionTitleReferences = (el: Element | ComponentPublicInstance | null)
             <h1 ref="liveRef" class="font-inter font-thin tracking-loose text-red-500 ml-8">(LIVE)</h1>
         </div>
         <div v-for="site in websiteTypes">
-            <h1 :ref="(el) => addSectionTitleReferences(el)" class="font-3xl text-emerald-300 tracking-loose font-fira-code my-2 block text-center">
+            <h1 :ref="(el) => addSectionTitleReferences(el)" class="font-4xl text-emerald-300 tracking-widest font-fira-code my-2 block text-center">
                 {{ site.type }}
             </h1>
             <div class="my-4" :ref="(el) => addCarouselReferences(el)">
@@ -268,7 +268,7 @@ const addSectionTitleReferences = (el: Element | ComponentPublicInstance | null)
                     pause-on-focus="false"
                     :draggable="false"
                     loop
-                    :ui="{ item: 'basis-1/4' }">
+                    :ui="{ item: 'basis-1/4 opacity-70' }">
                     <NuxtLink :to="item.link" external target="_blank" rel="noopener noreferrer">
                         <img :src="item.siteImage" class="h-56">
                     </NuxtLink>
