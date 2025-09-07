@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, type ComponentPublicInstance } from 'vue'
+import { ref, onMounted, type ComponentPublicInstance } from 'vue'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
@@ -168,6 +168,9 @@ onMounted(() => {
     })
   })
 
+  gsap.set('#semicircle', { opacity: 0, scaleY: 0, transformOrigin: 'center bottom' })
+  gsap.set('.arrow-line', { opacity: 0, scaleY: 0, transformOrigin: 'center bottom' })
+  gsap.set('.arrow-head', { opacity: 0, scale: 0, transformOrigin: 'center' })
   gsap.set(titleRef.value, { yPercent: '460' });
   gsap.set(carouselRef.value, { borderColor: '#00bbff' })
   gsap.set([...languageReferences.value, ...frameworkReferences.value], { opacity: 0 })
@@ -204,7 +207,7 @@ onMounted(() => {
       ease: "back.out(1.7)"
     }, 2)
     .to(titleRef.value, {
-      yPercent: 0,
+      yPercent: -15,
       duration: 1.5, 
       color: '#fff',
       scale: 1,
@@ -321,6 +324,38 @@ onMounted(() => {
       languageTweens.value[index] = tween
     })
 
+    timeline.to('#semicircle', {
+      scaleY: 1,
+      opacity: 1,
+      duration: 1,
+      ease: 'power4.inOut'
+    }, '-=1')
+    .to('.arrow-line', {
+      scaleY: 1,
+      opacity: 1,
+      duration: 0.6,
+      ease: 'power4.out'
+    }, '-=0.5')
+    .to('.arrow-head', {
+      scale: 1,
+      opacity: 1,
+      duration: 0.8,
+      ease: 'back.out(1.7)'
+    }, '-=0.31')
+    .fromTo(['.arrow-head', '.arrow-line'], 
+    {
+      duration: 1,
+      y: -5
+    },
+    {
+      stagger: 0,
+      y: 5,
+      duration: 1,
+      ease: 'power1.inOut',
+      yoyo: true,
+      repeat: -1
+    })
+
   }
 })
 
@@ -402,6 +437,13 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
     <path ref="rightPathRef" d="M 410 600 q -360 -300 10 -600" fill="none"/>
   </svg>
 
+  <div class="fixed bottom-0 left-1/2 transform -translate-x-1/2 z-20">
+    <svg height="75" width="300" >
+      <ellipse cx="150" cy="75" rx="80" ry="75" fill="#72A0B3" opacity="0.8" id="semicircle"/>
+      <path d="M 135 45 L 150 60 L 165 45" stroke="white" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" class="arrow-head"/>
+      <path d="M 150 60 L 150 20" stroke="white" stroke-width="5" stroke-linecap="round" class="arrow-line"/>
+    </svg>
+  </div>
 
   <div
     v-for="(icon, index) in sidebarIcons.frameworks"
@@ -467,7 +509,7 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
   </div>
 
   <div class="min-h-screen flex items-center flex-col items-center" style="background: radial-gradient(ellipse at 50%, #59626e, #0f172a 70%);">
-    <div class="w-full text-center z-50 pt-8 pb-4">
+    <div class="w-full text-center z-50 pt-2 pb-4">
       <h1 ref="titleRef" class="font-inter text-black text-8xl font-thin tracking-loose">
         EXPERIENCE
       </h1>
@@ -489,5 +531,6 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
           <ExperienceCarousel :item="item"/>
       </UCarousel>
     </div>
+    
   </div>
 </template>

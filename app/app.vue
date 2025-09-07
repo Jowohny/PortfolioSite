@@ -117,7 +117,6 @@ const onLeave = (el: Element, done: () => void) => {
     </Transition>
     <div v-if="showExperience">
       <Experience/>
-      <Projects/>
     </div>
   </UApp>
 </template>
