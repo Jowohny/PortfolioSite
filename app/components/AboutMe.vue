@@ -80,7 +80,7 @@ onMounted(() => {
         scale: 1,
         duration: 1,
         ease: 'power4.inOut'
-    })
+    }, '+=2')
     .to(selfImageRef.value, {
         border: 5,
         duration: 0.5,
@@ -90,7 +90,7 @@ onMounted(() => {
         border: 0,
         duration: 0.5,
         ease: 'power1.inOut'
-    }, '<+=0.4')
+    }, '<+=0.41')
     .to(nameplateRef.value, {
         scrambleText: {
             text: 'As introduced, my name is Johny Vu',

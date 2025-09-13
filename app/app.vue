@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { gsap } from 'gsap';
-import Experience from './components/Experience.vue';
 
 const showIntro = ref(true);
 const showExperience = ref(false);
@@ -12,6 +11,7 @@ const trapezoidLeft = ref<HTMLElement | null>(null);
 const trapezoidRight = ref<HTMLElement | null>(null);
 const centerCircle = ref<HTMLElement | null>(null);
 const shapeContainer = ref<HTMLElement | null>(null);
+const sectionTitleRef = ref<HTMLHeadingElement | null>(null);
 
 const turnOffIntro = () => {
   showIntro.value = false;
@@ -64,7 +64,7 @@ const onLeave = (el: Element, done: () => void) => {
       onComplete: () => {
         turnOnExperience()
       }
-    }, '-=4')
+    }, '-=4.1')
     .to(centerCircle.value, {
       scale: 1.7,
       duration: 2,
@@ -102,11 +102,13 @@ const onLeave = (el: Element, done: () => void) => {
         style="width: 130%; clip-path: polygon(20% 0, 100% 0, 100% 100%, 0% 100%)"
       />
       <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-        <div
+        <div  
           ref="centerCircle"
-          class="bg-white rounded-full"
+          class="bg-white rounded-full flex items-center justify-center"
           style="width: 40vh; height: 40vh;"
-        />
+        >
+          <h1 ref="sectionTitleRef" class="text-black text-6xl font-inter font-thin tracking-wide flex items-center justify-center w-full h-full">About Me</h1>
+        </div>
       </div>
     </div>
     <Transition
