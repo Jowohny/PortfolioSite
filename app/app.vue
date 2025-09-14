@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { gsap } from 'gsap';
+import { SplitText } from 'gsap/SplitText';
 
 const showIntro = ref(true);
 const showExperience = ref(false);
@@ -24,10 +25,13 @@ const turnOnExperience = () => {
 const onLeave = (el: Element, done: () => void) => {
   const particles = el.querySelectorAll('.sparkle');
 
+  const splitTitle = new SplitText(sectionTitleRef.value, { type: 'words' })
+
   const tl = gsap.timeline();
 
   tl.set(shapeContainer.value, { autoAlpha: 1 })
     .set(centerCircle.value, { scale: 0 })
+    .set(splitTitle.words, { opacity: 0, scale: 0 })
     .to(particles, {
       y: gsap.utils.random(-800, -1200, true),
       x: gsap.utils.random(-300, 300, true),
@@ -76,6 +80,13 @@ const onLeave = (el: Element, done: () => void) => {
       ease: 'power3.inOut',
       backgroundColor: '#94A3B8'
     })
+    .to(splitTitle.words, {
+      opacity: 1,
+      scale: 1,
+      duration: 2,
+      ease: 'power2.inOut',
+       stagger: 0.05
+    }, '<')
     .to(centerCircle.value, {
       opacity: 0,
       backgroundColor: '#000000',
