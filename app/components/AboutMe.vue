@@ -9,6 +9,7 @@ const sectionReferences = ref<HTMLDivElement[]>([])
 const sectionTweens = ref<gsap.core.Timeline[]>([])
 const nameplateRef = ref<HTMLHeadingElement | null>(null)
 const selfImageRef = ref<HTMLImageElement | null>( null)
+const aboutMeRef = ref<HTMLHeadingElement | null>(null)
 let timeline: GSAPTimeline | null = null
 
 const experienceTransition = () => {
@@ -75,12 +76,19 @@ onMounted(() => {
     gsap.set([...sectionReferences.value], { opacity: 0, y: 100, scaleX: 0 })
     gsap.set('.fishsauce', { opacity: 0, xPercent: 100 })
     gsap.set(selfImageRef.value, { scale: 0 })
+    gsap.set(aboutMeRef.value, { y: -100 })
 
     timeline.to(selfImageRef.value, {
         scale: 1,
         duration: 1,
         ease: 'power4.inOut'
-    }, '+=2')
+    }, '+=5')
+
+    .to(aboutMeRef.value, {
+        y: 0,
+        duration: 1,
+        ease: 'bounce.out'
+    })
     .to(selfImageRef.value, {
         border: 5,
         duration: 0.5,
@@ -145,7 +153,7 @@ const sectionAnimate = (index: number) => {
     
     <div class="min-h-screen flex flex-col items-center">
         <div>
-            <h1 class="block h-[15vh] text-center text-6xl content-center bg-clip-text text-transparent bg-linear-to-r/decreasing from-indigo-500 to-teal-400 font-inter tracking-wider font-thin">
+            <h1 ref="aboutMeRef" class="block h-[15vh] text-center text-6xl content-center bg-clip-text text-transparent bg-linear-to-r/decreasing from-indigo-500 to-teal-400 font-inter tracking-wider font-thin">
                 About Me
             </h1>
         </div>

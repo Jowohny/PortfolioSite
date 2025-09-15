@@ -27,11 +27,12 @@ const onLeave = (el: Element, done: () => void) => {
 
   const splitTitle = new SplitText(sectionTitleRef.value, { type: 'words' })
 
-  const tl = gsap.timeline();
+  const tl = gsap.timeline({ defaults: { ease: 'power3.inOut' } });
 
   tl.set(shapeContainer.value, { autoAlpha: 1 })
     .set(centerCircle.value, { scale: 0 })
     .set(splitTitle.words, { opacity: 0, scale: 0 })
+    .set([centerCircle.value, sectionTitleRef.value], { willChange: 'transform' })
     .to(particles, {
       y: gsap.utils.random(-800, -1200, true),
       x: gsap.utils.random(-300, 300, true),
@@ -57,9 +58,7 @@ const onLeave = (el: Element, done: () => void) => {
       onComplete: () => {
         done()
       } 
-      },
-      "<"
-    )
+    },"<")
     .to(introRef.value, {
       scale: 0,
       duration: 2,
@@ -74,24 +73,43 @@ const onLeave = (el: Element, done: () => void) => {
       duration: 2,
       ease: "elastic.out(1, 0.75)"
     }, '-=0.75')
-    .to(centerCircle.value, {
-      scale: 6,
-      duration: 2,
-      ease: 'power3.inOut',
-      backgroundColor: '#94A3B8'
-    })
     .to(splitTitle.words, {
       opacity: 1,
-      scale: 1,
+      scale: 0.9,
+      duration: 1.5,
+      ease: 'power2.inOut',
+      stagger: 0.1
+    }, '-=2')
+    .to(sectionTitleRef.value, {
+      x: -25,
+      y: 50,
+      duration: 1.2,
+      ease: 'power4.out'
+    }, '-=0.4')
+    .to(centerCircle.value, {
+      x: -75,
+      y: 100,
+      duration: 1.2,
+      ease: 'expo.out'
+    }, '<')
+    .to([sectionTitleRef.value, centerCircle.value], {
+      x: 600,
+      y: -800,
+      duration: 1.6,
+      ease: 'power3.in'
+    }, '-=0.6')
+    .to(splitTitle.words, {
+      opacity: 0,
+      scale: 0.8,
       duration: 2,
       ease: 'power2.inOut',
-       stagger: 0.05
-    }, '<')
+      stagger: 0.05
+    }, '-=1.5')
     .to(centerCircle.value, {
       opacity: 0,
       backgroundColor: '#000000',
       duration: 2
-    }, '-=1')
+    }, '-=2')
     .to([trapezoidLeft.value, trapezoidRight.value], {
       opacity: 0,
       duration: 1
