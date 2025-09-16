@@ -57,6 +57,7 @@ const onLeave = (el: Element, done: () => void) => {
         ease: 'power2.inOut',
       onComplete: () => {
         done()
+        turnOnExperience()
       } 
     },"<")
     .to(introRef.value, {
@@ -64,9 +65,6 @@ const onLeave = (el: Element, done: () => void) => {
       duration: 2,
       opacity: 0,
       ease: 'power2.inOut',
-      onComplete: () => {
-        turnOnExperience()
-      }
     }, '-=4.1')
     .to(centerCircle.value, {
       scale: 1.7,
