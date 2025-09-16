@@ -215,12 +215,12 @@ const animateOut = (selectedIndex: number) => {
     }, '<')
     .to(paragraphSectionRef.value, {
         rotateY: -90,
-        duration: 2,
+        duration: 1,
         ease: 'power2.out'
     }, '-=1.51')
     .to(selfImageRef.value, {
         rotateY: 90,
-        duration: 2,
+        duration: 1,
         ease: 'power2.out'
     }, '<')
 }
@@ -231,11 +231,11 @@ const animateOut = (selectedIndex: number) => {
     
     <div class="min-h-screen flex flex-col items-center">
         <div>
-            <h1 class="block h-[15vh] text-center text-6xl content-center bg-clip-text text-transparent bg-linear-to-r/decreasing from-indigo-500 to-teal-400 font-inter tracking-wider font-thin">
+            <h1 ref="aboutMeRef" class="block h-[15vh] text-center text-6xl content-center bg-clip-text text-transparent bg-linear-to-r/decreasing from-indigo-500 to-teal-400 font-inter tracking-wider font-thin">
                 About Me
             </h1>
         </div>
-        <div ref="leftSideRef" class="flex flex-row w-3/5 mb-8">
+        <div class="flex flex-row w-3/5 mb-8">
             <div ref="paragraphSectionRef" class="h-[65vh] flex flex-col px-8 text-left mr-8">
                 <h1 ref="nameplateRef" class="text-white text-2xl font-inter block text-center tracking-tight font-thin mb-2 px-8">( ͡° ͜ʖ ͡°)</h1>
                 <p class="text-white opacity-80 text-xl font-inter text-left tracking-wide font-thin leading-snug mb-4 fishsauce">
