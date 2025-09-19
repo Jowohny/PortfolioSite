@@ -57,8 +57,8 @@ const websiteTypes = [
                 link: 'https://trollface.dk'
             },
             {
-                siteImage: '/images/project/comingsoon.jpg',
-                link: 'https://trollface.dk'
+                siteImage: '/images/project/GlobalClicker.png',
+                link: 'https://clickcounter-lkf1.onrender.com'
             }
         ]
     },
