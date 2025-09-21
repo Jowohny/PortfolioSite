@@ -437,13 +437,6 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
     <path ref="rightPathRef" d="M 410 600 q -360 -300 10 -600" fill="none"/>
   </svg>
 
-  <div class="fixed bottom-0 left-1/2 transform -translate-x-1/2 z-20">
-    <svg height="75" width="300" >
-      <ellipse cx="150" cy="75" rx="80" ry="75" fill="#72A0B3" opacity="0.8" id="semicircle"/>
-      <path d="M 135 45 L 150 60 L 165 45" stroke="white" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" class="arrow-head"/>
-      <path d="M 150 60 L 150 20" stroke="white" stroke-width="5" stroke-linecap="round" class="arrow-line"/>
-    </svg>
-  </div>
 
   <div
     v-for="(icon, index) in sidebarIcons.frameworks"
