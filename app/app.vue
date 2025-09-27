@@ -145,7 +145,7 @@ const onLeave = (el: Element, done: () => void) => {
       <Intro ref="introRef" v-if="showIntro" @introTransition="turnOffIntro" />
     </Transition>
     <div v-if="showExperience">
-      <Projects/>
+      <AboutMe/>
     </div>
   </UApp>
 </template>

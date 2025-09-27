@@ -8,6 +8,7 @@ import ExperienceCarousel from './ExperienceCarousel.vue'
 gsap.registerPlugin(SplitText, MotionPathPlugin)
 
 const titleRef = ref()
+const pageRef = ref() 
 const carouselRef = ref<HTMLDivElement | null>(null)
 const leftPathRef = ref<SVGPathElement | null>(null)
 const rightPathRef = ref<SVGPathElement | null>(null)
@@ -164,7 +165,8 @@ onMounted(() => {
       rotateZ: index % 2 !== 0 ? -50 : 50,
       y: index % 2 !== 0 ? -20 : 20,
       opacity: 0,
-      scaleY: 1
+      scaleY: 1,
+			color: '#fff'
     })
   })
 
@@ -173,6 +175,7 @@ onMounted(() => {
   gsap.set('.arrow-head', { opacity: 0, scale: 0, transformOrigin: 'center' })
   gsap.set(titleRef.value, { yPercent: '460' });
   gsap.set(carouselRef.value, { borderColor: '#00bbff' })
+	gsap.set(pageRef.value, { opacity: 0, scale: 0 })
   gsap.set([...languageReferences.value, ...frameworkReferences.value], { opacity: 0 })
 
   if (leftPathRef.value && rightPathRef.value) {
@@ -197,7 +200,13 @@ onMounted(() => {
 
     timeline = gsap.timeline()
 
-    timeline.to(splitTitle.chars, {
+    timeline.to(pageRef.value, {
+			opacity: 1,
+			scale: 1,
+			duration: 3,
+			ease: 'elastic.out(1,0.4)'
+		})
+		.to(splitTitle.chars, {
       rotateZ: 0,
       y: 0,
       opacity: 1,
@@ -501,7 +510,7 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
 
   </div>
 
-  <div class="min-h-screen flex items-center flex-col items-center" style="background: radial-gradient(ellipse at 50%, #59626e, #0f172a 70%);">
+  <div ref="pageRef" class="min-h-screen flex items-center flex-col items-center" style="background: radial-gradient(ellipse at 50%, #59626e, #0f172a 70%);">
     <div class="w-full text-center z-50 pt-2 pb-4">
       <h1 ref="titleRef" class="font-inter text-black text-8xl font-thin tracking-loose">
         EXPERIENCE

@@ -5,15 +5,18 @@ import { ScrambleTextPlugin } from 'gsap/all'
 
 gsap.registerPlugin(ScrambleTextPlugin) 
 
-let firstTimeAnimated: boolean = true
+const firstTimeAnimated = ref<boolean>(true)
 
 const sectionReferences = ref<HTMLDivElement[]>([])
+const currentClassRef = ref<HTMLDivElement | null>(null)
 const sectionTweens = ref<gsap.core.Timeline[]>([])
 const nameplateRef = ref<HTMLHeadingElement | null>(null)
 const selfImageRef = ref<HTMLImageElement | null>(null)
 const githubRef = ref<HTMLImageElement | null>(null)
 const paragraphSectionRef = ref<HTMLDivElement | null>(null)
 const aboutMeRef = ref<HTMLHeadingElement | null>(null)
+const currentComponent = ref<string>('current')
+const currentAnimatorCom = ref<any | null>(null)
 let timeline: GSAPTimeline | null = null
 let timelineOut: GSAPTimeline | null = null
 
@@ -38,7 +41,7 @@ const contactTransition = () => {
 }
 
 const firstTimeConversion = () => {
-    firstTimeAnimated = false
+    firstTimeAnimated.value = false
 }
 
 const menuOptions = [ 
@@ -84,83 +87,78 @@ const addSectionRef = (el: Element | ComponentPublicInstance | null) => {
 }
 
 onMounted(() => {
-    if(firstTimeAnimated) {
-        timeline = gsap.timeline()
+	timeline = gsap.timeline()
 
-        gsap.set([...sectionReferences.value], { opacity: 0, y: 100, scaleX: 0 })
-        gsap.set([githubRef.value, '.fishsauce'], { opacity: 0, xPercent: 100 })
-        gsap.set(selfImageRef.value, { scale: 0 })
-        gsap.set(aboutMeRef.value, { y: -300, opacity: 0 })
-
-        timeline.to(selfImageRef.value, {
-            scale: 1,
-            duration: 1,
-            ease: 'power4.inOut'
-        }, '+=5')
-        .to(selfImageRef.value, {
-            border: 5,
-            duration: 0.5,
-            ease: 'power2.out'
-        }, '<')
-        .to(selfImageRef.value, {
-            border: 0,
-            duration: 0.5,
-            ease: 'power1.inOut'
-        }, '<+=0.4')
-        .fromTo(aboutMeRef.value, 
-        {
-            opacity: 1
-        },
-        {
-            y: 0,
-            duration: 2,
-            ease: 'bounce.out'
-        }, '<')
-        .to(nameplateRef.value, {
-            scrambleText: {
-                text: 'As introduced, my name is Johny Vu',
-                chars: 'XO',
-                speed: 0.2
-            },
-            duration: 1
-        }, '<')
-        .to(nameplateRef.value, {
-            yPercent: -100,
-            opacity: 0,
-            duration: 1
-        }, '+=0.5')
-        .fromTo(nameplateRef.value, 
-        {
-            yPercent: 100,
-        },
-        {
-            scrambleText: {
-                text: 'Johny Vu',
-                chars: '1234675890',
-                speed: 1
-            },
-            duration: 2,
-            yPercent: 0,
-            opacity: 1
-        })
-        .to(['.fishsauce', githubRef.value], {
-            duration: 1.5,
-            stagger: 0.5,
-            opacity: 1,
-            xPercent: 0,
-            ease: 'power4.inOut'
-        }, '<+=0.2')
-        .to([...sectionReferences.value], {
-            duration: 1,
-            ease: 'power4.inOut',
-            y: 0,
-            scaleX: 1,
-            opacity: 1,
-            stagger: 0.1
-        }, ',-=10')    
-    } else {
-
-    }
+	timeline.set([...sectionReferences.value], { opacity: 0, y: 100, scaleX: 0 })
+	.set([githubRef.value, '.fishsauce'], { opacity: 0, xPercent: 100 })
+	.set(selfImageRef.value, { scale: 0 })
+	.set(aboutMeRef.value, { y: -300, opacity: 0 })
+	.to(selfImageRef.value, {
+			scale: 1,
+			duration: 1,
+			ease: 'power4.inOut'
+	}, '+=2')
+	.to(selfImageRef.value, {
+			border: 5,
+			duration: 0.5,
+			ease: 'power2.out'
+	}, '<')
+	.to(selfImageRef.value, {
+			border: 0,
+			duration: 0.5,
+			ease: 'power1.inOut'
+	}, '<+=0.4')
+	.fromTo(aboutMeRef.value, 
+	{
+			opacity: 1
+	},
+	{
+			y: 0,
+			duration: 2,
+			ease: 'bounce.out'
+	}, '<')
+	.to(nameplateRef.value, {
+			scrambleText: {
+					text: 'As introduced, my name is Johny Vu',
+					chars: 'XO',
+					speed: 0.2
+			},
+			duration: 1
+	}, '<')
+	.to(nameplateRef.value, {
+			yPercent: -100,
+			opacity: 0,
+			duration: 1
+	}, '+=0.5')
+	.fromTo(nameplateRef.value, 
+	{
+			yPercent: 100,
+	},
+	{
+			scrambleText: {
+					text: 'Johny Vu',
+					chars: '1234675890',
+					speed: 1
+			},
+			duration: 2,
+			yPercent: 0,
+			opacity: 1
+	})
+	.to(['.fishsauce', githubRef.value], {
+			duration: 1.5,
+			stagger: 0.5,
+			opacity: 1,
+			xPercent: 0,
+			ease: 'power4.inOut'
+	}, '<+=0.2')
+	.to([...sectionReferences.value], {
+			duration: 1,
+			ease: 'power4.inOut',
+			y: 0,
+			scaleX: 1,
+			opacity: 1,
+			stagger: 0.11
+	}, '<')   
 })
 
 const sectionAnimate = (index: number) => {
@@ -220,16 +218,51 @@ const animateOut = (selectedIndex: number) => {
     }, '-=1.51')
     .to(selfImageRef.value, {
         rotateY: 90,
-        duration: 1,
-        ease: 'power2.out'
+        duration: 1.1,
+        ease: 'power2.out',
+				onComplete: () => {
+					switchComponent(selectedIndex)
+				}
     }, '<')
+}
+
+const switchComponent = (selectedIndex: number) => {
+	if (selectedIndex === 0) {
+			currentComponent.value = 'experience'
+		} else if (selectedIndex === 1) {
+			currentComponent.value = 'projects'
+		} else if (selectedIndex === 2) {
+			currentComponent.value = 'hobbies'
+		} else if (selectedIndex === 3) {
+			currentComponent.value = 'contact'
+		}
+
+		
+}
+
+const setBack = async() => {
+	currentComponent.value = 'current'
+	await nextTick() 
+	const timeline1 = gsap.timeline()
+
+	if (currentClassRef.value) {
+		timeline1.set(currentClassRef.value, { opacity: 0, yPercent: -50 })
+
+		timeline1.to(currentClassRef.value, {
+			opacity: 1,
+			duration: 1.5,
+			ease: 'power4.inOut',
+			yPercent: 0
+		})
+	}
+
 }
 
 </script>
 
 <template>
     
-    <div class="min-h-screen flex flex-col items-center">
+    <div ref="currentClassRef" v-if="currentComponent === 'current'" class="min-h-screen flex flex-col items-center">
         <div>
             <h1 ref="aboutMeRef" class="block h-[15vh] text-center text-6xl content-center bg-clip-text text-transparent bg-linear-to-r/decreasing from-indigo-500 to-teal-400 font-inter tracking-wider font-thin">
                 About Me
@@ -237,7 +270,7 @@ const animateOut = (selectedIndex: number) => {
         </div>
         <div class="flex flex-row w-3/5 mb-8">
             <div ref="paragraphSectionRef" class="h-[65vh] flex flex-col px-8 text-left mr-8">
-                <h1 ref="nameplateRef" class="text-white text-2xl font-inter block text-center tracking-tight font-thin mb-2 px-8">( ͡° ͜ʖ ͡°)</h1>
+                <h1 ref="nameplateRef" class="text-white text-2xl font-inter block text-center tracking-tight font-thin mb-2 px-8">Izza Me Jowohny</h1>
                 <p class="text-white opacity-80 text-xl font-inter text-left tracking-wide font-thin leading-snug mb-4 fishsauce">
                     I am many things, but for the purpose of this portfolio, I'll keep it short... at least I'll try to. I am a Frontend 
                     Developer who specializes in optimized and fun animations primarily through the use of GSAP (Green Sock Animation
@@ -256,7 +289,7 @@ const animateOut = (selectedIndex: number) => {
 
                 <img ref="githubRef" src="/images/AboutMe/GithubContributions.png" class="border rounded-xl border-none w-full mt-auto">
             </div>
-            <img ref="selfImageRef" src="/images/AboutMe/JohnyVu.jpg" class="border rounded-3xl h-[65vh] w-auto object-contain z-10">
+            <img ref="selfImageRef" src="/images/AboutMe/JohnyVu.png" class="border rounded-3xl h-[65vh] w-auto object-contain z-10">
         </div>
         <div class="flex flex-row pt-2 w-2/3 justify-center">
             <div 
@@ -272,5 +305,12 @@ const animateOut = (selectedIndex: number) => {
             </div>
         </div>
     </div>
+
+		<div>
+			<Experience ref="currentAnimatorCom" v-if="currentComponent === 'experience'" />
+			<Projects ref="currentAnimatorCom" @returnToSender="setBack" v-if="currentComponent === 'projects'" />
+			<!--<Hobbies ref="currentAnimatorCom" v-if="currentComponent === 'hobbies'"/>-->
+			<!--<Contact ref="currentAnimatorCom" v-if="currentComponent === 'contact'"/>-->
+		</div>
 
 </template>

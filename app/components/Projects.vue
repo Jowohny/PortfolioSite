@@ -2,14 +2,18 @@
 import {gsap} from 'gsap'
 import { SplitText } from 'gsap/SplitText';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { button } from '#build/ui';
 
 gsap.registerPlugin(SplitText, ScrollTrigger)
 
 const splitTitleRef = ref<HTMLHeadingElement | null>(null)
+const buttonRef = ref<HTMLDivElement | null>(null)
 const carouselRefs = ref<HTMLDivElement[]>([])
 const liveRef = ref<HTMLDivElement | null>(null)
 let splitTitle: SplitText | null = null
 let splitSectionTitles: SplitText[] = []
+
+const emit = defineEmits(['returnToSender'])
 
 const websiteTypes = [
     {    
@@ -18,6 +22,18 @@ const websiteTypes = [
             {
                 siteImage: '/images/project/AeryLanding.png',
                 link: 'https://aery.app'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
             },
             {
                 siteImage: '/images/project/comingsoon.jpg',
@@ -59,6 +75,18 @@ const websiteTypes = [
             {
                 siteImage: '/images/project/GlobalClicker.png',
                 link: 'https://clickcounter-lkf1.onrender.com'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
             }
         ]
     },
@@ -72,6 +100,18 @@ const websiteTypes = [
             {   
                 siteImage: '/images/project/PortfolioV1.png',
                 link: 'https://portfolio-site-lemon-theta.vercel.app/'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
+            },
+            {
+                siteImage: '/images/project/comingsoon.jpg',
+                link: 'https://trollface.dk'
             },
             {
                 siteImage: '/images/project/comingsoon.jpg',
@@ -106,6 +146,7 @@ onMounted(() => {
     })
 
     gsap.set(liveRef.value, { opacity: 0, yPercent: 100 })
+		gsap.set(buttonRef.value, { opacity: 0, scale: 0 })
 
     gsap.set(splitTitle.chars[1]!,{rotateX: 180, x: 0, y: '40vmin'}) // R
     gsap.set(splitTitle.chars[2]!,{rotateY: 180, x: '-30vmin', y: '34vmin'}) // O
@@ -128,7 +169,7 @@ onMounted(() => {
         opacity: 1,
         duration: 1,
         ease: 'expoScale(0.5,7,power2.out)'
-    }, '+=3')
+    })
     .to(splitTitle.chars[0]!, {
         rotateZ: 0,
         scale: 1,
@@ -200,7 +241,7 @@ onMounted(() => {
     .to([...splitTitle.chars], {
         duration: 1,
         stagger: 0.04,
-        y: 0,
+        y: '50%',
         x: 0,
         rotateX: 0,
         rotateY: 0,
@@ -212,7 +253,7 @@ onMounted(() => {
     .to(liveRef.value, {
         duration: 0.5,
         ease: 'power4.inOut',
-        yPercent: 0,
+        yPercent: 25,
         opacity: 1
     }, '-=0.5')
     .to([...carouselRefs.value], {
@@ -220,15 +261,21 @@ onMounted(() => {
         opacity: 1,
         ease: 'power4.inOut',
         yPercent: 0,
-        stagger: 0.5
+        stagger: 0.3
     })
     .to(splitSectionTitles.flatMap(splitSection => splitSection.chars), {
         opacity: 1,
         duration: 1.5,
-        ease: 'elastic.out(1,0.1)',
+        ease: 'elastic.out(1,0.4)',
         stagger: 0.05,
         xPercent: 0
-    }, '-=1.31')
+    }, '-=1.3')
+		.to(buttonRef.value, {
+			opacity: 1,
+			scale: 1,
+			duration: 1.5,
+			ease: 'elastic.out(1,0.7)'
+		}, '-=2')
 })
 
 const addCarouselReferences = (el: Element | ComponentPublicInstance | null) => {
@@ -244,13 +291,55 @@ const addSectionTitleReferences = (el: Element | ComponentPublicInstance | null)
     } 
 }
 
+const reverseOut = () => {
+	const timeline = gsap.timeline()
+	splitTitle = new SplitText(splitTitleRef.value, { type: 'chars' })
+
+	timeline.to(liveRef.value, {
+		xPercent: 200,
+		duration: 1.2,
+		ease: 'power4.inOut',
+		opacity: 0
+	})
+	.to(buttonRef.value, {
+		opacity: 0,
+		duration: 1.5,
+		ease: 'elastic.inOut(1,0.3)',
+		scale: 0
+	}, '<')
+	.to(splitTitle!.chars, {
+		yPercent: -100,
+		rotateZ: 45,
+		duration: 1.5,
+		opacity: 0,
+		stagger: 0.07,
+		ease: 'elastic.out(1, 1)'
+	}, '<+=0.2')
+	.to([...carouselRefs.value].reverse(), {
+		duration: 0.75,
+		opacity: 0,
+		ease: 'power4.inOut',
+		yPercent: -50,
+		stagger: 0.3,
+	}, '-=1')
+	.to(splitSectionTitles.flatMap(splitSection => splitSection.chars), {
+        opacity: 0,
+        duration: 1.5,
+        ease: 'power4.inOut',
+        stagger: 0.02,
+				rotateX: 90,
+				onComplete: () => {
+					emit('returnToSender')
+				}
+    }, '-=1.5')
+}
 
 </script>
 
 <template>
-    <div class="min-h-screen bg-[#0f172a] mt-20">
+    <div class="min-h-screen bg-[#0f172a]">
         <div class="block text-center flex justify-center">
-            <h1 ref="splitTitleRef" class="text-8xl text-white font-thin tracking-loose font-inter">
+            <h1 ref="splitTitleRef" class="text-8xl mb-20 text-white font-thin tracking-loose font-inter">
                 PROJECTS
             </h1>
             <h1 ref="liveRef" class="font-inter font-thin tracking-loose text-red-500 ml-8">(LIVE)</h1>
@@ -268,12 +357,15 @@ const addSectionTitleReferences = (el: Element | ComponentPublicInstance | null)
                     pause-on-focus="false"
                     :draggable="false"
                     loop
-                    :ui="{ item: 'basis-1/4 opacity-70' }">
+                    :ui="{ item: 'basis-1/6 opacity-70' }">
                     <NuxtLink :to="item.link" external target="_blank" rel="noopener noreferrer">
-                        <img :src="item.siteImage" class="h-56">
+                        <img :src="item.siteImage" class="h-40">
                     </NuxtLink>
                 </UCarousel>
             </div>
         </div>
+				<div ref="buttonRef" class="block flex justify-center mt-12">
+					<UButton class="py-2 px-8 text-xl font-light tracking-widest" label="Return" size="xl" variant="solid" color="secondary"  @click="reverseOut"/>
+				</div>
     </div>
 </template>
