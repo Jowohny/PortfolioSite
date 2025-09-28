@@ -4,17 +4,20 @@ import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
 import ExperienceCarousel from './ExperienceCarousel.vue'
+import { button } from '#build/ui'
 
 gsap.registerPlugin(SplitText, MotionPathPlugin)
 
+const emit = defineEmits(['returnToSender'])
+
 const titleRef = ref()
 const pageRef = ref() 
+const buttonRef = ref<HTMLDivElement | null>(null)
 const carouselRef = ref<HTMLDivElement | null>(null)
 const leftPathRef = ref<SVGPathElement | null>(null)
 const rightPathRef = ref<SVGPathElement | null>(null)
 const transitionFinished = ref(false)
 let splitTitle: SplitText | null = null
-let timeline: GSAPTimeline | null = null
 
 const toast = useToast()
 
@@ -170,9 +173,7 @@ onMounted(() => {
     })
   })
 
-  gsap.set('#semicircle', { opacity: 0, scaleY: 0, transformOrigin: 'center bottom' })
-  gsap.set('.arrow-line', { opacity: 0, scaleY: 0, transformOrigin: 'center bottom' })
-  gsap.set('.arrow-head', { opacity: 0, scale: 0, transformOrigin: 'center' })
+	gsap.set(buttonRef.value, { opacity: 0, scale: 0 })
   gsap.set(titleRef.value, { yPercent: '460' });
   gsap.set(carouselRef.value, { borderColor: '#00bbff' })
 	gsap.set(pageRef.value, { opacity: 0, scale: 0 })
@@ -198,7 +199,7 @@ onMounted(() => {
       scaleY: 0
     })
 
-    timeline = gsap.timeline()
+    const timeline = gsap.timeline()
 
     timeline.to(pageRef.value, {
 			opacity: 1,
@@ -214,7 +215,7 @@ onMounted(() => {
       duration: 0.8,
       stagger: 0.05,
       ease: "back.out(1.7)"
-    }, 2)
+    }, 1)
     .to(titleRef.value, {
       yPercent: -15,
       duration: 1.5, 
@@ -230,36 +231,7 @@ onMounted(() => {
         transitionFinished.value = true
       }
     }, '-=1.3')
-    .to(carouselRef.value, {
-      opacity: 1,
-      scaleY: 1,
-      duration: 1.5,
-      ease: "power4.inOut"
-    }, '-=1')
-    .to(carouselRef.value, {
-      borderBottom: 20,
-      borderTop: 20,
-      duration: 0.5,
-      ease: "power4.in"
-    }, '-=1.65')
-    .to(carouselRef.value, {
-      borderBottom: 0,
-      borderTop: 0,
-      duration: 0.5,
-      ease: "power4.out",
-      onComplete: () => {
-        toast.add({
-          title: "Hover over the icons!",
-          description: "To get more information, hover over each of them to get some insight on how well I feel about them.",
-          icon: "i-lucide-lightbulb",
-          ui: {
-            root: 'w-full p-4 rounded-lg shadow-lg bg-white dark:bg-gray-900 ring-1 ring-gray-200 dark:ring-gray-800',
-          },
-          closeIcon: 'i-lucide-arrow-right',
-          duration: 5000
-        })
-      }
-    }, '-=0.64')
+		.to(splitTitle.chars, {})
 
     frameworkReferences.value.forEach((icon, index) => {
       const leftPath = leftPathRef.value!
@@ -333,40 +305,100 @@ onMounted(() => {
       languageTweens.value[index] = tween
     })
 
-    timeline.to('#semicircle', {
-      scaleY: 1,
+    timeline.to(carouselRef.value, {
       opacity: 1,
-      duration: 1,
-      ease: 'power4.inOut'
-    }, '-=1')
-    .to('.arrow-line', {
       scaleY: 1,
-      opacity: 1,
-      duration: 0.6,
-      ease: 'power4.out'
+      duration: 1.5,
+      ease: "power4.inOut",
+			onComplete: () => {
+        toast.add({
+          title: "Hover over the icons!",
+          description: "To get more information, hover over each of them to get some insight on how well I feel about them.",
+          icon: "i-lucide-lightbulb",
+          ui: {
+            root: 'w-full p-4 rounded-lg shadow-lg bg-white dark:bg-gray-900 ring-1 ring-gray-200 dark:ring-gray-800',
+          },
+          closeIcon: 'i-lucide-arrow-right',
+          duration: 5000
+        })
+      }
     }, '-=0.5')
-    .to('.arrow-head', {
-      scale: 1,
-      opacity: 1,
-      duration: 0.8,
-      ease: 'back.out(1.7)'
-    }, '-=0.31')
-    .fromTo(['.arrow-head', '.arrow-line'], 
-    {
-      duration: 1,
-      y: -5
-    },
-    {
-      stagger: 0,
-      y: 5,
-      duration: 1,
-      ease: 'power1.inOut',
-      yoyo: true,
-      repeat: -1
-    })
+		.to(buttonRef.value, {
+			opacity: 1,
+			scale: 1,
+			ease: 'elastic.inOut(1,0.7)',
+		
+		})
 
   }
 })
+
+const reverseOut = () => {
+	const timeline = gsap.timeline({ onComplete: () => {emit('returnToSender')} })
+	splitTitle = new SplitText(titleRef.value, { type: 'chars' })
+
+	timeline.to(buttonRef.value, {
+		opacity: 0,
+		duration: 1,
+		scale: 0,
+		ease: 'elastic.in(1,0.7)'
+	})	
+	.to(splitTitle.chars, {
+		rotateZ: -90,
+		duration: 1.2,
+		opacity: 0,
+		yPercent: -100,
+		ease: 'power4.inOut',
+		stagger: 0.05
+	}, '<')
+	.to(splitTitle.chars, {}, '<+=1.2')
+
+	frameworkReferences.value.forEach((icon, index) => {
+      const leftPath = leftPathRef.value!
+      if (timeline)
+        timeline.to(icon, {
+          motionPath: {
+            path: leftPath,
+            align: leftPath,
+            alignOrigin: [0.5, 0.5],
+            start: (0.8 / sidebarIcons.frameworks.length) + (index / (sidebarIcons.frameworks.length + 1)),
+            end: 0
+        },
+        ease: 'power4.inOut',
+        opacity: 0,
+        duration: 1
+      }, '<')
+    })
+
+    languageReferences.value.forEach((icon, index) => {
+      const rightPath = rightPathRef.value!
+      if (timeline)
+          timeline.to(icon, {
+            motionPath: {
+              path: rightPath,
+              align: rightPath,
+              alignOrigin: [0.5, 0.5],
+              start: (0.8 / sidebarIcons.frameworks.length) + (index / (sidebarIcons.frameworks.length + 1)),
+              end: 0
+        },
+        ease: 'power4.inOut',
+        opacity: 0,
+        duration: 1
+      }, '<')
+	})
+	timeline.to(carouselRef.value, {
+		scale: 0,
+		duration: 1.5,
+		ease: 'power4.inOut',
+		opacity: 0
+	}, '-=0.5')
+	.to(pageRef.value, {
+		scale: 0,
+		opacity: 0,
+		duration: 2,
+		ease: 'power4.inOut'
+	}, '-=1.3')
+}
 
 const showIconDetails = (index: number, type: string) => {
   if(type === 'framework') { 
@@ -533,6 +565,9 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
           <ExperienceCarousel :item="item"/>
       </UCarousel>
     </div>
-    
+
+		<div ref="buttonRef" class="absolute top-8 left-8 block z-100">
+			<UButton class="py-2 px-8 text-xl font-light tracking-widest" label="Return" size="xl" icon="i-mdi-arrow-left-bold" variant="solid" color="secondary"  @click="reverseOut"/>
+		</div>
   </div>
 </template>

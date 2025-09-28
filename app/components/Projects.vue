@@ -309,7 +309,7 @@ const reverseOut = () => {
 	}, '<')
 	.to(splitTitle!.chars, {
 		yPercent: -100,
-		rotateZ: 45,
+		rotateZ: 90,
 		duration: 1.5,
 		opacity: 0,
 		stagger: 0.07,
@@ -326,7 +326,7 @@ const reverseOut = () => {
         opacity: 0,
         duration: 1.5,
         ease: 'power4.inOut',
-        stagger: 0.02,
+        stagger: 0.015,
 				rotateX: 90,
 				onComplete: () => {
 					emit('returnToSender')
