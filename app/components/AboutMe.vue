@@ -66,6 +66,7 @@ const menuOptions = [
 const addSectionRef = (el: Element | ComponentPublicInstance | null) => {
   if (el instanceof HTMLDivElement) {
     sectionReferences.value.push(el)
+		console.log(el)
 
     const splitText = new SplitText(el, { type: 'chars' })
     const glorp = gsap.timeline({ paused: true })
@@ -162,7 +163,25 @@ onMounted(() => {
 })
 
 const sectionAnimate = (index: number) => {
-    sectionTweens.value[index]?.restart(true)
+	if(sectionTweens.value[index]) {
+    sectionTweens.value[index].restart(true)
+	} else {
+		console.log('dayum')
+		const splitText = new SplitText(sectionReferences.value[index]!, { type: 'chars' })
+		const glorp = gsap.timeline()
+		glorp.to(splitText.chars, {
+				stagger: 0.05,
+				y: -5,
+				color: '#00ffff',
+				duration: 0.4
+		})
+		.to(splitText.chars, {
+				stagger: 0.05,
+				y: 0,
+				color: '#fff',
+				duration: 0.4
+		}, '-=0.5')
+	}
 }
 
 const animateOut = (selectedIndex: number) => {
@@ -241,6 +260,9 @@ const switchComponent = (selectedIndex: number) => {
 }
 
 const setBack = async() => {
+	sectionReferences.value = []
+  sectionTweens.value = []
+	
 	currentComponent.value = 'current'
 	await nextTick() 
 	const timeline1 = gsap.timeline()
