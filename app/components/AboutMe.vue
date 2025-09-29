@@ -332,7 +332,7 @@ const setBack = async() => {
 			<Experience ref="currentAnimatorCom" @returnToSender="setBack" v-if="currentComponent === 'experience'" />
 			<Projects ref="currentAnimatorCom" @returnToSender="setBack" v-if="currentComponent === 'projects'" />
 			<!--<Hobbies ref="currentAnimatorCom" v-if="currentComponent === 'hobbies'"/>-->
-			<Contact ref="currentAnimatorCom" v-if="currentComponent === 'contact'"/>
+			<Contact ref="currentAnimatorCom" @returnToSender="setBack" v-if="currentComponent === 'contact'"/>
 		</div>
 
 </template>

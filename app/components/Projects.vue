@@ -2,7 +2,6 @@
 import {gsap} from 'gsap'
 import { SplitText } from 'gsap/SplitText';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { button } from '#build/ui';
 
 gsap.registerPlugin(SplitText, ScrollTrigger)
 
@@ -279,16 +278,16 @@ onMounted(() => {
 })
 
 const addCarouselReferences = (el: Element | ComponentPublicInstance | null) => {
-    if (el instanceof HTMLDivElement) {
-        carouselRefs.value.push(el)
-    }
+	if (el instanceof HTMLDivElement) {
+		carouselRefs.value.push(el)
+	}
 }
 
 const addSectionTitleReferences = (el: Element | ComponentPublicInstance | null) => {
-    if (el instanceof HTMLHeadingElement) {
-        let splitSection = new SplitText(el, { type: 'chars' })
-        splitSectionTitles.push(splitSection)
-    } 
+	if (el instanceof HTMLHeadingElement) {
+		let splitSection = new SplitText(el, { type: 'chars' })
+		splitSectionTitles.push(splitSection)
+	} 
 }
 
 const reverseOut = () => {
@@ -323,49 +322,49 @@ const reverseOut = () => {
 		stagger: 0.3,
 	}, '-=1')
 	.to(splitSectionTitles.flatMap(splitSection => splitSection.chars), {
-        opacity: 0,
-        duration: 1.5,
-        ease: 'power4.inOut',
-        stagger: 0.015,
-				rotateX: 90,
-				onComplete: () => {
-					emit('returnToSender')
-				}
-    }, '-=1.5')
+		opacity: 0,
+		duration: 1.5,
+		ease: 'power4.inOut',
+		stagger: 0.015,
+		rotateX: 90,
+		onComplete: () => {
+			emit('returnToSender')
+		}
+	}, '-=1.5')
 }
 
 </script>
 
 <template>
-    <div class="min-h-screen bg-[#0f172a]">
-        <div class="block text-center flex justify-center">
-            <h1 ref="splitTitleRef" class="text-8xl mb-20 text-white font-thin tracking-loose font-inter">
-                PROJECTS
-            </h1>
-            <h1 ref="liveRef" class="font-inter font-thin tracking-loose text-red-500 ml-8">(LIVE)</h1>
-        </div>
-        <div v-for="site in websiteTypes">
-            <h1 :ref="(el) => addSectionTitleReferences(el)" class="font-4xl text-emerald-300 tracking-widest font-fira-code my-2 block text-center">
-                {{ site.type }}
-            </h1>
-            <div class="my-4" :ref="(el) => addCarouselReferences(el)">
-                <UCarousel
-                    v-slot="{ item }"
-                    :items="site.sites"
-                    pause-on-hover="false"
-                    :auto-scroll="true"
-                    pause-on-focus="false"
-                    :draggable="false"
-                    loop
-                    :ui="{ item: 'basis-1/6 opacity-70' }">
-                    <NuxtLink :to="item.link" external target="_blank" rel="noopener noreferrer">
-                        <img :src="item.siteImage" class="h-40">
-                    </NuxtLink>
-                </UCarousel>
-            </div>
-        </div>
-				<div ref="buttonRef" class="block flex justify-center mt-12">
-					<UButton class="py-2 px-8 text-xl font-light tracking-widest" label="Return" size="xl" variant="solid" color="secondary"  @click="reverseOut"/>
-				</div>
-    </div>
+	<div class="min-h-screen bg-[#0f172a]">
+		<div class="block text-center flex justify-center">
+			<h1 ref="splitTitleRef" class="text-8xl mb-20 text-white font-thin tracking-loose font-inter">
+					PROJECTS
+			</h1>
+			<h1 ref="liveRef" class="font-inter font-thin tracking-loose text-red-500 ml-8">(LIVE)</h1>
+		</div>
+		<div v-for="site in websiteTypes">
+			<h1 :ref="(el) => addSectionTitleReferences(el)" class="font-4xl text-emerald-300 tracking-widest font-fira-code my-2 block text-center">
+				{{ site.type }}
+			</h1>
+			<div class="my-4" :ref="(el) => addCarouselReferences(el)">
+				<UCarousel
+					v-slot="{ item }"
+					:items="site.sites"
+					pause-on-hover="false"
+					:auto-scroll="true"
+					pause-on-focus="false"
+					:draggable="false"
+					loop
+					:ui="{ item: 'basis-1/6 opacity-70' }">
+					<NuxtLink :to="item.link" external target="_blank" rel="noopener noreferrer">
+						<img :src="item.siteImage" class="h-40">
+					</NuxtLink>
+				</UCarousel>
+			</div>
+		</div>
+		<div ref="buttonRef" class="block flex justify-center mt-12">
+			<UButton class="py-2 px-8 text-xl font-light tracking-widest" label="Return" size="xl" variant="solid" color="secondary"  @click="reverseOut"/>
+		</div>
+	</div>
 </template>
