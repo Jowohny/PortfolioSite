@@ -215,14 +215,14 @@ onMounted(() => {
       duration: 0.8,
       stagger: 0.05,
       ease: "back.out(1.7)"
-    }, 1)
+    }, '-=1')
     .to(titleRef.value, {
       yPercent: -15,
       duration: 1.5, 
       color: '#fff',
       scale: 1,
       ease: 'power4.inOut',
-    })
+    }, '-=0.5')
     .to(splitTitle.chars, {
       rotateX: 360,
       stagger: 0.05,
