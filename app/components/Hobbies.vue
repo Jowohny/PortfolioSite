@@ -40,11 +40,11 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { onMounted, onUnmounted, ref } from 'vue'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger)
 
 const hobbies = [
   {
@@ -62,36 +62,36 @@ const hobbies = [
     displayTitle: 'Speed Cubing',
     titleColor: '#ef4444',
   }
-];
+]
 
-const mainContainer = ref(null);
-const introTitleContainer = ref(null);
-const introTitle = ref(null);
-const leftCover = ref(null);
-const rightCover = ref(null);
-const pinnedContainer = ref(null);
-const titleWrapper = ref(null);
-const shape1 = ref(null);
-const shape2 = ref(null);
-const shape3 = ref(null);
-const shape4 = ref(null);
-const shape5 = ref(null);
-const shape6 = ref(null);
-const shape7 = ref(null);
-const shape8 = ref(null);
-const shape9 = ref(null);
-const shape10 = ref(null);
-const titleRefs = ref([]);
-let ctx;
+const mainContainer = ref(null)
+const introTitleContainer = ref(null)
+const introTitle = ref(null)
+const leftCover = ref(null)
+const rightCover = ref(null)
+const pinnedContainer = ref(null)
+const titleWrapper = ref(null)
+const shape1 = ref(null)
+const shape2 = ref(null)
+const shape3 = ref(null)
+const shape4 = ref(null)
+const shape5 = ref(null)
+const shape6 = ref(null)
+const shape7 = ref(null)
+const shape8 = ref(null)
+const shape9 = ref(null)
+const shape10 = ref(null)
+const titleRefs = ref([])
+let ctx
 
 
 const addTitleRef = (el) => {
-  if (el) titleRefs.value.push(el);
-};
+  if (el) titleRefs.value.push(el)
+}
 
 onMounted(() => {
   ctx = gsap.context(() => {
-    const introTl = gsap.timeline();
+    const introTl = gsap.timeline()
     introTl.from(introTitle.value, { 
 			y: 30, 
 			opacity: 0, 
@@ -113,16 +113,16 @@ onMounted(() => {
 			xPercent: 100, 
 			duration: 1.2, 
 			ease: 'power4.inOut' 
-		}, '<');
+		}, '<')
 
     gsap.set(titleRefs.value, {
       top: '50%',
       yPercent: -50,
       opacity: (i) => (i === 0 ? 1 : 0),
       y: (i) => `${i * 100}%`
-    });
+    })
 
-    const shapes = [shape1.value, shape2.value, shape3.value, shape4.value, shape5.value, shape6.value, shape7.value, shape8.value, shape9.value, shape10.value];
+    const shapes = [shape1.value, shape2.value, shape3.value, shape4.value, shape5.value, shape6.value, shape7.value, shape8.value, shape9.value, shape10.value]
     const mainTl = gsap.timeline({
       scrollTrigger: {
         trigger: mainContainer.value,
@@ -132,10 +132,10 @@ onMounted(() => {
         pin: pinnedContainer.value,
         anticipatePin: 1,
       },
-    });
+    })
 
     hobbies.forEach((hobby, index) => {
-      const isEven = index % 2 === 0;
+      const isEven = index % 2 === 0
 
       mainTl.to(titleWrapper.value, { 
 				x: isEven ? '0' : '50vw', 
@@ -151,16 +151,16 @@ onMounted(() => {
 				opacity: (i) => (i === index ? 1 : 0),
 				color: (i) => (i === index ? hobby.titleColor : '#4a5568'),
 				ease: 'sine.inOut',
-			}, '<');
-    });
+			}, '<')
+    })
 
-  }, mainContainer.value);
-});
+  }, mainContainer.value)
+})
 
 onUnmounted(() => {
   if (ctx) {
-    ctx.revert();
+    ctx.revert()
   }
-});
+})
 </script>
 
