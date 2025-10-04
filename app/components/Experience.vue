@@ -4,7 +4,6 @@ import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
 import ExperienceCarousel from './ExperienceCarousel.vue'
-import { button } from '#build/ui'
 
 gsap.registerPlugin(SplitText, MotionPathPlugin)
 

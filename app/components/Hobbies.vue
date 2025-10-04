@@ -27,6 +27,16 @@ const hobbies: Hobby[] = [
     displayTitle: 'Speed Cubing',
     titleColor: '#ef4444',
   },
+	{
+    title: 'Animation',
+    displayTitle: 'Animation',
+    titleColor: '#a4b53e',
+  },
+	{
+    title: 'Cooking',
+    displayTitle: 'Cooking',
+    titleColor: '#feaafe',
+  },
 ]
 
 const mainContainer: Ref<HTMLDivElement | null> = ref(null)
@@ -103,7 +113,7 @@ onMounted(() => {
         end: `+=${hobbies.length * 100}%`,
         scrub: 1.2,
         pin: pinnedContainer.value,
-        anticipatePin: 1,
+        anticipatePin: 1
       },
     })
 

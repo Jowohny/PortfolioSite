@@ -36,6 +36,7 @@ const onLeave = (el: Element, done: () => void) => {
     .to(particles, {
       y: gsap.utils.random(-800, -1200, true),
       x: gsap.utils.random(-300, 300, true),
+			rotateZ: 360,
       scale: 10,
       opacity: 0,
       duration: 1,

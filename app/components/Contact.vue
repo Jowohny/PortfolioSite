@@ -140,8 +140,8 @@ const createAndAnimateIcons = () => {
       icon: mediaIcons[Math.floor(Math.random() * mediaIcons.length)]!,
       x: Math.random() * bounds.width,
       y: Math.random() * bounds.height,
-      vx: (Math.random() - 0.5) * 150, 
-      vy: (Math.random() - 0.5) * 150,
+      vx: (Math.random() - 0.5) * 200, 
+      vy: (Math.random() - 0.5) * 200,
       size: 40 + Math.random() * 30,
 			opacity: 1
     };

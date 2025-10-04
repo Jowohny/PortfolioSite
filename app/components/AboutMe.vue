@@ -94,6 +94,7 @@ onMounted(() => {
 	.set([githubRef.value, '.fishsauce'], { opacity: 0, xPercent: 100 })
 	.set(selfImageRef.value, { scale: 0 })
 	.set(aboutMeRef.value, { y: -300, opacity: 0 })
+	.set(nameplateRef.value, { opacity: 0 })
 	.to(selfImageRef.value, {
 			scale: 1,
 			duration: 1,
@@ -124,13 +125,14 @@ onMounted(() => {
 					chars: 'XO',
 					speed: 0.2
 			},
+			opacity: 1,
 			duration: 1
 	}, '<')
 	.to(nameplateRef.value, {
 			yPercent: -100,
 			opacity: 0,
 			duration: 1
-	}, '+=0.5')
+	}, '-=0.6')
 	.fromTo(nameplateRef.value, 
 	{
 			yPercent: 100,
@@ -144,7 +146,7 @@ onMounted(() => {
 			duration: 2,
 			yPercent: 0,
 			opacity: 1
-	})
+	}, '-=0.3')
 	.to(['.fishsauce', githubRef.value], {
 			duration: 1.5,
 			stagger: 0.5,

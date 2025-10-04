@@ -80,23 +80,24 @@ const createDynamicParticles = () => {
 
   for (let i = 0; i < 100; i++) {
     const particle = document.createElement('div')
-    const size = gsap.utils.random(2, 10)
+    const size = gsap.utils.random(10, 20)
     const duration = gsap.utils.random(3, 8)
     const delay = gsap.utils.random(0, 5)
 
     gsap.set(particle, {
-      className: 'sparkle particle-shape absolute rounded-full',
-      width: size,
-      height: size,
+      className: 'sparkle particle-shape absolute',
+			textContent: '☆',
+			fontSize: size,
+      color: gsap.utils.random(colors),
       left: `${gsap.utils.random(0, 100)}%`,
       top: `${gsap.utils.random(0, 100)}%`,
-      backgroundColor: gsap.utils.random(colors),
       opacity: gsap.utils.random(0.2, 0.8),
     })
 
     gsap.to(particle, {
-      y: gsap.utils.random(-100, 100),
-      x: gsap.utils.random(-100, 100),
+      y: gsap.utils.random(-200, 200),
+      x: gsap.utils.random(-200, 200),
+			rotateZ: gsap.utils.random(0, 180),
       duration: duration,
       delay: delay,
       ease: 'power1.inOut',
