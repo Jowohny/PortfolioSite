@@ -7,14 +7,6 @@ const emit = defineEmits(['returnToSender'])
 
 const socialMediaLinks = [
   {
-    icon: 'i-ant-design-github-outlined',
-    link: 'https://github.com/Jowohny'
-  },
-  {
-    icon: 'i-ion-logo-linkedin',
-    link: 'https://www.linkedin.com/in/johny-vu-2620182aa/'
-  },
-  {
     icon: 'i-mdi-instagram',
     link: 'https://www.instagram.com/johny._.vu/'
   },
@@ -25,6 +17,14 @@ const socialMediaLinks = [
   {
     icon: 'i-ic-baseline-tiktok',
     link: 'https://www.tiktok.com/@johnyrcvu?_t=ZP-905tWm1NYNj&_r=1'
+  },
+	{
+    icon: 'i-mdi-github',
+    link: 'https://github.com/Jowohny'
+  },
+  {
+    icon: 'i-mdi-linkedin',
+    link: 'https://www.linkedin.com/in/johny-vu-2620182aa/'
   }
 ]
 
