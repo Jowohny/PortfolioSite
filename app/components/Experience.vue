@@ -119,7 +119,7 @@ const experienceSlides = [
   {
     company: 'Aery',
     logo: '/images/experience/AeryLogo.png',
-    timePeriod: 'May 2025 - Present',
+    timePeriod: 'February 2025 - Present',
     title: 'Frontend Developer',
     details: [
       "Developed responsive web applications using React.js and Typescript",
@@ -566,7 +566,13 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
     </div>
 
 		<div ref="buttonRef" class="absolute top-8 left-8 block z-100">
-			<UButton class="py-2 px-8 text-xl font-light tracking-widest" label="Return" size="xl" icon="i-mdi-arrow-left-bold" variant="solid" color="secondary"  @click="reverseOut"/>
-		</div>
+			<UButton
+				class="py-2 px-8 text-xl font-light tracking-widest" 
+				label="Return" 
+				size="xl" 
+				variant="solid" 
+				color="secondary"  
+				@click="reverseOut"/>		
+			</div>
   </div>
 </template>

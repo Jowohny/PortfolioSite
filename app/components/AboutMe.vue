@@ -294,7 +294,7 @@ const setBack = async() => {
         </div>
         <div class="flex flex-row w-3/5 mb-8">
             <div ref="paragraphSectionRef" class="h-[65vh] flex flex-col px-8 text-left mr-8">
-                <h1 ref="nameplateRef" class="text-white text-2xl font-inter block text-center tracking-tight font-thin mb-2 px-8">Izza Me Jowohny</h1>
+                <h1 ref="nameplateRef" class="text-white text-2xl font-inter block text-center tracking-tight font-thin mb-2 px-8">Here's Johny :D</h1>
                 <p class="text-white opacity-80 text-xl font-inter text-left tracking-wide font-thin leading-snug mb-4 fishsauce">
                     I am many things, but for the purpose of this portfolio, I'll keep it short... at least I'll try to. I am a Frontend 
                     Developer who specializes in optimized and fun animations primarily through the use of GSAP (Green Sock Animation
@@ -311,9 +311,9 @@ const setBack = async() => {
                     getting flooded.
                 </p>
 
-                <img ref="githubRef" src="/images/AboutMe/GithubContributions.png" class="border rounded-xl border-none w-full mt-auto">
+                <img ref="githubRef" src="/images/AboutMe/GithubContributions.png" class="shadow-2xl border rounded-xl border-none w-full mt-auto">
             </div>
-            <img ref="selfImageRef" src="/images/AboutMe/JohnyVu.png" class="border rounded-3xl h-[65vh] w-auto object-contain z-10">
+            <img ref="selfImageRef" src="/images/AboutMe/JohnyVu.png" class="shadow-2xl border rounded-3xl h-[65vh] w-auto object-contain z-10">
         </div>
         <div class="flex flex-row pt-2 w-2/3 justify-center">
             <div 

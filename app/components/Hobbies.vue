@@ -5,6 +5,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const emit = defineEmits(['returnToSender'])
+
 interface Hobby {
   title: string
   displayTitle: string
@@ -67,15 +69,16 @@ const hobbies: Hobby[] = [
   },
 ]
 
-const mainContainer: Ref<HTMLDivElement | null> = ref(null)
-const introTitleContainer: Ref<HTMLDivElement | null> = ref(null)
-const introTitle: Ref<HTMLHeadingElement | null> = ref(null)
-const leftCover: Ref<HTMLDivElement | null> = ref(null)
-const rightCover: Ref<HTMLDivElement | null> = ref(null)
-const pinnedContainer: Ref<HTMLDivElement | null> = ref(null)
-const titleWrapper: Ref<HTMLDivElement | null> = ref(null)
-const titleRefs: Ref<HTMLDivElement[]> = ref([])
-const shapeRefs: Ref<HTMLDivElement[]> = ref([])
+const mainContainer = ref<HTMLDivElement | null>(null)
+const introTitleContainer = ref<HTMLDivElement | null>(null)
+const introTitle = ref<HTMLHeadingElement | null>(null)
+const leftCover = ref<HTMLDivElement | null>(null)
+const rightCover = ref<HTMLDivElement | null>(null)
+const pinnedContainer = ref<HTMLDivElement | null>(null)
+const titleWrapper = ref<HTMLDivElement | null>(null)
+const buttonRef = ref<HTMLDivElement | null>(null)
+const titleRefs = ref<HTMLDivElement[]>([])
+const shapeRefs = ref<HTMLDivElement[]>([])
 
 let ctx: gsap.Context | null = null
 
@@ -186,6 +189,73 @@ onMounted(() => {
   }, mainContainer.value!)
 })
 
+const reverseOut = () => {
+	ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+	const timeline = gsap.timeline({ onComplete: () => { emit('returnToSender') }})
+	
+	timeline.to('.return-button', {
+		opacity: 0,
+		scale: 0,
+		duration: 0.8,
+		ease: 'power3.in'
+	})
+	
+	const detailSections = gsap.utils.toArray('.hobby-detail-section')
+	timeline.to(detailSections.reverse(), {
+		opacity: 0,
+		y: -100,
+		scale: 0.8,
+		duration: 0.6,
+		ease: 'power3.in',
+		stagger: 0.1
+	}, '<+=0.2')
+	.to(shapeRefs.value, {
+		borderColor: '#4a5568',
+		rotation: 0,
+		scale: 0,
+		opacity: 0,
+		duration: 1,
+		ease: 'power3.in',
+		stagger: 0.05
+	}, '<+=0.3')
+	.to(titleRefs.value, {
+		opacity: 0,
+		y: -50,
+		rotateX: -90,
+		scale: 0.5,
+		duration: 1.2,
+		ease: 'power3.in',
+		stagger: 0.1
+	}, '<+=0.2')
+	.to(buttonRef.value, {
+		opacity: 0,
+		scaleX: 0,
+		scaleY: 0.2,
+		duration: 1,
+		ease: "elastic.inOut(1, 0.7)"
+	}, '<')
+	.to(titleWrapper.value, {
+		x: 0,
+		duration: 1,
+		ease: 'power3.in'
+	}, '<')
+	.to(leftCover.value, {
+		xPercent: 0,
+		duration: 1.2,
+		ease: 'power4.inOut'
+	}, '<+=0.5')
+	.to(rightCover.value, {
+		xPercent: 0,
+		duration: 1.2,
+		ease: 'power4.inOut'
+	}, '<')
+	.to([leftCover.value, rightCover.value], {
+		opacity: 0,
+		duration: 1.5,
+		ease: 'power4.inOut'
+	}, '<+=0.5')
+}
+
 onUnmounted(() => {
   if (ctx) ctx.revert()
 })
@@ -263,6 +333,16 @@ onUnmounted(() => {
         </div>
       </div>
     </div>
+
+		<div ref="buttonRef" class="block flex justify-center mb-4">
+			<UButton
+				class="return-buttonpy-2 px-8 text-xl font-light tracking-widest" 
+				label="Return" 
+				size="xl" 
+				variant="solid" 
+				color="secondary"  
+				@click="reverseOut"/>
+		</div>
 
   </div>
 </template>

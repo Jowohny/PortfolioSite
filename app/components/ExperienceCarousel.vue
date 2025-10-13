@@ -35,7 +35,7 @@ const zoomOut = (imgKey: string) => {
   <div class="relative w-full h-full overflow-hidden">
     <div class="w-full h-full flex flex-col">
       <div class="flex items-center justify-center">
-        <img :src="item.logo" :alt="item.title" class="h-72 w-auto object-contain bg-white rounded-3xl p-8 border-black border-4" />
+        <img :src="item.logo" :alt="item.title" class="shadow-2xl h-72 w-auto object-contain bg-white rounded-3xl p-8 border-black border-4" />
       </div>
       <div class="flex-1 p-6 flex flex-col justify-center">
         <div class="justify-center text-center">
