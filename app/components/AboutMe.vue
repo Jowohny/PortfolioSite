@@ -286,55 +286,51 @@ const setBack = async() => {
 
 <template>
     
-    <div ref="currentClassRef" v-if="currentComponent === 'current'" class="min-h-screen flex flex-col items-center">
-        <div>
-            <h1 ref="aboutMeRef" class="block h-[15vh] text-center text-6xl content-center bg-clip-text text-transparent bg-linear-to-r/decreasing from-indigo-500 to-teal-400 font-inter tracking-wider font-thin">
-                About Me
-            </h1>
-        </div>
-        <div class="flex flex-row w-3/5 mb-8">
-            <div ref="paragraphSectionRef" class="h-[65vh] flex flex-col px-8 text-left mr-8">
-                <h1 ref="nameplateRef" class="text-white text-2xl font-inter block text-center tracking-tight font-thin mb-2 px-8">Here's Johny :D</h1>
-                <p class="text-white opacity-80 text-xl font-inter text-left tracking-wide font-thin leading-snug mb-4 fishsauce">
-                    I am many things, but for the purpose of this portfolio, I'll keep it short... at least I'll try to. I am a Frontend 
-                    Developer who specializes in optimized and fun animations primarily through the use of GSAP (Green Sock Animation
-                    Platform).
-                </p>
-                <p class="text-white opacity-80 text-xl font-inter text-left tracking-wide font-thin leading-snug mb-4 fishsauce">
-                    Yes, this portfolio may be a little overly animated, but I have fun seeing what I can set up. This website is mainly 
-                    for fun, so I will be most likely creating a more professional version that will have link routes for easy access to 
-                    projects and experience.
-                </p>
-                <p class="text-white opacity-80 text-xl font-inter text-left tracking-wide font-thin leading-snug mb-8 fishsauce">
-                    Since this is not only something to put myself out there, but also a passion project I put some time and effort into, 
-                    the non-important stuff like my hobbies and separate side projects will be off in another section to keep the site from 
-                    getting flooded.
-                </p>
+	<div ref="currentClassRef" v-if="currentComponent === 'current'" class="min-h-screen flex flex-col items-center p-4"> <div>
+					<h1 ref="aboutMeRef" class="block h-[15vh] text-center text-4xl md:text-6xl content-center bg-clip-text text-transparent bg-linear-to-r/decreasing from-indigo-500 to-teal-400 font-inter tracking-wider font-thin">
+							About Me
+					</h1>
+			</div>
+			<div class="flex flex-col lg:flex-row w-full lg:w-4/5 xl:w-3/5 mb-8">
+					<div ref="paragraphSectionRef" class="flex flex-col px-4 lg:px-8 text-left lg:mr-8 order-2 lg:order-1"> <h1 ref="nameplateRef" class="text-white text-2xl font-inter block text-center tracking-tight font-thin mb-2 px-8">Here's Johny :D</h1>
+							<p class="text-white opacity-80 text-base md:text-xl font-inter text-left tracking-wide font-thin leading-snug mb-4 fishsauce">
+									I am many things, but for the purpose of this portfolio, I'll keep it short... at least I'll try to. I am a Frontend 
+									Developer who specializes in optimized and fun animations primarily through the use of GSAP (Green Sock Animation
+									Platform).
+							</p>
+							<p class="text-white opacity-80 text-base md:text-xl font-inter text-left tracking-wide font-thin leading-snug mb-4 fishsauce">
+									Yes, this portfolio may be a little overly animated, but I have fun seeing what I can set up. This website is mainly 
+									for fun, so I will be most likely creating a more professional version that will have link routes for easy access to 
+									projects and experience.
+							</p>
+							<p class="text-white opacity-80 text-base md:text-xl font-inter text-left tracking-wide font-thin leading-snug mb-8 fishsauce">
+									Since this is not only something to put myself out there, but also a passion project I put some time and effort into, 
+									the non-important stuff like my hobbies and separate side projects will be off in another section to keep the site from 
+									getting flooded.
+							</p>
 
-                <img ref="githubRef" src="/images/AboutMe/GithubContributions.png" class="shadow-2xl border rounded-xl border-none w-full mt-auto">
-            </div>
-            <img ref="selfImageRef" src="/images/AboutMe/JohnyVu.png" class="shadow-2xl border rounded-3xl h-[65vh] w-auto object-contain z-10">
-        </div>
-        <div class="flex flex-row pt-2 w-2/3 justify-center">
-            <div 
-                v-for="(options, index) in menuOptions" 
-                @click="options.onClick" 
-                @mouseenter="sectionAnimate(index)" 
-                :key="index" 
-                :ref="(el) => addSectionRef(el)"
-                class="text-center text-3xl tracking-wider font-inter p-3 border-0 text-slate-100 mx-12 font-thin text-2xl border rounded-xl cursor-pointer">
+							<img ref="githubRef" src="/images/AboutMe/GithubContributions.png" class="shadow-2xl border rounded-xl border-none w-full mt-auto">
+					</div>
+					<img ref="selfImageRef" src="/images/AboutMe/JohnyVu.png" class="shadow-2xl border rounded-3xl h-[40vh] md:h-[65vh] w-auto object-contain z-10 self-center mb-8 lg:mb-0 order-1 lg:order-2">
+			</div>
+			<div class="flex flex-col md:flex-row pt-2 w-full md:w-2/3 justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
+					<div 
+							v-for="(options, index) in menuOptions" 
+							@click="options.onClick" 
+							@mouseenter="sectionAnimate(index)" 
+							:key="index" 
+							:ref="(el) => addSectionRef(el)"
+							class="text-center text-xl md:text-2xl tracking-wider font-inter p-3 border-0 text-slate-100 font-thin border rounded-xl cursor-pointer w-4/5 md:w-auto"> {{ options.name }}
 
-                {{ options.name }}
+					</div>
+			</div>
+	</div>
 
-            </div>
-        </div>
-    </div>
-
-		<div>
-			<Experience ref="currentAnimatorCom" @returnToSender="setBack" v-if="currentComponent === 'experience'" />
-			<Projects ref="currentAnimatorCom" @returnToSender="setBack" v-if="currentComponent === 'projects'" />
-			<Hobbies ref="currentAnimatorCom" @returnToSender="setBack" v-if="currentComponent === 'hobbies'"/>
-			<Contact ref="currentAnimatorCom" @returnToSender="setBack" v-if="currentComponent === 'contact'"/>
-		</div>
+	<div>
+		<Experience ref="currentAnimatorCom" @returnToSender="setBack" v-if="currentComponent === 'experience'" />
+		<Projects ref="currentAnimatorCom" @returnToSender="setBack" v-if="currentComponent === 'projects'" />
+		<Hobbies ref="currentAnimatorCom" @returnToSender="setBack" v-if="currentComponent === 'hobbies'"/>
+		<Contact ref="currentAnimatorCom" @returnToSender="setBack" v-if="currentComponent === 'contact'"/>
+	</div>
 
 </template>

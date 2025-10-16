@@ -21,6 +21,7 @@ let splitSubTextAlternate: SplitText | null = null
 let hoverTimelineTitle: gsap.core.Timeline | null = null
 let hoverTimelineSubText: gsap.core.Timeline | null = null
 let buttonTimeline: gsap.core.Timeline | null = null
+let resizeTimeout: NodeJS.Timeout | null = null
 
 
 onMounted(() => {
@@ -71,16 +72,46 @@ onMounted(() => {
 
   startContinuousAnimations()
   setupTitleHoverEffect()
+  
+  // Add resize listener for responsive particles
+  window.addEventListener('resize', handleResize)
 })
+
+onUnmounted(() => {
+  if (resizeTimeout) {
+    clearTimeout(resizeTimeout)
+  }
+  window.removeEventListener('resize', handleResize)
+})
+
+const handleResize = () => {
+  if (resizeTimeout) {
+    clearTimeout(resizeTimeout)
+  }
+  
+  resizeTimeout = setTimeout(() => {
+    // Clear existing particles
+    if (particlesRef.value) {
+      particlesRef.value.innerHTML = ''
+    }
+    // Recreate particles with new responsive settings
+    createDynamicParticles()
+  }, 250) // Debounce resize events
+}
 
 const createDynamicParticles = () => {
   if (!particlesRef.value) return
   const colors = ['#3B82F6', '#6366F1', '#06B6D4', '#7C3AED', '#A78BFA']
   const fragment = document.createDocumentFragment()
 
-  for (let i = 0; i < 100; i++) {
+  // Responsive particle count based on screen size
+  const particleCount = window.innerWidth < 768 ? 50 : window.innerWidth < 1024 ? 75 : 100
+
+  for (let i = 0; i < particleCount; i++) {
     const particle = document.createElement('div')
-    const size = gsap.utils.random(10, 20)
+    // Responsive particle size based on screen size
+    const baseSize = window.innerWidth < 768 ? 8 : window.innerWidth < 1024 ? 12 : 16
+    const size = gsap.utils.random(baseSize, baseSize + 8)
     const duration = gsap.utils.random(3, 8)
     const delay = gsap.utils.random(0, 5)
 
@@ -94,9 +125,12 @@ const createDynamicParticles = () => {
       opacity: gsap.utils.random(0.2, 0.8),
     })
 
+    // Responsive animation range based on screen size
+    const animationRange = window.innerWidth < 768 ? 100 : window.innerWidth < 1024 ? 150 : 200
+    
     gsap.to(particle, {
-      y: gsap.utils.random(-200, 200),
-      x: gsap.utils.random(-200, 200),
+      y: gsap.utils.random(-animationRange, animationRange),
+      x: gsap.utils.random(-animationRange, animationRange),
 			rotateZ: gsap.utils.random(0, 180),
       duration: duration,
       delay: delay,
@@ -229,32 +263,32 @@ defineExpose({
   >
     <div ref="particlesRef" class="absolute inset-0 z-0"></div>
 
-    <div class="relative z-0 text-center px-4">
-        <div @mouseenter="playTitleHoverAnimation" @mouseleave="reverseTitleHoverAnimation" class="mb-8">
+    <div class="relative z-0 text-center px-4 sm:px-6 lg:px-8">
+        <div @mouseenter="playTitleHoverAnimation" @mouseleave="reverseTitleHoverAnimation" class="mb-6 sm:mb-8 lg:mb-12">
             <h1
                 ref="titleAlternateRef"
-                class="top-0 left-0 text-9xl text-white font-bold mix-blend-difference yabadaba"
+                class="top-0 left-0 text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-white font-bold mix-blend-difference yabadaba leading-tight"
             >
                 Welome to my <br> Portfolio!
             </h1>
             <h1
                 ref="titleRef"
-                class="absolute top-0 left-0 right-0 text-9xl font-bold text-white tracking-tight mix-blend-difference yabadaba"
+                class="absolute top-0 left-0 right-0 text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white tracking-tight mix-blend-difference yabadaba leading-tight"
             >
                 I'm Johny Vu, <br> the creator
             </h1>
         </div>
 
-        <div @mouseenter="playSubTextHoverAnimation" @mouseleave="reverseSubTextHoverAnimation" class="relative">
+        <div @mouseenter="playSubTextHoverAnimation" @mouseleave="reverseSubTextHoverAnimation" class="relative mb-8 sm:mb-10 lg:mb-12">
             <p
             ref="subtitleRef"
-            class="text-lg md:text-2xl text-indigo-200/80 mb-10 font-semibold text-white yabadaba"
+            class="text-base sm:text-lg md:text-xl lg:text-2xl text-indigo-200/80 font-semibold text-white yabadaba leading-relaxed px-2"
                   >
                 I specialize in frontend development with<br>a higher focus on animation, web design, and UI.
             </p>      
             <p
             ref="subtitleAlternateRef"
-            class="absolute top-0 left-0 right-0 text-lg md:text-2xl text-indigo-200/80 mb-10 font-semibold text-white yabadaba"
+            class="absolute top-0 left-0 right-0 text-base sm:text-lg md:text-xl lg:text-2xl text-indigo-200/80 font-semibold text-white yabadaba leading-relaxed px-2"
                   >
                 This portfolio gives me a chance to show<br> off and maybe even have a chance to be hired.
             </p>
@@ -263,7 +297,7 @@ defineExpose({
       <button
         ref="buttonRef"
         @click="() => { $emit('introTransition'); buttonDestroy(); }"
-        class="border-4 border-blue-400 text-white font-semibold px-8 py-4 text-base rounded-full yabadaba"
+        class="border-2 sm:border-3 lg:border-4 border-blue-400 text-white font-semibold px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-5 text-sm sm:text-base lg:text-lg rounded-full yabadaba hover:bg-blue-400 hover:text-gray-900 transition-colors duration-300"
       >
         Lets Get Started
       </button>
