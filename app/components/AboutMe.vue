@@ -311,7 +311,7 @@ const setBack = async() => {
 
 							<img ref="githubRef" src="/images/AboutMe/GithubContributions.png" class="shadow-2xl border rounded-xl border-none w-full mt-auto">
 					</div>
-					<img ref="selfImageRef" src="/images/AboutMe/JohnyVu.png" class="shadow-2xl border rounded-3xl h-[40vh] md:h-[65vh] w-auto object-contain z-10 self-center mb-8 lg:mb-0 order-1 lg:order-2">
+					<img ref="selfImageRef" src="/images/AboutMe/JohnyVu.png" class="shadow-2xl border rounded-3xl h-[55vh] md:h-[65vh] w-auto object-contain z-10 self-center mb-8 lg:mb-0 order-1 lg:order-2">
 			</div>
 			<div class="flex flex-col md:flex-row pt-2 w-full md:w-2/3 justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
 					<div 

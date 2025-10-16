@@ -176,7 +176,7 @@ const animateIcon = (icon: BouncingIcon, bounds: DOMRect) => {
 </script>
 
 <template>
-	<div ref="contactContainerRef" class="min-h-screen bg-slate-900 flex flex-col justify-center items-center p-8 font-inter relative overflow-hidden">
+	<div ref="contactContainerRef" class="min-h-screen bg-slate-900 flex flex-col justify-center items-center p-4 sm:p-6 md:p-8 font-inter relative overflow-hidden">
 			
 			<div class="absolute inset-0 w-full h-full z-0">
 					<UIcon 
@@ -193,13 +193,13 @@ const animateIcon = (icon: BouncingIcon, bounds: DOMRect) => {
 					/>
 			</div>
 
-			<div class="w-full max-w-2xl relative z-10">
-					<h1 ref="titleRef" class="text-6xl font-light text-center mb-12 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-500 tracking-wider">
+			<div class="w-full max-w-xl md:max-w-2xl relative z-10">
+					<h1 ref="titleRef" class="text-4xl sm:text-5xl md:text-6xl font-light text-center mb-8 sm:mb-10 md:mb-12 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-500 tracking-wider">
 							Get In Touch
-					</h1>
+						</h1>
 
-					<form ref="formRef" action="#" @submit.prevent class="space-y-6">
-							<div class="grid grid-cols-2 gap-6">
+					<form ref="formRef" action="#" @submit.prevent class="space-y-5 sm:space-y-6">
+							<div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
 									<div>
 											<label for="name" class="block text-sm font-medium text-slate-300 mb-2">Name</label>
 											<input type="text" id="name" class="block w-full rounded-md border-0 bg-white py-2 px-3 text-black shadow-lg">
@@ -215,21 +215,21 @@ const animateIcon = (icon: BouncingIcon, bounds: DOMRect) => {
 									<textarea id="message" rows="4" class="block w-full rounded-md border-0 bg-white py-2 px-3 text-black shadow-lg"/>
 							</div>
 
-							<div class="mt-8 flex justify-center">
-									<button type="submit" class="rounded-md bg-emerald-500 px-8 py-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-400 duration-300">
+							<div class="mt-6 sm:mt-8 flex justify-center">
+									<button type="submit" class="rounded-md bg-emerald-500 px-6 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base font-semibold text-white shadow-sm hover:bg-emerald-400 duration-300">
 											Send Message
 									</button>
 							</div>
 					</form>
 
-					<div ref="socialsRef" class="mt-12 flex justify-center items-center gap-8">
+					<div ref="socialsRef" class="mt-10 sm:mt-12 flex justify-center items-center gap-6 sm:gap-8">
 						<a v-for="media in socialMediaLinks" :key="media.link" :href="media.link" external target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-cyan-400 transition-colors duration-300">
-							<UIcon :name="media.icon" class="size-10"/>
+							<UIcon :name="media.icon" class="size-8 sm:size-9 md:size-10"/>
 						</a>
 					</div>
 
-					<div ref="buttonRef" class="block flex justify-center mt-12">
-							<UButton class="py-2 px-8 text-xl font-light tracking-widest" label="Return" size="xl" variant="solid" color="secondary"  @click="reverseOut"/>
+					<div ref="buttonRef" class="block flex justify-center mt-10 sm:mt-12">
+							<UButton class="py-2 px-8 text-lg md:text-xl font-light tracking-widest" label="Return" size="xl" variant="solid" color="secondary"  @click="reverseOut"/>
 					</div>
 			</div>
 	</div>
