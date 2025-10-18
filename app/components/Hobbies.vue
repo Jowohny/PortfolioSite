@@ -92,71 +92,83 @@ const addShapeRef = (el: Element | ComponentPublicInstance | null) => {
 
 onMounted(() => {
   ctx = gsap.context(() => {
+    // Intro animation timeline
     const introTl = gsap.timeline()
     introTl.from(introTitle.value, { 
-			y: 30, 
-			opacity: 0, 
-			duration: 0.8, 
-			ease: 'power3.out' 
-		})
-		.to(introTitleContainer.value, { 
-			opacity: 0, 
-			duration: 1, 
-			ease: 'power3.in', 
-			delay: 0.5, 
-			onComplete: () => {
+      y: 30, 
+      opacity: 0, 
+      duration: 0.8, 
+      ease: 'power3.out' 
+    })
+    .to(introTitleContainer.value, { 
+      opacity: 0, 
+      duration: 1, 
+      ease: 'power3.in', 
+      delay: 0.5, 
+      onComplete: () => {
         gsap.set(introTitleContainer.value, { display: 'none' })
-			}
-		})
+      }
+    })
     .to(leftCover.value, {
-			xPercent: -100, 
-			duration: 1.2, 
-			ease: 'power4.inOut' 
-		}, '-=1')
+      xPercent: -100, 
+      duration: 1.2, 
+      ease: 'power4.inOut' 
+    }, '-=1')
     .to(rightCover.value, { 
-			xPercent: 100, 
-			duration: 1.2, 
-			ease: 'power4.inOut' 
-		}, '<')
+      xPercent: 100, 
+      duration: 1.2, 
+      ease: 'power4.inOut' 
+    }, '<')
 
-    gsap.set(titleRefs.value, {
-      top: '50%',
-      left: '0%',
-      yPercent: -50,
-      opacity: (i: number) => (i === 0 ? 1 : 0),
-      y: (i: number) => `${i * 100}%`,
-    })
+    // Use GSAP's matchMedia for responsive animations
+    const mm = gsap.matchMedia();
+    mm.add({
+      isDesktop: "(min-width: 768px)",
+      isMobile: "(max-width: 767px)"
+    }, (context) => {
+      const { isDesktop } = context.conditions as { isDesktop: boolean };
+      
+      gsap.set(titleRefs.value, {
+        top: '50%',
+        left: '0%',
+        yPercent: -50,
+        opacity: (i: number) => (i === 0 ? 1 : 0),
+        y: (i: number) => `${i * 100}%`,
+      })
 
-    const shapes: (HTMLDivElement | null)[] = [...shapeRefs.value]
+      const shapes: (HTMLDivElement | null)[] = [...shapeRefs.value]
 
-    const mainTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: pinnedContainer.value,
-        start: 'top top',
-        end: `+=${hobbies.length * 100}%`,
-        scrub: 1.2,
-        pin: true,
-        anticipatePin: 1
-      },
-    })
+      const mainTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: pinnedContainer.value,
+          start: 'top top',
+          end: `+=${hobbies.length * 100}%`,
+          scrub: 1.2,
+          pin: true,
+          anticipatePin: 1
+        },
+      })
 
-    hobbies.forEach((hobby, index) => {
-      mainTl.to(titleWrapper.value, { 
-				x: index % 2 === 0 ? '0' : '50vw', 
-				ease: 'sine.inOut' 
-			})
-			.to(shapes, { 
-				borderColor: hobby.titleColor, 
-				rotation: `+=${45 + index * 45}`, 
-				ease: 'sine.inOut' 
-			}, '<')
-			.to(titleRefs.value, {
-				y: (i: number) => `${(i - index) * 100}%`,
-				opacity: (i: number) => (i === index ? 1 : 0),
-				color: (i: number) => i === index ? hobby.titleColor : '#4a5568',
-				ease: 'sine.inOut',
-			}, '<')
-    })
+      hobbies.forEach((hobby, index) => {
+        mainTl.to(titleWrapper.value, { 
+          // Animate 'x' only on desktop for the alternating effect
+          x: isDesktop ? (index % 2 === 0 ? '0' : '50vw') : '0', 
+          ease: 'sine.inOut' 
+        })
+        .to(shapes, { 
+          borderColor: hobby.titleColor, 
+          rotation: `+=${45 + index * 45}`, 
+          ease: 'sine.inOut' 
+        }, '<')
+        .to(titleRefs.value, {
+          y: (i: number) => `${(i - index) * 100}%`,
+          opacity: (i: number) => (i === index ? 1 : 0),
+          color: (i: number) => i === index ? hobby.titleColor : '#4a5568',
+          ease: 'sine.inOut',
+        }, '<')
+      })
+    });
+
 
     const detailSections = gsap.utils.toArray('.hobby-detail-section')
     detailSections.forEach((section) => {
@@ -172,88 +184,88 @@ onMounted(() => {
       })
 
       tl.from(visual, { 
-				opacity: 0, 
-				scale: 0.8, 
-				duration: 0.8, 
-				ease: 'power3.out' 
-			})
-			.from(text!.children, {
-				opacity: 0,
-				y: 30,
-				duration: 0.6,
-				ease: 'power3.out',
-				stagger: 0.2
-			}, '-=0.5')
+        opacity: 0, 
+        scale: 0.8, 
+        duration: 0.8, 
+        ease: 'power3.out' 
+      })
+      .from(text!.children, {
+        opacity: 0,
+        y: 30,
+        duration: 0.6,
+        ease: 'power3.out',
+        stagger: 0.2
+      }, '-=0.5')
     })
 
   }, mainContainer.value!)
 })
 
 const reverseOut = () => {
-	ScrollTrigger.getAll().forEach(trigger => trigger.kill())
-	const timeline = gsap.timeline({ onComplete: () => { emit('returnToSender') }})
-	
-	timeline.to('.return-button', {
-		opacity: 0,
-		scale: 0,
-		duration: 0.8,
-		ease: 'power3.in'
-	})
-	
-	const detailSections = gsap.utils.toArray('.hobby-detail-section')
-	timeline.to(detailSections.reverse(), {
-		opacity: 0,
-		y: -100,
-		scale: 0.8,
-		duration: 0.6,
-		ease: 'power3.in',
-		stagger: 0.1
-	}, '<+=0.2')
-	.to(shapeRefs.value, {
-		borderColor: '#4a5568',
-		rotation: 0,
-		scale: 0,
-		opacity: 0,
-		duration: 1,
-		ease: 'power3.in',
-		stagger: 0.05
-	}, '<+=0.3')
-	.to(titleRefs.value, {
-		opacity: 0,
-		y: -50,
-		rotateX: -90,
-		scale: 0.5,
-		duration: 1.2,
-		ease: 'power3.in',
-		stagger: 0.1
-	}, '<+=0.2')
-	.to(buttonRef.value, {
-		opacity: 0,
-		scaleX: 0,
-		scaleY: 0.2,
-		duration: 1,
-		ease: "elastic.inOut(1, 0.7)"
-	}, '<')
-	.to(titleWrapper.value, {
-		x: 0,
-		duration: 1,
-		ease: 'power3.in'
-	}, '<')
-	.to(leftCover.value, {
-		xPercent: 0,
-		duration: 1.2,
-		ease: 'power4.inOut'
-	}, '<+=0.5')
-	.to(rightCover.value, {
-		xPercent: 0,
-		duration: 1.2,
-		ease: 'power4.inOut'
-	}, '<')
-	.to([leftCover.value, rightCover.value], {
-		opacity: 0,
-		duration: 1.5,
-		ease: 'power4.inOut'
-	}, '<+=0.5')
+  ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+  const timeline = gsap.timeline({ onComplete: () => { emit('returnToSender') }})
+  
+  timeline.to('.return-button', {
+    opacity: 0,
+    scale: 0,
+    duration: 0.8,
+    ease: 'power3.in'
+  })
+  
+  const detailSections = gsap.utils.toArray('.hobby-detail-section')
+  timeline.to(detailSections.reverse(), {
+    opacity: 0,
+    y: -100,
+    scale: 0.8,
+    duration: 0.6,
+    ease: 'power3.in',
+    stagger: 0.1
+  }, '<+=0.2')
+  .to(shapeRefs.value, {
+    borderColor: '#4a5568',
+    rotation: 0,
+    scale: 0,
+    opacity: 0,
+    duration: 1,
+    ease: 'power3.in',
+    stagger: 0.05
+  }, '<+=0.3')
+  .to(titleRefs.value, {
+    opacity: 0,
+    y: -50,
+    rotateX: -90,
+    scale: 0.5,
+    duration: 1.2,
+    ease: 'power3.in',
+    stagger: 0.1
+  }, '<+=0.2')
+  .to(buttonRef.value, {
+    opacity: 0,
+    scaleX: 0,
+    scaleY: 0.2,
+    duration: 1,
+    ease: "elastic.inOut(1, 0.7)"
+  }, '<')
+  .to(titleWrapper.value, {
+    x: 0,
+    duration: 1,
+    ease: 'power3.in'
+  }, '<')
+  .to(leftCover.value, {
+    xPercent: 0,
+    duration: 1.2,
+    ease: 'power4.inOut'
+  }, '<+=0.5')
+  .to(rightCover.value, {
+    xPercent: 0,
+    duration: 1.2,
+    ease: 'power4.inOut'
+  }, '<')
+  .to([leftCover.value, rightCover.value], {
+    opacity: 0,
+    duration: 1.5,
+    ease: 'power4.inOut'
+  }, '<+=0.5')
 }
 
 onUnmounted(() => {
@@ -262,9 +274,10 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="mainContainer" class="relative overflow-hidden bg-[#0f172a] font-sans text-white">
+  <div ref="mainContainer" class="relative overflow-x-hidden bg-[#0f172a] font-sans text-white">
+    <!-- Intro Title: Made font size responsive -->
     <div ref="introTitleContainer" class="fixed inset-0 z-[60] flex items-center justify-center">
-      <h1 ref="introTitle" class="text-center text-9xl font-bold uppercase tracking-widest text-gray-400">
+      <h1 ref="introTitle" class="text-center text-5xl sm:text-7xl lg:text-9xl font-bold uppercase tracking-widest text-gray-400">
         Hobbies
       </h1>
     </div>
@@ -272,7 +285,9 @@ onUnmounted(() => {
     <div ref="leftCover" class="fixed left-0 top-0 z-50 h-full w-1/2 bg-[#1a1a1a]"></div>
     <div ref="rightCover" class="fixed right-0 top-0 z-50 h-full w-1/2 bg-[#1a1a1a]"></div>
 
+    <!-- Pinned Section -->
     <div ref="pinnedContainer" class="relative h-screen w-full overflow-hidden">
+      <!-- Background Shapes -->
       <div class="absolute inset-0 z-0 opacity-20">
         <div :ref="addShapeRef" class="absolute left-[15%] top-[20%] h-48 w-48 border-4"></div>
         <div :ref="addShapeRef" class="absolute right-[20%] top-[55%] h-36 w-36 border-2"></div>
@@ -286,35 +301,38 @@ onUnmounted(() => {
         <div :ref="addShapeRef" class="absolute rounded-full right-[20%] top-[40%] h-96 w-96 border-4"></div>
       </div>
 
-      <div ref="titleWrapper" class="absolute flex h-full w-1/2 items-center justify-center">
+      <!-- Title Wrapper: Full width on mobile, half on desktop -->
+      <div ref="titleWrapper" class="absolute flex h-full w-full md:w-1/2 items-center justify-center">
         <div class="relative h-full w-full">
           <div
             v-for="hobby in hobbies"
             :key="hobby.title"
             :ref="addTitleRef"
-            class="absolute w-full flex items-center justify-center"
+            class="absolute w-full flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8"
           >
-            <h1 class="text-8xl text-center shrink font-black tracking-wide">
+            <!-- Title Text: Made font size responsive -->
+            <h1 class="text-4xl sm:text-6xl lg:text-8xl text-center shrink font-black tracking-wide">
               {{ hobby.displayTitle }}
             </h1>
-						<UIcon :name="hobby.icon" class="size-40"/>
+            <!-- Icon: Made size responsive -->
+            <UIcon :name="hobby.icon" class="size-20 sm:size-28 lg:size-40"/>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="relative z-10 bg-[#0f172a] px-8">
+    <!-- Details Sections -->
+    <div class="relative z-10 bg-[#0f172a] px-4 sm:px-8">
       <div
         v-for="(hobby, index) in hobbies"
         :key="`${hobby.title}${index}`"
-        class="hobby-detail-section grid min-h-[80vh] w-full max-w-7xl mx-auto items-center gap-12 py-24 grid-cols-2"
+        class="hobby-detail-section grid min-h-[80vh] w-full max-w-7xl mx-auto items-center gap-8 md:gap-12 py-16 sm:py-24 grid-cols-1 md:grid-cols-2"
       >
         <div
           class="visual-container flex justify-center aspect-square items-center"
-          :class="{'order-last': index % 2 === 0}"
+          :class="{'md:order-last': index % 2 === 0}"
         >
           <div class="relative rounded-2xl bg-slate-900 p-8 flex place-content-center blur w-4/5 h-4/5" :style="{backgroundColor: hobby.titleColor, opacity: 0.5}"/>
-            
         </div>
 
         <div class="text-container">
@@ -323,26 +341,27 @@ onUnmounted(() => {
             :style="{ color: hobby.titleColor }"
           >
             {{ hobby.start }}
-				</h3>
-          <h2 class="mb-6 text-6xl font-bold text-slate-100">
+          </h3>
+          <!-- Title Text: Made font size responsive -->
+          <h2 class="mb-6 text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-100">
             {{ hobby.title }}
           </h2>
-          <p class="text-lg text-slate-400 leading-relaxed">
+          <!-- Body Text: Made font size responsive -->
+          <p class="text-base sm:text-lg text-slate-400 leading-relaxed">
             {{ hobby.description }}
           </p>
         </div>
       </div>
     </div>
 
-		<div ref="buttonRef" class="block flex justify-center mb-4">
-			<UButton
-				class="return-buttonpy-2 px-8 text-xl font-light tracking-widest" 
-				label="Return" 
-				size="xl" 
-				variant="solid" 
-				color="secondary"  
-				@click="reverseOut"/>
-		</div>
-
+    <div ref="buttonRef" class="block flex justify-center mb-4 px-4">
+      <UButton
+        class="return-button py-2 px-8 text-xl font-light tracking-widest" 
+        label="Return" 
+        size="xl" 
+        variant="solid" 
+        color="secondary"  
+        @click="reverseOut"/>
+    </div>
   </div>
 </template>
