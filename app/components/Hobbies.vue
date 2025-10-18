@@ -92,7 +92,6 @@ const addShapeRef = (el: Element | ComponentPublicInstance | null) => {
 
 onMounted(() => {
   ctx = gsap.context(() => {
-    // Intro animation timeline
     const introTl = gsap.timeline()
     introTl.from(introTitle.value, { 
       y: 30, 
@@ -120,7 +119,6 @@ onMounted(() => {
       ease: 'power4.inOut' 
     }, '<')
 
-    // Use GSAP's matchMedia for responsive animations
     const mm = gsap.matchMedia();
     mm.add({
       isDesktop: "(min-width: 768px)",
@@ -151,7 +149,6 @@ onMounted(() => {
 
       hobbies.forEach((hobby, index) => {
         mainTl.to(titleWrapper.value, { 
-          // Animate 'x' only on desktop for the alternating effect
           x: isDesktop ? (index % 2 === 0 ? '0' : '50vw') : '0', 
           ease: 'sine.inOut' 
         })
@@ -275,7 +272,6 @@ onUnmounted(() => {
 
 <template>
   <div ref="mainContainer" class="relative overflow-x-hidden bg-[#0f172a] font-sans text-white">
-    <!-- Intro Title: Made font size responsive -->
     <div ref="introTitleContainer" class="fixed inset-0 z-[60] flex items-center justify-center">
       <h1 ref="introTitle" class="text-center text-5xl sm:text-7xl lg:text-9xl font-bold uppercase tracking-widest text-gray-400">
         Hobbies
@@ -285,9 +281,7 @@ onUnmounted(() => {
     <div ref="leftCover" class="fixed left-0 top-0 z-50 h-full w-1/2 bg-[#1a1a1a]"></div>
     <div ref="rightCover" class="fixed right-0 top-0 z-50 h-full w-1/2 bg-[#1a1a1a]"></div>
 
-    <!-- Pinned Section -->
     <div ref="pinnedContainer" class="relative h-screen w-full overflow-hidden">
-      <!-- Background Shapes -->
       <div class="absolute inset-0 z-0 opacity-20">
         <div :ref="addShapeRef" class="absolute left-[15%] top-[20%] h-48 w-48 border-4"></div>
         <div :ref="addShapeRef" class="absolute right-[20%] top-[55%] h-36 w-36 border-2"></div>
@@ -301,7 +295,6 @@ onUnmounted(() => {
         <div :ref="addShapeRef" class="absolute rounded-full right-[20%] top-[40%] h-96 w-96 border-4"></div>
       </div>
 
-      <!-- Title Wrapper: Full width on mobile, half on desktop -->
       <div ref="titleWrapper" class="absolute flex h-full w-full md:w-1/2 items-center justify-center">
         <div class="relative h-full w-full">
           <div
@@ -310,18 +303,15 @@ onUnmounted(() => {
             :ref="addTitleRef"
             class="absolute w-full flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8"
           >
-            <!-- Title Text: Made font size responsive -->
             <h1 class="text-4xl sm:text-6xl lg:text-8xl text-center shrink font-black tracking-wide">
               {{ hobby.displayTitle }}
             </h1>
-            <!-- Icon: Made size responsive -->
             <UIcon :name="hobby.icon" class="size-20 sm:size-28 lg:size-40"/>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Details Sections -->
     <div class="relative z-10 bg-[#0f172a] px-4 sm:px-8">
       <div
         v-for="(hobby, index) in hobbies"
@@ -342,11 +332,9 @@ onUnmounted(() => {
           >
             {{ hobby.start }}
           </h3>
-          <!-- Title Text: Made font size responsive -->
           <h2 class="mb-6 text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-100">
             {{ hobby.title }}
           </h2>
-          <!-- Body Text: Made font size responsive -->
           <p class="text-base sm:text-lg text-slate-400 leading-relaxed">
             {{ hobby.description }}
           </p>
