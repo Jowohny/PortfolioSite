@@ -25,6 +25,16 @@ const languageReferences = ref<HTMLDivElement[]>([])
 const frameworkTweens = ref<{ [key: number]: gsap.core.Tween }>({})
 const languageTweens = ref<{ [key: number]: gsap.core.Tween }>({})
 
+const selectedMobileIcon = ref<any>(null)
+
+const handleMobileIconTap = (icon: any) => {
+  selectedMobileIcon.value = icon
+}
+
+const clearMobileIconSelection = () => {
+  selectedMobileIcon.value = null
+}
+
 const sidebarIcons = {
   frameworks: [
     {
@@ -160,7 +170,7 @@ const experienceSlides = [
 onMounted(() => {
   splitTitle = new SplitText(titleRef.value, { 
     type: 'chars', 
-    charsClass: 'font-mono text-7xl'
+    charsClass: 'font-mono text-5xl md:text-7xl'
   })
   splitTitle.chars.forEach((char, index) => {
     gsap.set(char, {
@@ -168,14 +178,14 @@ onMounted(() => {
       y: index % 2 !== 0 ? -20 : 20,
       opacity: 0,
       scaleY: 1,
-			color: '#fff'
+      color: '#fff'
     })
   })
 
-	gsap.set(buttonRef.value, { opacity: 0, scale: 0 })
+  gsap.set(buttonRef.value, { opacity: 0, scale: 0 })
   gsap.set(titleRef.value, { yPercent: '460' });
   gsap.set(carouselRef.value, { borderColor: '#00bbff' })
-	gsap.set(pageRef.value, { opacity: 0, scale: 0 })
+  gsap.set(pageRef.value, { opacity: 0, scale: 0 })
   gsap.set([...languageReferences.value, ...frameworkReferences.value], { opacity: 0 })
 
   if (leftPathRef.value && rightPathRef.value) {
@@ -201,12 +211,12 @@ onMounted(() => {
     const timeline = gsap.timeline()
 
     timeline.to(pageRef.value, {
-			opacity: 1,
-			scale: 1,
-			duration: 3,
-			ease: 'elastic.out(1,0.4)'
-		})
-		.to(splitTitle.chars, {
+      opacity: 1,
+      scale: 1,
+      duration: 3,
+      ease: 'elastic.out(1,0.4)'
+    })
+    .to(splitTitle.chars, {
       rotateZ: 0,
       y: 0,
       opacity: 1,
@@ -230,7 +240,7 @@ onMounted(() => {
         transitionFinished.value = true
       }
     }, '-=1.3')
-		.to(splitTitle.chars, {})
+    .to(splitTitle.chars, {})
 
     frameworkReferences.value.forEach((icon, index) => {
       const leftPath = leftPathRef.value!
@@ -309,7 +319,7 @@ onMounted(() => {
       scaleY: 1,
       duration: 1.5,
       ease: "power4.inOut",
-			onComplete: () => {
+      onComplete: () => {
         toast.add({
           title: "Hover over the icons!",
           description: "To get more information, hover over each of them to get some insight on how well I feel about them.",
@@ -322,37 +332,37 @@ onMounted(() => {
         })
       }
     }, '-=0.5')
-		.to(buttonRef.value, {
-			opacity: 1,
-			scale: 1,
-			ease: 'elastic.inOut(1,0.7)',
-		
-		})
+    .to(buttonRef.value, {
+      opacity: 1,
+      scale: 1,
+      ease: 'elastic.inOut(1,0.7)',
+    
+    })
 
   }
 })
 
 const reverseOut = () => {
-	const timeline = gsap.timeline({ onComplete: () => {emit('returnToSender')} })
-	splitTitle = new SplitText(titleRef.value, { type: 'chars' })
+  const timeline = gsap.timeline({ onComplete: () => {emit('returnToSender')} })
+  splitTitle = new SplitText(titleRef.value, { type: 'chars' })
 
-	timeline.to(buttonRef.value, {
-		opacity: 0,
-		duration: 1,
-		scale: 0,
-		ease: 'elastic.in(1,0.7)'
-	})	
-	.to(splitTitle.chars, {
-		rotateZ: -90,
-		duration: 1.2,
-		opacity: 0,
-		yPercent: -100,
-		ease: 'power4.inOut',
-		stagger: 0.05
-	}, '<')
-	.to(splitTitle.chars, {}, '<+=1.2')
+  timeline.to(buttonRef.value, {
+    opacity: 0,
+    duration: 1,
+    scale: 0,
+    ease: 'elastic.in(1,0.7)'
+  })  
+  .to(splitTitle.chars, {
+    rotateZ: -90,
+    duration: 1.2,
+    opacity: 0,
+    yPercent: -100,
+    ease: 'power4.inOut',
+    stagger: 0.05
+  }, '<')
+  .to(splitTitle.chars, {}, '<+=1.2')
 
-	frameworkReferences.value.forEach((icon, index) => {
+  frameworkReferences.value.forEach((icon, index) => {
       const leftPath = leftPathRef.value!
       if (timeline)
         timeline.to(icon, {
@@ -384,19 +394,19 @@ const reverseOut = () => {
         opacity: 0,
         duration: 1
       }, '<')
-	})
-	timeline.to(carouselRef.value, {
-		scale: 0,
-		duration: 1.5,
-		ease: 'power4.inOut',
-		opacity: 0
-	}, '-=0.5')
-	.to(pageRef.value, {
-		scale: 0,
-		opacity: 0,
-		duration: 2,
-		ease: 'power4.inOut'
-	}, '-=1.3')
+  })
+  timeline.to(carouselRef.value, {
+    scale: 0,
+    duration: 1.5,
+    ease: 'power4.inOut',
+    opacity: 0
+  }, '-=0.5')
+  .to(pageRef.value, {
+    scale: 0,
+    opacity: 0,
+    duration: 2,
+    ease: 'power4.inOut'
+  }, '-=1.3')
 }
 
 const showIconDetails = (index: number, type: string) => {
@@ -470,10 +480,10 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
 </script>
 
 <template>
-  <svg width="400" height="600" class="z-30 absolute top-1/2 -translate-y-1/2 left-0">
+  <svg width="400" height="600" class="z-30 absolute top-1/2 -translate-y-1/2 left-0 hidden md:block">
     <path ref="leftPathRef" d="M -10 0 q 360 300 -10 600" fill="none"/>
   </svg>
-  <svg width="400" height="600" class="z-30 absolute top-1/2 -translate-y-1/2 right-0">
+  <svg width="400" height="600" class="z-30 absolute top-1/2 -translate-y-1/2 right-0 hidden md:block">
     <path ref="rightPathRef" d="M 410 600 q -360 -300 10 -600" fill="none"/>
   </svg>
 
@@ -482,17 +492,17 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
     v-for="(icon, index) in sidebarIcons.frameworks"
     :key="`framework-${index}`"
     :ref="(el) => addFrameworkRef(el)"
-    class="w-16 h-16 absolute z-50"
+    class="w-16 h-16 absolute z-50 hidden md:block"
     @mouseenter="showIconDetails(index, 'framework')"
     @mouseleave="closeIconDetails(index, 'framework')" >
       <UPopover 
         mode="hover"
         arrow
-        :content="{ side: 'right' }" >        
+        :popper="{ placement: 'right' }" >        
 
         <img :src="icon.image" class="w-full h-full object-contain">
 
-      <template #content>
+      <template #panel>
         <div class="h-32 w-88 py-2 px-4 ">
           <h1 class="font-bold text-lg tracking-loose text-center block" :class="icon.colorScheme[0]">
             {{ icon.name }}
@@ -513,7 +523,7 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
     v-for="(icon, index) in sidebarIcons.languages"
     :key="`language-${index}`"
     :ref="(el) => addLanguageRef(el)"
-    class="w-16 h-16 absolute z-50"
+    class="w-16 h-16 absolute z-50 hidden md:block"
     @mouseenter="showIconDetails(index, 'language')"
     @mouseleave="closeIconDetails(index, 'language')"
     >
@@ -521,11 +531,11 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
     <UPopover
         mode="hover"
         arrow
-        :content="{ side: 'left' }" >  
+        :popper="{ placement: 'left' }" >  
 
       <img :src="icon.image" class="w-full h-full object-contain">
 
-      <template #content>
+      <template #panel>
         <div class="h-32 w-88 py-2 px-4 ">
           <h1 class="font-bold text-lg tracking-loose text-center block" :class="icon.colorScheme[0]">
             {{ icon.name }}
@@ -533,7 +543,7 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
           <p class="font-semibold text-xs tracking-loose mb-4" :class="icon.colorScheme[1]">
             {{ icon.description }}
           </p>
-          <UProgress v-model="icon.proficiency" getalueLabel="Proficiency: ~{{item}}" size="lg"/>
+          <UProgress v-model="icon.proficiency" size="lg"/>
         </div>
       </template>
 
@@ -541,14 +551,14 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
 
   </div>
 
-  <div ref="pageRef" class="min-h-screen flex items-center flex-col items-center" style="background: radial-gradient(ellipse at 50%, #59626e, #0f172a 70%);">
+  <div ref="pageRef" class="min-h-screen w-full flex items-center flex-col" style="background: radial-gradient(ellipse at 50%, #59626e, #0f172a 70%);">
     <div class="w-full text-center z-50 pt-2 pb-4">
-      <h1 ref="titleRef" class="font-inter text-black text-8xl font-thin tracking-loose">
+      <h1 ref="titleRef" class="font-inter text-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-thin tracking-loose">
         EXPERIENCE
       </h1>
     </div>
 
-    <div ref="carouselRef" class="w-2/3 h-1/2 p-12">
+    <div ref="carouselRef" class="w-11/12 md:w-4/5 lg:w-2/3 h-auto md:h-1/2 p-4 sm:p-8 md:p-12">
       <UCarousel
         v-slot="{ item }"
         :items="experienceSlides"
@@ -565,14 +575,64 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
       </UCarousel>
     </div>
 
-		<div ref="buttonRef" class="absolute top-8 left-8 block z-100">
-			<UButton
-				class="py-2 px-8 text-xl font-light tracking-widest" 
-				label="Return" 
-				size="xl" 
-				variant="solid" 
-				color="secondary"  
-				@click="reverseOut"/>		
+    <div class="block md:hidden w-11/12 mt-4 mb-8">
+      <UCarousel
+        :items="[{name: 'Frameworks', data: sidebarIcons.frameworks}, {name: 'Languages', data: sidebarIcons.languages}]"
+        :ui="{ item: 'basis-full' }"
+        arrows
+        indicators
+      >
+        <template #default="{ item }">
+          <div class="text-center p-4">
+            <h2 class="text-xl font-bold mb-4 text-white tracking-widest uppercase">
+              {{ item.name }}
+            </h2>
+            <div class="grid grid-cols-3 sm:grid-cols-5 gap-4">
+              <div
+                v-for="icon in item.data"
+                :key="icon.name"
+                class="flex flex-col items-center justify-center cursor-pointer transform hover:scale-110 transition-transform duration-200"
+                @click="handleMobileIconTap(icon)"
+              >
+                <img :src="icon.image" class="w-12 h-12 object-contain" :alt="icon.name">
+                <span class="text-xs mt-2 text-gray-300">{{ icon.name }}</span>
+              </div>
+            </div>
+          </div>
+        </template>
+      </UCarousel>
+
+			<div
+				v-if="selectedMobileIcon"
+				class="relative mt-4 p-4 bg-slate-800/80 backdrop-blur-sm border border-slate-700 rounded-lg shadow-xl"
+			>
+				<UButton
+					icon="i-heroicons-x-mark-20-solid"
+					size="sm"
+					color="primary"
+					variant="ghost"
+					class="absolute top-2 right-2 z-10"
+					@click="clearMobileIconSelection"
+				/>
+				<div class="h-auto w-full py-2 px-4">
+					<h1 class="font-bold text-lg tracking-loose text-center block" :class="selectedMobileIcon.colorScheme[0]">
+						{{ selectedMobileIcon.name }}
+					</h1>
+					<p class="font-semibold text-xs text-center tracking-loose mb-4" :class="selectedMobileIcon.colorScheme[1]">
+						{{ selectedMobileIcon.description }}
+					</p>
+					<UProgress v-model="selectedMobileIcon.proficiency" size="lg"/>
+				</div>
 			</div>
+		</div>
+    <div ref="buttonRef" class="absolute top-4 left-4 md:top-8 md:left-8 block z-50">
+      <UButton
+        class="py-2 px-8 text-xl font-light tracking-widest" 
+        label="Return" 
+        size="xl" 
+        variant="solid" 
+        color="secondary"  
+        @click="reverseOut"/>   
+      </div>
   </div>
 </template>
