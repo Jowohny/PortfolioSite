@@ -15,6 +15,7 @@ const buttonRef = ref<HTMLDivElement | null>(null)
 const carouselRef = ref<HTMLDivElement | null>(null)
 const leftPathRef = ref<SVGPathElement | null>(null)
 const rightPathRef = ref<SVGPathElement | null>(null)
+const frameLangRef = ref<HTMLDivElement | null>(null)
 const transitionFinished = ref(false)
 let splitTitle: SplitText | null = null
 
@@ -186,6 +187,7 @@ onMounted(() => {
   gsap.set(titleRef.value, { yPercent: '460' });
   gsap.set(carouselRef.value, { borderColor: '#00bbff' })
   gsap.set(pageRef.value, { opacity: 0, scale: 0 })
+	gsap.set(frameLangRef.value, { opacity: 0, yPercent: 100 })
   gsap.set([...languageReferences.value, ...frameworkReferences.value], { opacity: 0 })
 
   if (leftPathRef.value && rightPathRef.value) {
@@ -231,7 +233,7 @@ onMounted(() => {
       color: '#fff',
       scale: 1,
       ease: 'power4.inOut',
-    }, '-=0.5')
+    }, '-=1')
     .to(splitTitle.chars, {
       rotateX: 360,
       stagger: 0.05,
@@ -239,7 +241,7 @@ onMounted(() => {
       onComplete: () => {
         transitionFinished.value = true
       }
-    }, '-=1.3')
+    }, '-=1.5')
     .to(splitTitle.chars, {})
 
     frameworkReferences.value.forEach((icon, index) => {
@@ -331,7 +333,11 @@ onMounted(() => {
           duration: 5000
         })
       }
-    }, '-=0.5')
+    }, '-=1.5')
+		.to(frameLangRef.value, {
+			opacity: 1,
+			yPercent: 0
+		})
     .to(buttonRef.value, {
       opacity: 1,
       scale: 1,
@@ -575,15 +581,16 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
       </UCarousel>
     </div>
 
-    <div class="block md:hidden w-11/12 mt-4 mb-8">
+    <div ref="frameLangRef" class="block md:hidden w-11/12 mt-28 mb-16">
       <UCarousel
         :items="[{name: 'Frameworks', data: sidebarIcons.frameworks}, {name: 'Languages', data: sidebarIcons.languages}]"
         :ui="{ item: 'basis-full' }"
         arrows
-        indicators
+				dots
+				loop
       >
         <template #default="{ item }">
-          <div class="text-center p-4">
+          <div class="text-center px-12">
             <h2 class="text-xl font-bold mb-4 text-white tracking-widest uppercase">
               {{ item.name }}
             </h2>
@@ -604,7 +611,7 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
 
 			<div
 				v-if="selectedMobileIcon"
-				class="relative mt-4 p-4 bg-slate-800/80 backdrop-blur-sm border border-slate-700 rounded-lg shadow-xl"
+				class="relative mt-12 px-8 bg-slate-800/80 backdrop-blur-sm border border-slate-700 rounded-lg shadow-xl"
 			>
 				<UButton
 					icon="i-heroicons-x-mark-20-solid"
@@ -625,7 +632,7 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
 				</div>
 			</div>
 		</div>
-    <div ref="buttonRef" class="absolute top-4 left-4 md:top-8 md:left-8 block z-50">
+    <div ref="buttonRef" class="m-4 block z-50">
       <UButton
         class="py-2 px-8 text-xl font-light tracking-widest" 
         label="Return" 

@@ -240,7 +240,7 @@ const reverseOut = () => {
     </div>
 
     <div>
-      <div class="px-2 sm:px-4 md:px-6 mb-40" ref="carouselRef">
+      <div class="px-4 sm:px-4 md:px-6 mb-40" ref="carouselRef">
         <UCarousel
           v-slot="{ item }"
           :items="websiteTypes"
@@ -250,7 +250,7 @@ const reverseOut = () => {
           :pause-on-focus="false"
           :draggable="false"
           loop
-          :ui= "{item:'basis-1/2 justify-center flex'}"
+          :ui= "{item:'basis-1/2 justify-center flex p-4'}"
         >
           <NuxtLink 
             :to="item.link" 
@@ -260,7 +260,7 @@ const reverseOut = () => {
             @mouseenter="onHoverEnter"
             @mouseleave="onHoverLeave"
           >
-            <img :src="item.siteImage" class="object-cover rounded-md shadow-lg">
+            <img :src="item.siteImage" class="border border-white object-cover rounded-lg shadow-lg">
           </NuxtLink>
         </UCarousel>
       </div>
