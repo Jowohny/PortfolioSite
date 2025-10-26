@@ -19,8 +19,6 @@ const frameLangRef = ref<HTMLDivElement | null>(null)
 const transitionFinished = ref(false)
 let splitTitle: SplitText | null = null
 
-const toast = useToast()
-
 const frameworkReferences = ref<HTMLDivElement[]>([])
 const languageReferences = ref<HTMLDivElement[]>([])
 const frameworkTweens = ref<{ [key: number]: gsap.core.Tween }>({})
@@ -320,19 +318,7 @@ onMounted(() => {
       opacity: 1,
       scaleY: 1,
       duration: 1.5,
-      ease: "power4.inOut",
-      onComplete: () => {
-        toast.add({
-          title: "Hover over the icons!",
-          description: "To get more information, hover over each of them to get some insight on how well I feel about them.",
-          icon: "i-lucide-lightbulb",
-          ui: {
-            root: 'w-full p-4 rounded-lg shadow-lg bg-white dark:bg-gray-900 ring-1 ring-gray-200 dark:ring-gray-800',
-          },
-          closeIcon: 'i-lucide-arrow-right',
-          duration: 5000
-        })
-      }
+      ease: "power4.inOut"
     }, '-=1.5')
 		.to(frameLangRef.value, {
 			opacity: 1,

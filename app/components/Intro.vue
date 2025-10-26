@@ -13,7 +13,6 @@ const buttonRef = ref<HTMLElement | null>(null)
 const particlesRef = ref<HTMLElement | null>(null)
 const titleAlternateRef = ref<HTMLElement | null>(null)
 const existance = ref(true)
-const toast = useToast()
 let splitTitle: SplitText | null = null
 let splitTitleAlternate: SplitText | null = null
 let splitSubText: SplitText | null = null
@@ -43,19 +42,7 @@ onMounted(() => {
       rotationX: -90,
       transformOrigin: '50% 50% -50',
       stagger: 0.04,
-      duration: 0.3,
-      onComplete: () => {
-        toast.add({
-          title: "Don't forget to hover!",
-          description: "Hover over the title and subtext for some extra information!",
-          icon: "i-lucide-lightbulb",
-          ui: {
-            root: 'w-full p-4 rounded-lg shadow-lg bg-white dark:bg-gray-900 ring-1 ring-gray-200 dark:ring-gray-800',
-          },
-          closeIcon: 'i-lucide-arrow-right',
-          duration: 3000
-        })
-      }
+      duration: 0.3
     },'-=0.5')
     .from(splitSubText.lines, {
       autoAlpha: 0,
