@@ -10,7 +10,6 @@ gsap.registerPlugin(SplitText, MotionPathPlugin)
 const emit = defineEmits(['returnToSender'])
 
 const titleRef = ref()
-const pageRef = ref() 
 const buttonRef = ref<HTMLDivElement | null>(null)
 const carouselRef = ref<HTMLDivElement | null>(null)
 const leftPathRef = ref<SVGPathElement | null>(null)
@@ -184,7 +183,6 @@ onMounted(() => {
   gsap.set(buttonRef.value, { opacity: 0, scale: 0 })
   gsap.set(titleRef.value, { yPercent: '460' });
   gsap.set(carouselRef.value, { borderColor: '#00bbff' })
-  gsap.set(pageRef.value, { opacity: 0, scale: 0 })
   gsap.set(frameLangRef.value, { opacity: 0, yPercent: 100 })
   gsap.set([...languageReferences.value, ...frameworkReferences.value], { opacity: 0 })
 
@@ -210,13 +208,7 @@ onMounted(() => {
 
     const timeline = gsap.timeline()
 
-    timeline.to(pageRef.value, {
-      opacity: 1,
-      scale: 1,
-      duration: 3,
-      ease: 'elastic.out(1,0.4)'
-    })
-    .to(splitTitle.chars, {
+    timeline.to(splitTitle.chars, {
       rotateZ: 0,
       y: 0,
       opacity: 1,
@@ -224,7 +216,7 @@ onMounted(() => {
       duration: 0.8,
       stagger: 0.05,
       ease: "back.out(1.7)"
-    }, '-=1')
+    })
     .to(titleRef.value, {
       yPercent: -15,
       duration: 1.5, 
@@ -393,12 +385,6 @@ const reverseOut = () => {
     ease: 'power4.inOut',
     opacity: 0
   }, '-=0.5')
-  .to(pageRef.value, {
-    scale: 0,
-    opacity: 0,
-    duration: 2,
-    ease: 'power4.inOut'
-  }, '-=1.3')
 }
 
 const showIconDetails = (index: number, type: string) => {
@@ -543,7 +529,7 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
 
   </div>
 
-  <div ref="pageRef" class="min-h-screen w-full flex items-center flex-col" style="background: radial-gradient(ellipse at 50%, #59626e, #0f172a 70%);">
+  <div class="min-h-screen w-full flex items-center flex-col bg-[0f172a]">
     <div class="w-full text-center z-50 pt-2 pb-4">
       <h1 ref="titleRef" class="font-inter text-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-thin tracking-loose">
         EXPERIENCE

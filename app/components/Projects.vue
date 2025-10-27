@@ -233,7 +233,7 @@ const reverseOut = () => {
 <template>
   <div class="min-h-screen bg-[#0f172a] overflow-hidden"> 
     <div class="block text-center flex justify-center">
-      <h1 ref="splitTitleRef" class="text-5xl sm:text-7xl md:text-8xl mb-8 sm:mb-12 md:mb-24 text-white font-thin tracking-loose font-inter  ">
+      <h1 ref="splitTitleRef" class="text-5xl sm:text-7xl md:text-8xl text-white font-thin tracking-loose font-inter  ">
           PROJECTS
       </h1>
       <h1 ref="liveRef" class="font-inter font-thin tracking-loose text-red-500 ml-4 sm:ml-6 md:ml-8 text-base sm:text-lg md:text-xl">(LIVE)</h1>
