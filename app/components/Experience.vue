@@ -185,7 +185,7 @@ onMounted(() => {
   gsap.set(titleRef.value, { yPercent: '460' });
   gsap.set(carouselRef.value, { borderColor: '#00bbff' })
   gsap.set(pageRef.value, { opacity: 0, scale: 0 })
-	gsap.set(frameLangRef.value, { opacity: 0, yPercent: 100 })
+  gsap.set(frameLangRef.value, { opacity: 0, yPercent: 100 })
   gsap.set([...languageReferences.value, ...frameworkReferences.value], { opacity: 0 })
 
   if (leftPathRef.value && rightPathRef.value) {
@@ -320,10 +320,10 @@ onMounted(() => {
       duration: 1.5,
       ease: "power4.inOut"
     }, '-=1.5')
-		.to(frameLangRef.value, {
-			opacity: 1,
-			yPercent: 0
-		})
+    .to(frameLangRef.value, {
+      opacity: 1,
+      yPercent: 0
+    })
     .to(buttonRef.value, {
       opacity: 1,
       scale: 1,
@@ -490,11 +490,11 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
       <UPopover 
         mode="hover"
         arrow
-        :popper="{ placement: 'right' }" >        
+        :content="{ side: 'right' }" >        
 
         <img :src="icon.image" class="w-full h-full object-contain">
 
-      <template #panel>
+      <template #content>
         <div class="h-32 w-88 py-2 px-4 ">
           <h1 class="font-bold text-lg tracking-loose text-center block" :class="icon.colorScheme[0]">
             {{ icon.name }}
@@ -523,11 +523,11 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
     <UPopover
         mode="hover"
         arrow
-        :popper="{ placement: 'left' }" >  
+        :content="{ side: 'left' }" >  
 
       <img :src="icon.image" class="w-full h-full object-contain">
 
-      <template #panel>
+      <template #content>
         <div class="h-32 w-88 py-2 px-4 ">
           <h1 class="font-bold text-lg tracking-loose text-center block" :class="icon.colorScheme[0]">
             {{ icon.name }}
@@ -572,8 +572,8 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
         :items="[{name: 'Frameworks', data: sidebarIcons.frameworks}, {name: 'Languages', data: sidebarIcons.languages}]"
         :ui="{ item: 'basis-full' }"
         arrows
-				dots
-				loop
+        dots
+        loop
       >
         <template #default="{ item }">
           <div class="text-center px-12">
@@ -595,29 +595,29 @@ const addLanguageRef = (el: Element | ComponentPublicInstance | null) => {
         </template>
       </UCarousel>
 
-			<div
-				v-if="selectedMobileIcon"
-				class="relative mt-12 px-8 bg-slate-800/80 backdrop-blur-sm border border-slate-700 rounded-lg shadow-xl"
-			>
-				<UButton
-					icon="i-heroicons-x-mark-20-solid"
-					size="sm"
-					color="primary"
-					variant="ghost"
-					class="absolute top-2 right-2 z-10"
-					@click="clearMobileIconSelection"
-				/>
-				<div class="h-auto w-full py-2 px-4">
-					<h1 class="font-bold text-lg tracking-loose text-center block" :class="selectedMobileIcon.colorScheme[0]">
-						{{ selectedMobileIcon.name }}
-					</h1>
-					<p class="font-semibold text-xs text-center tracking-loose mb-4" :class="selectedMobileIcon.colorScheme[1]">
-						{{ selectedMobileIcon.description }}
-					</p>
-					<UProgress v-model="selectedMobileIcon.proficiency" size="lg"/>
-				</div>
-			</div>
-		</div>
+      <div
+        v-if="selectedMobileIcon"
+        class="relative mt-12 px-8 bg-slate-800/80 backdrop-blur-sm border border-slate-700 rounded-lg shadow-xl"
+      >
+        <UButton
+          icon="i-heroicons-x-mark-20-solid"
+          size="sm"
+          color="primary"
+          variant="ghost"
+          class="absolute top-2 right-2 z-10"
+          @click="clearMobileIconSelection"
+        />
+        <div class="h-auto w-full py-2 px-4">
+          <h1 class="font-bold text-lg tracking-loose text-center block" :class="selectedMobileIcon.colorScheme[0]">
+            {{ selectedMobileIcon.name }}
+          </h1>
+          <p class="font-semibold text-xs text-center tracking-loose mb-4" :class="selectedMobileIcon.colorScheme[1]">
+            {{ selectedMobileIcon.description }}
+          </p>
+          <UProgress v-model="selectedMobileIcon.proficiency" size="lg"/>
+        </div>
+      </div>
+    </div>
     <div ref="buttonRef" class="m-4 block z-50">
       <UButton
         class="py-2 px-8 text-xl font-light tracking-widest" 
